@@ -1,5 +1,27 @@
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+
 .container{
-    background: #987654;
     padding: 20px;
-    width: 50%;
+    width: 40%;
+    border: 1px solid #c8f3d5;
+    border-radius: 10px;
+    background: #c8f3d5;
+}
+
+@media screen and (max-width: 800px) {
+  .container{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container{
+    width: 100%;
+  }
 }

@@ -7,6 +7,9 @@ import { LoginPageComponent } from './componentes/login-page/login-page.componen
 import { WelcomePageComponent } from './componentes/welcome-page/welcome-page.component';
 import { NotFoundPageComponent } from './componentes/not-found-page/not-found-page.component';
 
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +19,9 @@ import { NotFoundPageComponent } from './componentes/not-found-page/not-found-pa
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

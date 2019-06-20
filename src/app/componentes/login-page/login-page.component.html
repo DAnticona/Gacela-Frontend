@@ -1,27 +1,60 @@
 <div class="container">
 
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
       <div class="form-group row">
-        <label for="inputUsuario" class="col-lg-4 col-form-label">Usuario</label>
 
-        <div class="col-lg-8">
-          <input type="text" class="form-control" id="inputUsuario" placeholder="Usuario">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelUsuario">
+          <label for="usuario" class="col-form-label">Usuario</label>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 inputUsuario">
+
+          <input type="text" class="form-control" id="usuario" placeholder="Usuario" formControlName="usuario" required>
+          
+            <div *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)" class="alert alert-danger">
+
+              <div *ngIf="usuario.errors.required">
+                Debe ingresar un usuario
+              </div>
+
+            </div>
+
         </div>
         
       </div>
     
+
+
       <div class="form-group row">
-        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+          <label for="inputPassword3" class="col-form-label">Contraseña</label>
         </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 password">
+          <input type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password" required>
+          
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+
+              <div *ngIf="password.errors.required">
+                Debe ingresar una contraseña
+              </div>
+
+            </div>
+
+        </div>
+
       </div>
     
+
+
       <div class="form-group row">
+
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Iniciar Sesión</button>
         </div>
+        
       </div>
     
     </form>
