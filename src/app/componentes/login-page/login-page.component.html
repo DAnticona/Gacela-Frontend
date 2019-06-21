@@ -1,4 +1,7 @@
 <div class="container">
+    <div *ngIf="log" class="alert alert-danger">
+        {{log.mensaje}}
+    </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
