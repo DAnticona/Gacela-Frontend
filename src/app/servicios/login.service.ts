@@ -16,15 +16,15 @@ export class LoginService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  login(login: Login, config: Config): Observable<Usuario>{
+  login(login: Login, config: Config): Observable<any>{
 
-    return this.http.post<Usuario>(config.loginUrl, login).pipe(
+    return this.http.post<any>(config.loginUrl, login).pipe(
       catchError(this.handleError)
     );
   }
 
-  routeWelcomePage(){
-    this.router.navigate(['welcome']);
+  routeWelcomePage(usuario: Usuario){
+    this.router.navigate(['welcome/' + `${usuario.noUsua.toLowerCase()}`]);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {

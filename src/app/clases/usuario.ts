@@ -1,4 +1,7 @@
 import { Persona } from './persona';
+import { Perfil } from './perfil';
+import { Submenu } from './submenu';
+
 export class Usuario extends Persona{
     coUsua: String;
 	noUsua: String;
@@ -7,4 +10,8 @@ export class Usuario extends Persona{
 	usModiUsua: String;
 	feCreaUsua: String;
 	feModiUsua: String;
+
+	perfil: Perfil;
+
+	subMenus: Submenu[];
 }

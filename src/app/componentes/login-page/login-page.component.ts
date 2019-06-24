@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { LoginService } from '../../servicios/login.service';
-import { Login } from '../../clases/login';
+
 import { Config } from '../../interfaces/config';
-import { ConfigService } from '../../servicios/config.service';
+import { Login } from '../../clases/login';
 import { Usuario } from '../../clases/usuario';
 import { Log } from '../../clases/log';
+
+import { ConfigService } from '../../servicios/config.service';
+import { LoginService } from '../../servicios/login.service';
 
 @Component({
   selector: 'app-login-page',
@@ -31,21 +33,21 @@ export class LoginPageComponent implements OnInit {
     this.showConfig();
 
     this.loginForm = new FormGroup({
-      'usuario': new FormControl(this.login.usuario, [
+      'noUsua': new FormControl(this.login.noUsua, [
         Validators.required
       ]),
-      'password': new FormControl(this.login.password, [
+      'pasUsua': new FormControl(this.login.pasUsua, [
         Validators.required
       ]),
     });
   }
 
-  get usuario() { 
-    return this.loginForm.get('usuario'); 
+  get noUsua() { 
+    return this.loginForm.get('noUsua'); 
   }
   
-  get password() { 
-    return this.loginForm.get('password');
+  get pasUsua() { 
+    return this.loginForm.get('pasUsua');
   }
 
   showConfig() {
@@ -60,39 +62,44 @@ export class LoginPageComponent implements OnInit {
 
     this.loginService.login(this.loginForm.value, this.config).subscribe(
       
-      usuarioConectado => this.usuarioConectado = {
+      res => this.usuarioConectado = {
         
-        coUsua: usuarioConectado['coUsua'],
-        noUsua: usuarioConectado['noUsua'],
-        feUltSes: usuarioConectado['feUltSes'],
-        usCreaUsua: usuarioConectado['usCreaUsua'],
-        usModiUsua: usuarioConectado['usModiUsua'],
-        feCreaUsua: usuarioConectado['feCreaUsua'],
-        feModiUsua: usuarioConectado['feModiUsua'],
-        coPers: usuarioConectado['coPers'],
-        nuDocu: usuarioConectado['nuDocu'],
-        noPers: usuarioConectado['noPers'],
-        apPate: usuarioConectado['apPate'],
-        apMate: usuarioConectado['apMate'],
-        sexo: usuarioConectado['sexo'],
-        feNaci: usuarioConectado['feNaci'],
-        usCreaPers: usuarioConectado['usCreaPers'],
-        usModiPers: usuarioConectado['usModiPers'],
-        feCreaPers: usuarioConectado['feCreaPers'],
-        feModiPers: usuarioConectado['feModiPers']
+        coUsua: res['coUsua'],
+        noUsua: res['noUsua'],
+        feUltSes: res['feUltSes'],
+        usCreaUsua: res['usCreaUsua'],
+        usModiUsua: res['usModiUsua'],
+        feCreaUsua: res['feCreaUsua'],
+        feModiUsua: res['feModiUsua'],
+        coPers: res['coPers'],
+        nuDocu: res['nuDocu'],
+        noPers: res['noPers'],
+        apPate: res['apPate'],
+        apMate: res['apMate'],
+        sexo: res['sexo'],
+        feNaci: res['feNaci'],
+        usCreaPers: res['usCreaPers'],
+        usModiPers: res['usModiPers'],
+        feCreaPers: res['feCreaPers'],
+        feModiPers: res['feModiPers'],
+
+        perfil: res['perfil'],
+
+        subMenus: res['subMenus'],
         
       },
       
-      log => this.log = {
-        mensaje: log['mensaje'],
-        codigo: log['codigo'],
-        estado: log['estado'],
-        nombreClase: log['nombreClase'],
-        exception: log['exception']
+      err => this.log = {
+        mensaje: err['mensaje'],
+        codigo: err['codigo'],
+        estado: err['estado'],
+        nombreClase: err['nombreClase'],
+        exception: err['exception']
       },
 
       () => {
-        this.loginService.routeWelcomePage();
+        console.log(this.usuarioConectado);
+        this.loginService.routeWelcomePage(this.usuarioConectado);
       }
       
     );
