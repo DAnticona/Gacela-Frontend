@@ -9,13 +9,17 @@ import { NotFoundPageComponent } from './componentes/not-found-page/not-found-pa
 
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
+import { SideBarComponent } from './componentes/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     WelcomePageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    NavBarComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,

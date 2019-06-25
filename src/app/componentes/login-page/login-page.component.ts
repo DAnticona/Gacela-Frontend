@@ -98,7 +98,6 @@ export class LoginPageComponent implements OnInit {
       },
 
       () => {
-        console.log(this.usuarioConectado);
         this.loginService.routeWelcomePage(this.usuarioConectado);
       }
       

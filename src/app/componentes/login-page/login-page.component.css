@@ -7,11 +7,12 @@
   }
 
 .container{
-    padding: 20px;
-    width: 40%;
-    border: 1px solid #c8f3d5;
-    border-radius: 10px;
-    background: #c8f3d5;
+  margin-top: 80px;  
+  padding: 20px;
+  width: 40%;
+  border: 1px solid #a7a8a7;
+  border-radius: 10px;
+  background: #a7a8a7;
 }
 
 @media screen and (max-width: 800px) {

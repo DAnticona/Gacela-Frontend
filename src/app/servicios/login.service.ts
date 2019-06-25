@@ -8,13 +8,14 @@ import { Router } from '@angular/router';
 import { Login } from '../clases/login';
 import { Usuario } from '../clases/usuario';
 import { Config } from '../interfaces/config';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private usuarioService: UsuarioService) { }
 
   login(login: Login, config: Config): Observable<any>{
 
@@ -24,7 +25,8 @@ export class LoginService {
   }
 
   routeWelcomePage(usuario: Usuario){
-    this.router.navigate(['welcome/' + `${usuario.noUsua.toLowerCase()}`]);
+    this.usuarioService.setUsuario(usuario);
+    this.router.navigate([`welcome/${usuario.noUsua.toLowerCase()}`]);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
