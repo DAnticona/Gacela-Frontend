@@ -24,4 +24,8 @@ export class NavBarComponent implements OnInit {
     console.log(this.usuarioActual);
   }
 
+  menu(){
+    console.log("click Menu");
+  }
+
 }

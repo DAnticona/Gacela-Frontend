@@ -1,65 +1,63 @@
-<div class="container">
-    <div *ngIf="log" class="alert alert-danger">
-        {{log.mensaje}}
+<div class="login-container">
+  <div class="form-container">
+    <div class="gacela-container">
+      <img src="../../../assets/Images/gacela.svg" class="imageGacela">
     </div>
 
+    <div *ngIf="log" class="alert alert-danger">
+      {{log.mensaje}}
+    </div>
+  
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group row">
-
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelUsuario">
-          <label for="noUsua" class="col-form-label">Usuario</label>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 inputUsuario">
-
-          <input type="text" class="form-control" id="noUsua" placeholder="Usuario" formControlName="noUsua" required>
-          
-            <div *ngIf="noUsua.invalid && (noUsua.dirty || noUsua.touched)" class="alert alert-danger">
-
-              <div *ngIf="noUsua.errors.required">
-                Debe ingresar un usuario
-              </div>
-
+      <div class="form-group">
+  
+        <div class="inputUsuario">
+            
+          <input type="text" class="form-control noUsua" id="noUsua" placeholder="Usuario" formControlName="noUsua" required/>
+          <i class="fa fa-user errspan" aria-hidden="true"></i>
+            
+          <div *ngIf="noUsua.invalid && (noUsua.dirty || noUsua.touched)" class="alert alert-danger">
+            <div *ngIf="noUsua.errors.required">
+              Debe ingresar un usuario
             </div>
-
+          </div>
+  
         </div>
-        
+  
       </div>
-    
-
-
-      <div class="form-group row">
-
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-          <label for="inputPassword3" class="col-form-label">Contraseña</label>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 password">
-          <input type="password" class="form-control" id="pasUsua" placeholder="Contraseña" formControlName="pasUsua" required>
-          
+      
+  
+  
+      <div class="form-group">
+  
+        <div class="inputPassword">
+              
+          <input type="password" class="form-control pasUsua" id="pasUsua" placeholder="Contraseña" formControlName="pasUsua" required/>
+          <i class="fa fa-lock errspan" aria-hidden="true"></i>
+              
           <div *ngIf="pasUsua.invalid && (pasUsua.dirty || pasUsua.touched)" class="alert alert-danger">
-
-              <div *ngIf="pasUsua.errors.required">
-                Debe ingresar una contraseña
-              </div>
-
+  
+            <div *ngIf="pasUsua.errors.required">
+              Debe ingresar una contraseña
             </div>
-
+      
+          </div>
         </div>
-
+  
       </div>
-    
-
-
-      <div class="form-group row">
-
-        <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Iniciar Sesión</button>
-        </div>
-        
+     
+  
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Iniciar Sesión</button>
       </div>
-    
+
     </form>
 
+    <div class="opciones">
+      <ul>
+        <li><a href="#">Olvidé mi contraseña</a></li>
+        <li><a href="https://wollcorp.cloud.invgate.net">Solicita tu acceso</a></li>
+      </ul>
+    </div>
+  </div>
 </div>

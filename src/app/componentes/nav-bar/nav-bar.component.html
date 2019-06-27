@@ -1,11 +1,19 @@
-<nav class="navbar navbar-light bg-light justify-content-between">
-  <a class="navbar-brand">Gacela</a>
+<nav class="navbar-container">
 
-  <div id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a routerLink="/login" class="nav-link" (click)="logOut()">Log-Out</a>
-      </li>
-    </ul>
+  <div class="subnav">
+
+    <div class="navbar-menu">
+      <a routerLink="#" class="fa fa-bars menu" aria-hidden="true" (click)="menu()"></a>
+    </div>
+    
+    <div class="navbar-marca">
+      <a routerLink="#" class="marca">Gacela</a>
+    </div>
+          
+    <div class="navbar-opciones">
+      <a routerLink="/login" class="logout" (click)="logOut()">Log-Out</a>
+    </div>
+
   </div>
+
 </nav>

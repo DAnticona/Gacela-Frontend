@@ -1,28 +1,84 @@
+.login-container{
+  width: 100%;
+  height: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+  align-content: stretch;
+  
+
+  background: #b4ddb4;
+  background: -moz-linear-gradient(-45deg,  #b4ddb4 0%, #83c783 17%, #52b152 33%, #008a00 67%, #005700 83%, #002400 100%);
+  background: -webkit-linear-gradient(-45deg,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%);
+  background: linear-gradient(135deg,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4ddb4', endColorstr='#002400',GradientType=1 );
+}
+
+.form-container {
+  width: 30%;
+  min-width: 300px;
+  padding: 20px;
+  border-radius: 15px;
+  background: #b4ddb4;
+}
+
+.gacela-container{
+  background: #FFFFFF;
+  width: 50%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 90px;
+
+  margin-bottom: 30px;
+}
+
+.imageGacela{
+  width: 100%;
+  height: auto;
+}
+
+.inputUsuario, .inputPassword {
+  position: relative;
+}
+
+.noUsua, .pasUsua{
+  border-right: 28px solid #D5D5D5;
+}
+
+.errspan {
+  top: 5px;
+  right: 5px;
+  position: absolute;
+  font-size: 20pt;
+}
+
 .ng-valid[required], .ng-valid.required  {
-    border-left: 5px solid #42A948; /* green */
+    border-left: 5px solid #0AA45E;
   }
   
-  .ng-invalid:not(form)  {
-    border-left: 5px solid #a94442; /* red */
-  }
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442;
+}
 
-.container{
-  margin-top: 80px;  
-  padding: 20px;
-  width: 40%;
-  border: 1px solid #a7a8a7;
-  border-radius: 10px;
-  background: #a7a8a7;
+.opciones ul li{
+  list-style: none;
+}
+
+.opciones ul li a{
+  color: rgb(103, 139, 177);
+  font-family: 'Times New Roman', Times, serif;
 }
 
 @media screen and (max-width: 800px) {
-  .container{
-    width: 80%;
+  .form-container{
+    width: 50%;
   }
 }
 
 @media screen and (max-width: 500px) {
-  .container{
-    width: 100%;
+  .form-container{
+    width: 80%;
   }
 }
