@@ -1,25 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
-
-import { UsuarioService } from '../../servicios/usuario.service';
-import { Usuario } from '../../clases/usuario';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-welcome-page',
   templateUrl: './welcome-page.component.html',
-  styleUrls: ['./welcome-page.component.css']
+  styleUrls: ['./welcome-page.component.css'],
+  animations: [
+    trigger('sideBarTr', [
+      state('open', style({
+        visibility: 'visible',
+        width: '25%'
+      })),
+      state('closed', style({
+        visibility: 'hidden'
+      })),
+      transition('open <=> closed', [
+        animate(100)
+      ])
+    ]),
+    trigger('contentTr', [
+      state('open', style({
+        marginLeft: '25%'
+      })),
+      state('closed', style({
+        marginLeft: '0%'
+      })),
+      transition('open <=> closed', [
+        animate(100)
+      ])
+    ])
+  ]
 })
 export class WelcomePageComponent implements OnInit {
 
-  usuarioActual: Usuario;
+  isOpen = true;
 
-  constructor(private usuarioService: UsuarioService) { 
-    this.usuarioActual = this.usuarioService.getUsuario();
-  }
+  constructor() { }
 
   ngOnInit() {
     
+  }
+
+  onNotify() {
+    this.isOpen = !this.isOpen;
   }
 
 }

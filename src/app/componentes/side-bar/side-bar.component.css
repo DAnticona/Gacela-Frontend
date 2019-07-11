@@ -1,0 +1,28 @@
+
+.opciones-container {
+    height: 100%;
+    width: 100%;
+    color: #000000;
+}
+
+.opciones-container ul li {
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}
+
+.opciones-container ul li a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.opciones-container ul li a.active{
+    font-weight: bolder;
+    color: #0AA45E;
+}
+
+.opciones-container ul li a:hover {
+    font-weight: bolder;
+    color: #0AA45E;
+}

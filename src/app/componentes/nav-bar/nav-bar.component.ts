@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { UsuarioService } from '../../servicios/usuario.service';
 import { Usuario } from 'src/app/clases/usuario';
@@ -12,6 +12,8 @@ export class NavBarComponent implements OnInit {
 
   usuarioActual: Usuario;
 
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(private usuarioService: UsuarioService) { 
     this.usuarioActual = this.usuarioService.getUsuario()
    }
@@ -21,11 +23,11 @@ export class NavBarComponent implements OnInit {
   }
 
   logOut(){
-    console.log(this.usuarioActual);
+    console.log("logOut");
   }
 
-  menu(){
-    console.log("click Menu");
+  menu() {
+    this.notify.emit();
   }
 
 }

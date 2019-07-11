@@ -85,7 +85,7 @@ export class LoginPageComponent implements OnInit {
 
         perfil: res['perfil'],
 
-        subMenus: res['subMenus'],
+        menus: res['menus'],
         
       },
       

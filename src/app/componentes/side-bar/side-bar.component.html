@@ -1,3 +1,44 @@
-<div class="sidebar">
-  <h6>MENU 1</h6>
+<div class="opciones-container">
+  <nav id="sidebar">
+      <ul class="list-unstyled components">
+          <li>
+              <a [routerLink]="['home']" class="menu" routerLinkActive="active" (click)="activaHome()">Home</a>
+          </li>
+
+          <li *ngFor="let item of usuarioActual.menu">
+            <spam class="menu">{{item}}</spam>
+          </li>
+<!--
+          <li>
+              <a #menuLogistica href="#subMenuLogistica" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Logística</a>
+              <ul class="collapse list-unstyled" id="subMenuLogistica">
+                <li>
+                  <a #menuOperaciones href="#subMenuOperaciones" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Operaciones</a>
+                  <ul class="collapse list-unstyled" id="subMenuOperaciones">
+                      <li><a [routerLink]="['forecast']" class="submenu" routerLinkActive="active" (click)="activaOperaciones()">Forecast</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <a #menuEquipos href="#subMenuEquipos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Equipos</a>
+                  <ul class="collapse list-unstyled" id="subMenuEquipos">
+                    <li><a [routerLink]="['retiros']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Prog. de Retiros</a></li>
+                    <li><a [routerLink]="['rep6040']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">60 - 40</a></li>
+                    <li><a [routerLink]="['gates']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Gates</a></li>
+                    <li><a [routerLink]="['transbordo']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Transbordo</a></li>
+                    <li><a [routerLink]="['proyecciones']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Proyecciones</a></li>
+                  </ul>
+                  </li>
+              </ul>
+          </li>
+
+          <li>
+              <a #menuFinanzas href="#subMenuFinanzas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Finanzas</a>
+              <ul class="collapse list-unstyled" id="subMenuFinanzas">
+                  <li><a #inventario [routerLink]="['outstanding']" class="submenu" routerLinkActive="active" (click)="activaFinanzas()">Outstanding</a></li>
+              </ul>
+          </li>
+-->
+      </ul>
+  </nav>
 </div>

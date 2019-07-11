@@ -1,11 +1,12 @@
 export class Menu {
 
-    coMenu: String;
-	noMenu: String;
-	aliasMenu: String;
-	rutaMenu: String;
-	usCreaMenu: String;
-	usModiMenu: String;
+    coMenu: string;
+	noMenu: string;
+	lvMenu: number;
+	alMenu: string;
+	noComp: string;
+	usCreaMenu: string;
+	usModiMenu: string;
 	feCreaMenu: Date;
 	feModiMenu: Date;
 

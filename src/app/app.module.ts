@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './componentes/login-page/login-page.component';
@@ -11,6 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
 import { SideBarComponent } from './componentes/side-bar/side-bar.component';
+import { ForecastComponent } from './componentes/opciones/forecast/forecast.component';
+import { RetirosComponent } from './componentes/opciones/retiros/retiros.component';
+import { Rep6040Component } from './componentes/opciones/rep6040/rep6040.component';
+import { GatesComponent } from './componentes/opciones/gates/gates.component';
+import { TransbordoComponent } from './componentes/opciones/transbordo/transbordo.component';
+import { OutstandingComponent } from './componentes/opciones/outstanding/outstanding.component';
+import { HomeComponent } from './componentes/opciones/home/home.component';
+import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proyecciones.component';
 
 @NgModule({
   declarations: [
@@ -19,13 +29,22 @@ import { SideBarComponent } from './componentes/side-bar/side-bar.component';
     WelcomePageComponent,
     NotFoundPageComponent,
     NavBarComponent,
-    SideBarComponent
+    SideBarComponent,
+    ForecastComponent,
+    RetirosComponent,
+    Rep6040Component,
+    GatesComponent,
+    TransbordoComponent,
+    OutstandingComponent,
+    HomeComponent,
+    ProyeccionesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
