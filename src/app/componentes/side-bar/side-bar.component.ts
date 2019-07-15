@@ -18,11 +18,12 @@ export class SideBarComponent implements OnInit {
   usuarioActual: Usuario;
 
   constructor(private usuarioService: UsuarioService, private renderer: Renderer2, private el: ElementRef) {
-    
+    this.usuarioActual = this.usuarioService.getUsuario();
+    console.log(this.usuarioActual.menus)
   }
 
   ngOnInit() {
-    this.usuarioActual = this.usuarioService.getUsuario();
+    
   }
 
   activaHome(){

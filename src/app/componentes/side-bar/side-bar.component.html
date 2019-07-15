@@ -5,8 +5,8 @@
               <a [routerLink]="['home']" class="menu" routerLinkActive="active" (click)="activaHome()">Home</a>
           </li>
 
-          <li *ngFor="let item of usuarioActual.menu">
-            <spam class="menu">{{item}}</spam>
+          <li *ngFor="let menu of usuarioActual.menus">
+            <a>{{menu.alMenu}}</a>
           </li>
 <!--
           <li>

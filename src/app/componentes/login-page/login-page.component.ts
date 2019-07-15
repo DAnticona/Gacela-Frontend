@@ -85,8 +85,7 @@ export class LoginPageComponent implements OnInit {
 
         perfil: res['perfil'],
 
-        menus: res['menus'],
-        
+        menus: res.menus
       },
       
       err => this.log = {
