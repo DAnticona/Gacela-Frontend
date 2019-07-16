@@ -9,5 +9,6 @@ export class Menu {
 	usModiMenu: string;
 	feCreaMenu: Date;
 	feModiMenu: Date;
+	coPadr: string;
 
 }
