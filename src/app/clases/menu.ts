@@ -4,11 +4,12 @@ export class Menu {
 	noMenu: string;
 	lvMenu: number;
 	alMenu: string;
-	noComp: string;
+	ruta: string;
 	usCreaMenu: string;
 	usModiMenu: string;
 	feCreaMenu: Date;
 	feModiMenu: Date;
 	coPadr: string;
+	nrOrde: number;
 
 }

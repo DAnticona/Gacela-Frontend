@@ -1,3 +1,4 @@
 {
-    "loginUrl": "/Gacela-Backend/login"
+    "loginUrl": "/Gacela-Backend/login",
+    "logoutUrl": "/Gacela-Backend/logout"
 }

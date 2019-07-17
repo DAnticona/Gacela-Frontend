@@ -38,6 +38,11 @@
   font-size: 25pt;
 }
 
+.navbar-opciones .logout:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 
 @media screen and (max-width: 800px) {
     .subnav{

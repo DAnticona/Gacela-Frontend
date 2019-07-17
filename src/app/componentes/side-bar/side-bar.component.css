@@ -17,6 +17,10 @@
     text-decoration: none;
 }
 
+.opciones-container ul li .submenu{
+    cursor: pointer;
+}
+
 .opciones-container ul li a.active{
     font-weight: bolder;
     color: #0AA45E;

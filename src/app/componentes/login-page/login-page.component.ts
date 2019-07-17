@@ -53,7 +53,8 @@ export class LoginPageComponent implements OnInit {
   showConfig() {
     this.configService.getConfig().subscribe(
       (data: Config) => this.config = {
-        loginUrl: data['loginUrl']
+        loginUrl: data['loginUrl'],
+        logoutUrl: data['logoutUrl']
       },
     );
   }
