@@ -1,3 +1,73 @@
-<p>
-  forecast works!
-</p>
+<div>
+
+  <form [formGroup]="myForm">
+
+    <div class="forecastUp-contenedor">
+
+
+      <div class="forecastRight-contenedor">
+
+        <label class="my-1 mr-2" for="servicios">Servicios</label>
+        <div class="servicios" id="servicios">
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="wsa" name="customRadio" class="custom-control-input" checked >
+            <label class="custom-control-label" for="wsa">WSA - Forecast de EVL del Servicio WSA</label>
+          </div>
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="wpa" name="customRadio" class="custom-control-input">
+            <label class="custom-control-label" for="wpa">WPA - Forecast Nave Partner del Servicio WSA</label>
+          </div>
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="wp3" name="customRadio" class="custom-control-input">
+            <label class="custom-control-label" for="wp3">WP3 - Forecast Nave Partner del Servicio WSA3</label>
+          </div>
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="wp4" name="customRadio" class="custom-control-input">
+            <label class="custom-control-label" for="wp4">WP4 - Forecast Nave Partner del Servicio WSA4</label>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="forecastLeft-contenedor">
+
+        <div class="form-group" id="naves">
+          <label class="my-1 mr-2" for="nave">Naves</label>
+          <input type="text" class="form-control" id="nave" placeholder="Ingrese una nave" required>
+          <select class="custom-select" size="4">
+            <option value="Nave1">Nave1</option>
+            <option value="Nave2">Nave2</option>
+            <option value="Nave3">Nave3</option>
+            <option value="Nave4">Nave4</option>
+            <option value="Nave5">Nave5</option>
+            <option value="Nave6">Nave6</option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="forecastBottom-contenedor">
+
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Seleccione un archivo</label>
+      </div>
+
+      <button type="button" class="btn btn-primary">Procesar</button>
+
+      <div class="forecast-resultados">
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
