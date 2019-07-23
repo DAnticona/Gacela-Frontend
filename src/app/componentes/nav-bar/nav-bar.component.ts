@@ -26,6 +26,7 @@ export class NavBarComponent implements OnInit {
 
   logOut(){
     console.log("logOut");
+    /*
     this.logoutService.logOut(this.usuarioActual).subscribe(
       res => {
         console.log(res);
@@ -37,6 +38,7 @@ export class NavBarComponent implements OnInit {
         console.log('router');
       }
     )
+    */
   }
 
   menu() {

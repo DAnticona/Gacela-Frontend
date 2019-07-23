@@ -65,27 +65,10 @@ export class LoginPageComponent implements OnInit {
       
       res => this.usuarioConectado = {
         
-        coUsua: res['coUsua'],
-        noUsua: res['noUsua'],
-        feUltSes: res['feUltSes'],
-        usCreaUsua: res['usCreaUsua'],
-        usModiUsua: res['usModiUsua'],
-        feCreaUsua: res['feCreaUsua'],
-        feModiUsua: res['feModiUsua'],
-        coPers: res['coPers'],
-        nuDocu: res['nuDocu'],
-        noPers: res['noPers'],
-        apPate: res['apPate'],
-        apMate: res['apMate'],
-        sexo: res['sexo'],
-        feNaci: res['feNaci'],
-        usCreaPers: res['usCreaPers'],
-        usModiPers: res['usModiPers'],
-        feCreaPers: res['feCreaPers'],
-        feModiPers: res['feModiPers'],
-
-        perfil: res['perfil'],
-
+        nombre: res.nombre,
+        sexo: res.sexo,
+        usuario: res.usuario,
+        perfil: res.perfil,
         menus: res.menus
       },
       

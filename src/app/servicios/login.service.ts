@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Login } from '../clases/login';
@@ -19,14 +19,22 @@ export class LoginService {
 
   login(login: Login, config: Config): Observable<any>{
 
-    return this.http.post<any>(config.loginUrl, login).pipe(
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        'Authorization': 'basic ' + btoa(`${login.noUsua}:${login.pasUsua}`),
+        'Content-Type': 'application/json'
+      })
+    };
+    console.log(btoa(`${login.noUsua}:${login.pasUsua}`));
+    return this.http.post<any>(config.loginUrl, '', httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
   routeWelcomePage(usuario: Usuario){
     this.usuarioService.setUsuario(usuario);
-    this.router.navigate([`welcome/${usuario.noUsua.toLowerCase()}`]);
+    this.router.navigate([`welcome/${usuario.usuario.toLowerCase()}`]);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {

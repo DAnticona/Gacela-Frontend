@@ -19,7 +19,7 @@ export class LogoutService {
               private configService: ConfigService) { }
 
   logOut(usuario: Usuario): Observable<any>{
-    return this.http.post<any>(this.configService.configUrl, usuario.coUsua).pipe(
+    return this.http.post<any>(this.configService.configUrl, usuario.usuario).pipe(
       catchError(this.handleError)
     );
   }
