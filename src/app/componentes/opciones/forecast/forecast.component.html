@@ -1,6 +1,6 @@
 <div>
 
-  <form [formGroup]="myForm">
+  <form [formGroup]="forecastForm">
 
     <div class="forecastUp-contenedor">
 
@@ -10,24 +10,9 @@
         <label class="my-1 mr-2" for="servicios">Servicios</label>
         <div class="servicios" id="servicios">
 
-          <div class="custom-control custom-radio">
-            <input type="radio" id="wsa" name="customRadio" class="custom-control-input" checked >
-            <label class="custom-control-label" for="wsa">WSA - Forecast de EVL del Servicio WSA</label>
-          </div>
-
-          <div class="custom-control custom-radio">
-            <input type="radio" id="wpa" name="customRadio" class="custom-control-input">
-            <label class="custom-control-label" for="wpa">WPA - Forecast Nave Partner del Servicio WSA</label>
-          </div>
-
-          <div class="custom-control custom-radio">
-            <input type="radio" id="wp3" name="customRadio" class="custom-control-input">
-            <label class="custom-control-label" for="wp3">WP3 - Forecast Nave Partner del Servicio WSA3</label>
-          </div>
-
-          <div class="custom-control custom-radio">
-            <input type="radio" id="wp4" name="customRadio" class="custom-control-input">
-            <label class="custom-control-label" for="wp4">WP4 - Forecast Nave Partner del Servicio WSA4</label>
+          <div class="custom-control custom-radio" *ngFor="let servicio of servicios">
+            <input type="radio" id={{servicio.codigo}} name="servicio" class="custom-control-input" value={{servicio.codigo}} (click)="onClickServicio($event)" formControlName="servicio">
+            <label class="custom-control-label" for={{servicio.codigo}}>{{servicio.nombre}}</label>
           </div>
 
         </div>
@@ -36,16 +21,11 @@
 
       <div class="forecastLeft-contenedor">
 
-        <div class="form-group" id="naves">
+        <div class="form-group" id="naves" *ngIf="filtroNaves">
           <label class="my-1 mr-2" for="nave">Naves</label>
-          <input type="text" class="form-control" id="nave" placeholder="Ingrese una nave" required>
-          <select class="custom-select" size="4">
-            <option value="Nave1">Nave1</option>
-            <option value="Nave2">Nave2</option>
-            <option value="Nave3">Nave3</option>
-            <option value="Nave4">Nave4</option>
-            <option value="Nave5">Nave5</option>
-            <option value="Nave6">Nave6</option>
+          <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave" (input)="search(nave.value)">
+          <select class="custom-select" size="7">
+            <option value={{nave.codigo}} *ngFor="let nave of filtroNaves" >{{nave.shortName}} - {{nave.longName}}</option>
           </select>
         </div>
 

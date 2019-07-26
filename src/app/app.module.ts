@@ -10,7 +10,7 @@ import { WelcomePageComponent } from './componentes/welcome-page/welcome-page.co
 import { NotFoundPageComponent } from './componentes/not-found-page/not-found-page.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
 import { SideBarComponent } from './componentes/side-bar/side-bar.component';
 import { ForecastComponent } from './componentes/opciones/forecast/forecast.component';
@@ -44,7 +44,8 @@ import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proye
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

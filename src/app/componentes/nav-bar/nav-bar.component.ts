@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { UsuarioService } from '../../servicios/usuario.service';
 import { Usuario } from 'src/app/clases/usuario';
+
+import { ParameterService } from '../../servicios/parameter.service';
 import { LogoutService } from '../../servicios/logout.service';
 
 @Component({
@@ -15,9 +16,12 @@ export class NavBarComponent implements OnInit {
 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private usuarioService: UsuarioService,
-              private logoutService: LogoutService) { 
-    this.usuarioActual = this.usuarioService.getUsuario()
+  constructor(
+    private parameterService: ParameterService,
+    private logoutService: LogoutService) {
+
+    this.usuarioActual = this.parameterService.getUsuario()
+
    }
 
   ngOnInit() {

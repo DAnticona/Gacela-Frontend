@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 
-import { UsuarioService } from '../../servicios/usuario.service';
+import { ParameterService } from '../../servicios/parameter.service';
 import { Usuario } from '../../clases/usuario';
 import { Menu } from '../../clases/menu';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,15 +17,18 @@ export class SideBarComponent implements OnInit, AfterViewInit {
 
   usuarioActual: Usuario;
 
-  constructor(private usuarioService: UsuarioService,
-              private renderer: Renderer2,
-              private padre: ElementRef,
-              private route: Router,
-              private activatedRoute: ActivatedRoute) {
-    this.usuarioActual = this.usuarioService.getUsuario();
+  constructor(
+    private parameterService: ParameterService,
+    private renderer: Renderer2,
+    private padre: ElementRef,
+    private route: Router,
+    private activatedRoute: ActivatedRoute) {
+
+    this.usuarioActual = this.parameterService.getUsuario();
     this.usuarioActual.menus.sort(
       (a,b) => a.nrOrde - b.nrOrde
     );
+
   }
 
   ngOnInit() {
@@ -36,17 +39,22 @@ export class SideBarComponent implements OnInit, AfterViewInit {
     this.agregarMenus();
   }
 
+  /**
+   * Agrega el evento click al DOM, en este caso evalúa si es un menu del nivel 2
+   * @param data 
+   */
   @HostListener('click', ['$event.target'])
-  onClick(data){
+  onClick(data: any){
 
     for(var value of this.usuarioActual.menus){
 
       if(data.id === value.noMenu.toLowerCase() && value.lvMenu === 2){
+
         this.route.navigate([value.ruta], {relativeTo: this.activatedRoute});
         break;
+
       }
     }
-    
   }
 
   agregarMenus(){

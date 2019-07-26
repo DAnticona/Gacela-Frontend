@@ -1,4 +1,5 @@
 {
     "loginUrl": "/Gacela-Backend/login",
-    "logoutUrl": "/Gacela-Backend/logout"
+    "logoutUrl": "/Gacela-Backend/logout",
+    "forecastUrl": "/Gacela-Backend/forecast"
 }

@@ -1,41 +1,32 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-
-import { Login } from '../clases/login';
-import { Usuario } from '../clases/usuario';
-import { Config } from '../interfaces/config';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class ForecastService {
 
   constructor(private http: HttpClient) { }
 
-
-
-
-  login(login: Login, config: Config): Observable<HttpResponse<Usuario>>{
+  getData(url: string, token: string): Observable<any>{
 
     const httpOptions = {
 
       headers: new HttpHeaders({
-        'Authorization': 'basic ' + btoa(`${login.noUsua}:${login.pasUsua}`),
+        'token': `${token}`,
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body'
     };
 
-    return this.http.post<any>(config.loginUrl, '', httpOptions)
+    return this.http.get<any>(url, httpOptions)
     .pipe(
       catchError(this.handleError)
     );
+
   }
-
-
-
 
 
   private handleError(errorResponse: HttpErrorResponse) {

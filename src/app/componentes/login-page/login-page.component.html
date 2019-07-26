@@ -4,8 +4,8 @@
       <img src="../../../assets/Images/gacela.svg" class="imageGacela">
     </div>
 
-    <div *ngIf="log" class="alert alert-danger">
-      {{log.mensaje}}
+    <div *ngIf="error" class="alert alert-danger">
+      {{error}}
     </div>
   
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">

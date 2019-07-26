@@ -14,6 +14,8 @@ export class ConfigService {
   constructor(private http: HttpClient) { }
 
   getConfig() {
+
     return this.http.get<Config>(this.configUrl);
+    
   }
 }
