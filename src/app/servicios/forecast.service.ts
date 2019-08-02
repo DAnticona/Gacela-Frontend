@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import * as XLSX from 'xlsx';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ForecastService {
 
   constructor(private http: HttpClient) { }
 
-  getData(url: string, token: string): Observable<any>{
+  getData(url: string, token: string): Observable<any> {
 
     const httpOptions = {
 
@@ -25,6 +26,12 @@ export class ForecastService {
     .pipe(
       catchError(this.handleError)
     );
+
+  }
+
+  loadFile() {
+
+    // const wb: XLSX.WorkBook = XLSX.read(data, options);
 
   }
 

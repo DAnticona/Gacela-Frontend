@@ -31,9 +31,9 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private loginService: LoginService, 
+    private loginService: LoginService,
     private configService: ConfigService,
-    private parameterService: ParameterService 
+    private parameterService: ParameterService
   ) { }
 
   ngOnInit() {
@@ -41,23 +41,23 @@ export class LoginPageComponent implements OnInit {
     this.getConfig();
 
     this.loginForm = new FormGroup({
-      'noUsua': new FormControl(this.login.noUsua, [
+      noUsua: new FormControl(this.login.noUsua, [
         Validators.required
       ]),
-      'pasUsua': new FormControl(this.login.pasUsua, [
+      pasUsua: new FormControl(this.login.pasUsua, [
         Validators.required
       ]),
     });
 
   }
 
-  get noUsua() { 
+  get noUsua() {
 
-    return this.loginForm.get('noUsua'); 
+    return this.loginForm.get('noUsua');
 
   }
-  
-  get pasUsua() { 
+
+  get pasUsua() {
 
     return this.loginForm.get('pasUsua');
 
@@ -67,18 +67,18 @@ export class LoginPageComponent implements OnInit {
 
     this.configService.getConfig().subscribe(
       (data: Config) => this.config = {
-        loginUrl: data['loginUrl'],
-        logoutUrl: data['logoutUrl'],
-        forecastUrl: data['forecastUrl']
+        loginUrl: data.loginUrl,
+        logoutUrl: data.logoutUrl,
+        forecastUrl: data.forecastUrl
       },
     );
 
   }
 
-  onSubmit(){
+  onSubmit() {
 
     this.loginService.login(this.loginForm.value, this.config).subscribe(
-      
+
       res => {
 
         this.token = {
@@ -86,13 +86,13 @@ export class LoginPageComponent implements OnInit {
         };
 
         this.usuario = {
-        
+
           nombre: res.body.nombre,
           sexo: res.body.sexo,
           usuario: res.body.usuario,
           perfil: res.body.perfil,
           menus: res.body.menus
-  
+
         };
       },
 
@@ -100,7 +100,6 @@ export class LoginPageComponent implements OnInit {
         this.error = `Status: ${err.status} Message: ${err.error}`;
       },
 
-    
       () => {
         this.routeWelcomePage(this.usuario);
       }
@@ -109,14 +108,14 @@ export class LoginPageComponent implements OnInit {
   }
 
 
-  routeWelcomePage(usuario: Usuario){
+  routeWelcomePage(usuario: Usuario) {
 
     this.loadParameters();
     this.router.navigate([`welcome/${usuario.usuario.toLowerCase()}`]);
 
   }
 
-  loadParameters(){
+  loadParameters() {
 
     this.parameterService.setConfig(this.config);
     this.parameterService.setToken(this.token);

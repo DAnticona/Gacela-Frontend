@@ -26,29 +26,29 @@ export class SideBarComponent implements OnInit, AfterViewInit {
 
     this.usuarioActual = this.parameterService.getUsuario();
     this.usuarioActual.menus.sort(
-      (a,b) => a.nrOrde - b.nrOrde
+      (a, b) => a.nrOrde - b.nrOrde
     );
 
   }
 
   ngOnInit() {
-    
+
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.agregarMenus();
   }
 
   /**
    * Agrega el evento click al DOM, en este caso evalúa si es un menu del nivel 2
-   * @param data 
+   * @param data
    */
   @HostListener('click', ['$event.target'])
-  onClick(data: any){
+  onClick(data: any) {
 
-    for(var value of this.usuarioActual.menus){
+    for (let value of this.usuarioActual.menus) {
 
-      if(data.id === value.noMenu.toLowerCase() && value.lvMenu === 2){
+      if (data.id === value.noMenu.toLowerCase() && value.lvMenu === 2) {
 
         this.route.navigate([value.ruta], {relativeTo: this.activatedRoute});
         break;
@@ -57,11 +57,11 @@ export class SideBarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  agregarMenus(){
+  agregarMenus() {
 
-    for(var value of this.usuarioActual.menus){
+    for (let value of this.usuarioActual.menus) {
 
-      if(value.coPadr === '/'){
+      if (value.coPadr === '/') {
 
         let text = this.renderer.createText(value.alMenu);
         let a = this.renderer.createElement('a');
@@ -77,11 +77,11 @@ export class SideBarComponent implements OnInit, AfterViewInit {
         this.renderer.addClass(ul, 'collapse');
         this.renderer.addClass(ul, 'list-unstyled');
         this.renderer.setProperty(ul, 'id', `sm${value.noMenu.toLowerCase()}`);
-        
+
         this.renderer.appendChild(a, text);
         this.renderer.appendChild(li, a);
         this.renderer.appendChild(li, ul);
-        this.renderer.appendChild(this.menu.nativeElement, li)
+        this.renderer.appendChild(this.menu.nativeElement, li);
 
         this.padre.nativeElement = ul;
 
@@ -96,7 +96,7 @@ export class SideBarComponent implements OnInit, AfterViewInit {
 
         this.renderer.appendChild(a, text);
         this.renderer.appendChild(li, a);
-        this.renderer.appendChild(this.padre.nativeElement, li)
+        this.renderer.appendChild(this.padre.nativeElement, li);
 
       }
 
