@@ -1,11 +1,12 @@
 <div>
     <form [formGroup]="forecastForm">
+
         <div class="forecastUp-contenedor">
             <div class="forecastRight-contenedor">
                 <label class="my-1 mr-2" for="servicios" >Servicios</label>
                 <div class="servicios" id="servicios">
                     <div class="custom-control custom-radio" *ngFor="let servicio of servicios; index as i">
-                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input" value="{{ servicio.codigo }}" (click)="onClickServicio($event)" formControlName="servicio" [checked]="i === 0"/>
+                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input" value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio"/>
                         <label class="custom-control-label" for="{{ servicio.codigo }}">{{ servicio.nombre }}</label>
                     </div>
                 </div>
@@ -13,11 +14,13 @@
 
             <div class="forecastLeft-contenedor">
                 <div class="form-group" id="naves" *ngIf="filtroNaves">
+                    
                     <label class="my-1 mr-2" for="nave">Naves</label>
                     <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave" (input)="search(nave.value)" uppercase/>
                     <select class="custom-select" size="7" formControlName="nave">
-                      <option value="{{ nave.codigo }}" *ngFor="let nave of filtroNaves; let i = index" [value]="nave.codigo">{{ nave.shortName }} - {{ nave.longName }}</option>
+                      <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves" (click)="onClickNaves()">{{ n.shortName }} - {{ n.longName }}</option>
                     </select>
+                
                 </div>
             </div>
         </div>
@@ -31,20 +34,9 @@
             <button type="button" class="btn btn-primary" (click)="onProcesar()">Procesar</button>
 
             <div class="forecast-resultados">
-                <ul>
-                    <li class="resultado valido" *ngIf="valido"><i class="fa fa-check-square icono"></i>{{valido}}</li>
-                    <li class="resultado invalido" *ngIf="linea"><i class="fa fa-square icono"></i>{{linea}}</li>
-                    <li class="resultado invalido" *ngIf="pod"><i class="fa fa-square icono"></i>{{pod}}</li>
-                    <li class="resultado invalido" *ngIf="size"><i class="fa fa-square icono"></i>{{size}}</li>
-                    <li class="resultado invalido" *ngIf="type"><i class="fa fa-square icono"></i>{{type}}</li>
-                    <li class="resultado invalido" *ngIf="cnd"><i class="fa fa-square icono"></i>{{cnd}}</li>
-                    <li class="resultado invalido" *ngIf="vgm"><i class="fa fa-square icono"></i>{{vgm}}</li>
-                    <li class="resultado invalido" *ngIf="lineaData"><i class="fa fa-square icono"></i>{{lineaData}}</li>
-                    <li class="resultado invalido" *ngIf="podData"><i class="fa fa-square icono"></i>{{podData}}</li>
-                    <li class="resultado invalido" *ngIf="sizeData"><i class="fa fa-square icono"></i>{{sizeData}}</li>
-                    <li class="resultado invalido" *ngIf="typeData"><i class="fa fa-square icono"></i>{{typeData}}</li>
-                    <li class="resultado invalido" *ngIf="cndData"><i class="fa fa-square icono"></i>{{cndData}}</li>
-                    <li class="resultado invalido" *ngIf="vgmData"><i class="fa fa-square icono"></i>{{vgmData}}</li>
+                <p class="resultado valido" *ngIf="valido"><i class="fa fa-check-square icono"></i>{{valido}}</p>
+                <ul *ngIf="mensajes">
+                    <li class="resultado invalido" *ngFor="let mensaje of mensajes"><i class="fa fa-square icono"></i>{{mensaje}}</li>
                 </ul>
             </div>
         </div>

@@ -23,40 +23,46 @@ export class ForecastComponent implements OnInit {
   token: string;
   error: string;
 
-  forecastForm: FormGroup;
-
   dataForecast: DataForecast;
   naves: Nave[];
   filtroNaves: Nave[];
   servicios: Servicio[];
 
-  coServicio: string;
+  servicio = new Servicio();
+  nave = new Nave();
+
   term = '';
 
   textLabel = 'Seleccione un Archivo';
   file: File = null;
   arrayBuffer: any;
   result: object[];
+  
   valido: string;
 
-  linea: string;
-  pod: string;
-  size: string;
-  type: string;
-  cnd: string;
-  vgm: string;
+  mensajes: Array<string>;
+  linea = true;
+  pod= true;
+  size= true;
+  type= true;
+  cnd= true;
+  vgm= true;
 
-  lineaData: string;
-  podData: string;
-  sizeData: string;
-  typeData: string;
-  cndData: string;
-  vgmData: string;
+  forecastForm = new FormGroup({
+    servicio: new FormControl(this.servicio.codigo, [
+      Validators.required
+    ]),
+    nave: new FormControl(this.nave.codigo, [
+      Validators.required
+    ]),
+    file: new FormControl('', [
+      Validators.required
+    ])
+  });
 
   constructor(
     private forecastService: ForecastService,
-    private parameterService: ParameterService,
-    private renderer: Renderer2,
+    private parameterService: ParameterService
   ) {
 
     this.url = this.parameterService.getConfig().forecastUrl;
@@ -67,59 +73,18 @@ export class ForecastComponent implements OnInit {
 
   ngOnInit() {
 
-    this.forecastForm = new FormGroup({
-      servicio: new FormControl('', [
-        Validators.required
-      ]),
-      nave: new FormControl('', [
-        Validators.required
-      ]),
-      file: new FormControl('')
-    });
-
   }
 
-  get f() {
-
-    return this.forecastForm.controls;
-
+  get servicioForm() { 
+    return this.forecastForm.get('servicio');
   }
 
-  onClickServicio(event: any) {
-
-    this.coServicio = event.target.id;
-    this.filtroNaves = null;
-
-    if (!this.term.trim()) {
-
-      this.filtroNaves = this.naves.filter(
-        nave => nave.servicio === this.coServicio
-      );
-
-    } else {
-
-      this.filtroNaves = this.naves.filter(
-        nave => ((nave.longName.includes(this.term) || nave.shortName.includes(this.term)) && (nave.servicio === this.coServicio))
-      );
-
-    }
-
+  get naveForm() { 
+    return this.forecastForm.get('nave');
   }
 
-  search(term: string) {
-
-    this.term = term.toUpperCase();
-
-    if (!this.term.trim()) {
-      this.filtroNaves = this.naves.filter(
-        nave => nave.servicio === this.coServicio
-      );
-    } else {
-      this.filtroNaves = this.naves.filter(
-        nave => (nave.longName.includes(this.term) || nave.shortName.includes(this.term)) && (nave.servicio === this.coServicio)
-      );
-    }
-
+  get fileForm() { 
+    return this.forecastForm.get('file');
   }
 
   getData() {
@@ -141,6 +106,10 @@ export class ForecastComponent implements OnInit {
           nave => nave.servicio === this.servicios[0].codigo
         );
 
+        this.servicio = this.servicios[0];
+        this.nave = this.filtroNaves[0];
+        this.naveForm.setValue(this.nave.codigo);
+        this.servicioForm.setValue(this.servicio.codigo);
       },
 
       err => {
@@ -156,160 +125,244 @@ export class ForecastComponent implements OnInit {
   }
 
 
+  onClickNaves() {
+    const coNave = this.naveForm.value;
+    // const coNave = event.target.value;
+    for (const nave of this.naves) {
+      if (nave.codigo === coNave) {
+        this.nave = nave;
+        break;
+      }
+    }
+
+    console.log(this.nave);
+    
+  }
+
+  onChangeServicio() {
+
+    const coServicio = this.servicioForm.value;
+
+    for (const serv of this.servicios) {
+      if (serv.codigo === coServicio) {
+        this.servicio = serv;
+        break;
+      }
+    }
+
+    this.filtroNaves = null;
+
+    if (!this.term.trim()) {
+
+      this.filtroNaves = this.naves.filter(
+        nave => nave.servicio === this.servicio.codigo
+      );
+
+    } else {
+
+      this.filtroNaves = this.naves.filter(
+        nave => ((nave.longName.includes(this.term) || nave.shortName.includes(this.term)) && (nave.servicio === this.servicio.codigo))
+      );
+
+    }
+    
+    this.naveForm.setValue(this.filtroNaves[0].codigo);
+    const coNave = this.naveForm.value;
+
+    for (const nave of this.naves) {
+      if (nave.codigo === coNave) {
+        this.nave = nave;
+        break;
+      }
+    }
+
+    console.log(this.servicio);
+    console.log(this.nave);
+
+  }
+
+
+
+
+
+  search(term: string) {
+
+    this.term = term.toUpperCase();
+
+    if (!this.term.trim()) {
+      this.filtroNaves = this.naves.filter(
+        nave => nave.servicio === this.servicio.codigo
+      );
+    } else {
+      this.filtroNaves = this.naves.filter(
+        nave => (nave.longName.includes(this.term) || nave.shortName.includes(this.term)) && (nave.servicio === this.servicio.codigo)
+      );
+    }
+
+  }
+
+
+
+
+
   onChangeFile(event) {
 
-    this.linea = null;
-    this.pod = null;
-    this.size = null;
-    this.type = null;
-    this.cnd = null;
-    this.vgm = null;
-
-    this.lineaData = null;
-    this.podData = null;
-    this.sizeData = null;
-    this.typeData = null;
-    this.cndData = null;
-    this.vgmData = null;
-
+    this.mensajes = null;
     this.valido = null;
 
     const file = event.target.files.item(0);
-    this.textLabel = file.name;
 
-        /*
-    console.log(this.forecastForm.value.servicio);
-    console.log(this.forecastForm.value.nave);
-    console.log(this.textLabel);
-    console.log(files.item(0));
-*/
-    const fileReader = new FileReader();
+    if (file) {
+      this.textLabel = file.name;
 
-    fileReader.onload = (e) => {
-
-      this.arrayBuffer = fileReader.result;
-
-      const data = new Uint8Array(this.arrayBuffer);
-      const arr = new Array();
-
-      for (let i = 0; i < data.length; ++i) {
-
-        arr[i] = String.fromCharCode(data[i]);
-
-      }
-
-      const bstr = arr.join('');
-      const workbook = XLSX.read(bstr, { type: 'binary' });
-      const firstSheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheetName];
-      const result: object[] = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: null });
-      
-      const d: object[] = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: null });
-      let dpw = new Dpw();
-      let result2 = new Array<Dpw>();
-
-      d.forEach((item, i) => {
-        console.log(`${i}: ${item['LINEA']}`);
-        dpw.linea = item['LINEA'];
-        dpw.pod = item['POD'];
-        dpw.size = item['SIZE'];
-        dpw.type = item['TYPE'];
-        dpw.cnd = item['CND'];
-        dpw.vgm = item['VGM(KG)'];
-
-        result2.push(dpw);
-      });
-
-      console.log(result2);
       /*
-      const XL_row_object = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: null });
-      const json_object = JSON.stringify(XL_row_object);
-      XL_row_object.forEach(obj => {
-        Object.keys(obj).forEach(key => key.replace('VGM(KG)','VGM'));
-      });
-      */
-      // console.log(XL_row_object);
-      
+console.log(this.forecastForm.value.servicio);
+console.log(this.forecastForm.value.nave);
+console.log(this.textLabel);
+console.log(files.item(0));
+*/
+      const fileReader = new FileReader();
 
-      this.validaFile(result);
+      fileReader.onload = (e) => {
 
-    };
+        this.arrayBuffer = fileReader.result;
 
-    fileReader.readAsArrayBuffer(file);
+        const data = new Uint8Array(this.arrayBuffer);
+        const arr = new Array();
+
+        for (let i = 0; i < data.length; ++i) {
+
+          arr[i] = String.fromCharCode(data[i]);
+
+        }
+
+        const bstr = arr.join('');
+        const workbook = XLSX.read(bstr, { type: 'binary' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+
+        const dataCruda: object[] = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: null });
+
+        this.mensajes = new Array<string>();
+
+        this.validaColumnas(dataCruda);
+
+        const result = new Array<Dpw>();
+
+        dataCruda.forEach((item, i) => {
+          const dpw = new Dpw();
+
+          dpw.linea = item['LINEA'];
+          dpw.pod = item['POD'];
+          dpw.size = item['SIZE'];
+          dpw.type = item['TYPE'];
+          dpw.cnd = item['CND'];
+          dpw.vgm = item['VGM(KG)'];
+
+          result.push(dpw);
+        });
+
+        this.validaData(result);
+
+        if (this.mensajes.length === 0) {
+          this.valido = 'Validación Exitosa';
+        }
+
+      };
+
+      fileReader.readAsArrayBuffer(file);
+
+    } else {
+      this.textLabel = 'Seleccione un Archivo';
+    }
 
   }
 
 
-  onProcesar() {
-    // this.loadFile();
-    // this.validaFile(this.result);
-  }
 
-  validaFile(data: object[]) {
+
+  validaColumnas(data: object[]) {
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'LINEA').length > 1) {
-      this.linea = 'Existen múltiples columnas LINEA';
+      this.mensajes.push('Existen múltiples columnas LINEA');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'LINEA').length === 0) {
-      this.linea = 'Columna LINEA NO existe';
+      this.mensajes.push('Columna LINEA NO existe');
+      this.linea = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'POD').length > 1) {
-      this.pod = 'Existen múltiples columnas POD';
+      this.mensajes.push('Existen múltiples columnas POD');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'POD').length === 0) {
-      this.pod = 'Columna POD NO existe';
+      this.mensajes.push('Columna POD NO existe');
+      this.pod = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'SIZE').length > 1) {
-      this.size = 'Existen múltiples columnas SIZE';
+      this.mensajes.push('Existen múltiples columnas SIZE');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'SIZE').length === 0) {
-      this.size = 'Columna SIZE NO existe';
+      this.mensajes.push('Columna SIZE NO existe');
+      this.size = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TYPE').length > 1) {
-      this.type = 'Existen múltiples columnas TYPE';
+      this.mensajes.push('Existen múltiples columnas TYPE');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TYPE').length === 0) {
-      this.type = 'Columna TYPE NO existe';
+      this.mensajes.push('Columna TYPE NO existe');
+      this.type = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'CND').length > 1) {
-      this.cnd = 'Existen múltiples columnas CND';
+      this.mensajes.push('Existen múltiples columnas CND');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'CND').length === 0) {
-      this.cnd = 'Columna CND NO existe';
+      this.mensajes.push('Columna CND NO existe');
+      this.cnd = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'VGM(KG)').length > 1) {
-      this.vgm = 'Existen múltiples columnas VGM(KG)';
+      this.mensajes.push('Existen múltiples columnas VGM(KG)');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'VGM(KG)').length === 0) {
-      this.vgm = 'Columna VGM(KG) NO existe';
+      this.mensajes.push('Columna VGM(KG) NO existe');
+      this.vgm = false;
     }
+
+  }
+
+  validaData(data: Array<Dpw>) {
 
     data.forEach((row, index) => {
-      if(!row['LINEA']) {
-        this.lineaData = `Problemas con la fila ${index + 2} de la columna LINEA`;
+
+      if (this.linea && !row.linea) {
+        this.mensajes.push(`Fila ${index + 2} Columna LINEA: Celda vacía`);
       }
-      if(!row['POD']) {
-        this.podData = `Problemas con la fila ${index + 2} de la columna POD`;
+      
+      if(this.pod) {
+        if (!row.pod) {
+          this.mensajes.push(`Fila ${index + 2} Columna POD: Celda vacía`);
+        } else if (this.servicio.puertos.filter(puer => (puer.coIso === row.pod)).length === 0) {
+          this.mensajes.push(`Fila ${index + 2} Columna POD: puerto no válido para el servicio seleccionado`);
+        }
       }
-      if(!row['SIZE']) {
-        this.sizeData = `Problemas con la fila ${index + 2} de la columna SIZE`;
-      }
-      if(!row['TYPE']) {
-        this.typeData = `Problemas con la fila ${index + 2} de la columna TYPE`;
-      }
-      if(!row['CND']) {
-        this.cndData = `Problemas con la fila ${index + 2} de la columna CND`;
+      
+      if (this.size && !row.size) {
+        this.mensajes.push(`Fila ${index + 2} Columna SIZE: Celda vacía o con valor 0`);
       }
 
-      /*
-      if(!row.LINEA) {
-        this.lineaData = `Problemas con la fila ${index + 2} de la columna LINEA`;
+      if (this.type && !row.type) {
+        this.mensajes.push(`Fila ${index + 2} Columna TYPE: Celda vacía`);
       }
-      */
+
+      if (this.cnd && !row.cnd) {
+        this.mensajes.push(`Fila ${index + 2} Columna CND: Celda vacía`);
+      }
+
+      if(this.vgm) {
+        if (!row.vgm) {
+          this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): Celda vacía o con valor 0`);
+        } else if (row.vgm < 2000) {
+          this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): no puede ser menor a 2000`);
+        }
+      }
     });
-
-    if (!this.linea && !this.pod && !this.size && !this.type && !this.cnd && !this.vgm && !this.lineaData && !this.podData && !this.sizeData && !this.typeData && !this.cndData && !this.vgmData) {
-      this.valido = 'Validación Exitosa';
-    }
     /*
     console.log(`linea: ${this.lineaData}`);
     console.log(`pod: ${this.podData}`);
@@ -319,5 +372,11 @@ export class ForecastComponent implements OnInit {
     console.log(`vgm: ${this.vgmData}`);
     console.log(this.valido);
     */
+  }
+
+
+  onProcesar() {
+    // this.loadFile();
+    // this.validaFile(this.result);
   }
 }
