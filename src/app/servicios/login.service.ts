@@ -4,38 +4,62 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { Login } from '../clases/login';
-import { Usuario } from '../clases/usuario';
-import { Config } from '../interfaces/config';
+import { ConfigService } from './config.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) { }
+  configUrl = 'assets/config.json';
+  config: any;
+
+  constructor(private http: HttpClient,
+              private configService: ConfigService,
+              private router: Router) {
+
+    // console.log('loginService')
+
+    this.configService.getInitConfig().subscribe(config => {
+      this.config = config;
+    });
+  }
 
 
-
-
-  login(login: Login, config: Config): Observable<HttpResponse<Usuario>>{
-
+  getLogin(login: Login): Observable<HttpResponse<any>> {
+    
     const httpOptions = {
 
       headers: new HttpHeaders({
-        'Authorization': 'basic ' + btoa(`${login.noUsua}:${login.pasUsua}`),
+        Authorization: 'basic ' + btoa(`${login.noUsua}:${login.pasUsua}`),
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body'
     };
-
-    return this.http.post<any>(config.loginUrl, '', httpOptions)
+    
+    return this.http.post<any>(this.config.loginUrl, '', httpOptions)
     .pipe(
       catchError(this.handleError)
     );
+    
   }
 
 
+  routeWelcomePage(usuario: string) {
 
+    this.router.navigate([`welcome/${usuario}`]);
+
+  }
+
+
+  guardarDatos(usuario: any, token: string) {
+
+    this.configService.guardarToken(token);
+    this.configService.guardarUsuario(usuario);
+    this.configService.guardarConfig(this.config);
+    
+  }
 
 
   private handleError(errorResponse: HttpErrorResponse) {
@@ -57,6 +81,8 @@ export class LoginService {
     }
     // return an observable with a user-facing error message
     return throwError(errorResponse);
-  };
+  }
+
+
 
 }

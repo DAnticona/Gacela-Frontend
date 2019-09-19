@@ -2,24 +2,47 @@ import { Injectable } from '@angular/core';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { ConfigService } from '../servicios/config.service';
-
-import { Usuario } from '../clases/usuario';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogoutService {
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private configService: ConfigService) { }
+  // logoutUrl: string;
+  config: any;
 
-  logOut(usuario: Usuario): Observable<any>{
-    return this.http.post<any>(this.configService.configUrl, usuario.usuario).pipe(
+  constructor(private http: HttpClient,
+              private configService: ConfigService) {
+
+    // this.configService.getInitConfig().subscribe(data => {
+    //   this.logoutUrl = data.logoutUrl;
+    // });
+    this.config = this.configService.getConfig();
+  }
+
+  logout(): Observable<any> {
+
+    
+    let noUsua = this.configService.getUsuario();
+    let token = this.configService.getToken();
+
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        token: `${token}`,
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body',
+      params: new HttpParams()
+        .set('usuario', noUsua)
+    };
+
+    this.configService.removeAllData();
+
+    return this.http.get<any>(this.config.logoutUrl, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
@@ -46,5 +69,5 @@ export class LogoutService {
     return throwError(
       errorResponse.error
     );
-  };
+  }
 }

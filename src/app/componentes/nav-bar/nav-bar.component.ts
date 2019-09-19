@@ -1,9 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { Usuario } from 'src/app/clases/usuario';
-
-import { ParameterService } from '../../servicios/parameter.service';
 import { LogoutService } from '../../servicios/logout.service';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,37 +11,28 @@ import { LogoutService } from '../../servicios/logout.service';
 })
 export class NavBarComponent implements OnInit {
 
-  usuarioActual: Usuario;
+  usuario: any;
 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(
-    private parameterService: ParameterService,
-    private logoutService: LogoutService) {
-
-    this.usuarioActual = this.parameterService.getUsuario()
-
-   }
+  constructor(private logoutService: LogoutService,
+              private router: Router) { }
 
   ngOnInit() {
     
   }
 
-  logOut(){
-    console.log("logOut");
-    /*
-    this.logoutService.logOut(this.usuarioActual).subscribe(
+  logout() {
+
+    this.logoutService.logout().subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
+        this.router.navigate(['login']);
       },
       err => {
         console.log(err);
       },
-      () => {
-        console.log('router');
-      }
-    )
-    */
+    );
   }
 
   menu() {

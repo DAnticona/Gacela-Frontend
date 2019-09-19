@@ -1,6 +1,6 @@
 export class Menu {
 
-    coMenu: string;
+	coMenu: string;
 	noMenu: string;
 	lvMenu: number;
 	alMenu: string;

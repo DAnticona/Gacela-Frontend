@@ -1,3 +1,7 @@
 <div>
-  <h1>BIENVENIDO <span *ngIf="usuarioActual">{{usuarioActual.noPers}}</span></h1>
+  <div class="container">
+    <h1 class="display-4">Hola {{ usuario.nombre.split(' ')[0] | capitalizado }}</h1>
+    <hr>
+    <h4 *ngIf="usuario.perfil"><small>Perfil: {{ usuario.perfil | capitalizado }}</small></h4>
+  </div>
 </div>

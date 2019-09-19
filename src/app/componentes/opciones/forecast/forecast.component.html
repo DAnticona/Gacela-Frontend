@@ -1,44 +1,82 @@
+<h1>Forecast</h1>
+<hr>
+<div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+</div>
 <div>
     <form [formGroup]="forecastForm">
 
         <div class="forecastUp-contenedor">
+
             <div class="forecastRight-contenedor">
-                <label class="my-1 mr-2" for="servicios" >Servicios</label>
+
+                <label class="my-1 mr-2" for="servicios">Servicios</label>
                 <div class="servicios" id="servicios">
                     <div class="custom-control custom-radio" *ngFor="let servicio of servicios; index as i">
-                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input" value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio"/>
+                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input"
+                            value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio" />
                         <label class="custom-control-label" for="{{ servicio.codigo }}">{{ servicio.nombre }}</label>
                     </div>
                 </div>
+
             </div>
 
             <div class="forecastLeft-contenedor">
+
                 <div class="form-group" id="naves" *ngIf="filtroNaves">
-                    
+
                     <label class="my-1 mr-2" for="nave">Naves</label>
-                    <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave" (input)="search(nave.value)" uppercase/>
+                    <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave"
+                        (input)="search(nave.value)" uppercase formControlName="naveSearch" />
                     <select class="custom-select" size="7" formControlName="nave">
-                      <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves" (click)="onClickNaves()">{{ n.shortName }} - {{ n.longName }}</option>
+                        <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves" (click)="onClickNaves()">
+                            {{ n.shortName }} - {{ n.longName }}</option>
                     </select>
-                
+
                 </div>
+
             </div>
         </div>
 
         <div class="forecastBottom-contenedor">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputFile" (change)="onChangeFile($event)" />
-                <label class="custom-file-label" for="inputFile" #inputFileLabel>{{ textLabel }}</label>
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" (click)="file.value=error=null"
+                        (change)="onChangeFile(file)" formControlName="file" #file accept=".xlsx" />
+                    <label class="custom-file-label" for="inputGroupFile01">{{ textLabel }}</label>
+                </div>
             </div>
 
-            <button type="button" class="btn btn-primary" (click)="onProcesar()">Procesar</button>
+            <!-- <button *ngIf="!cargando" type="button" class="btn btn-primary" (click)="onProcesar()">Procesar</button>
+            <button *ngIf="cargando" class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Cargando...
+            </button> -->
 
-            <div class="forecast-resultados">
-                <p class="resultado valido" *ngIf="valido"><i class="fa fa-check-square icono"></i>{{valido}}</p>
-                <ul *ngIf="mensajes">
-                    <li class="resultado invalido" *ngFor="let mensaje of mensajes"><i class="fa fa-square icono"></i>{{mensaje}}</li>
+
+            <button type="button" class="btn btn-primary" (click)="onProcesar()" [disabled]="cargando">
+                <i [ngClass]=" { 'fa-spinner fa-pulse': cargando } " class="fa"></i>
+                <span *ngIf="!cargando"> Procesar</span>
+                <span *ngIf="cargando"> Cargando...</span>
+            </button>
+
+            <div class="alert alert-success" role="alert" *ngIf="valido == true">
+                <ul>
+                    <li class="resultado" *ngFor="let mensaje of mensajes">
+                        <i class="fa fa-check-square icono"></i>{{ mensaje }}
+                    </li>
                 </ul>
             </div>
+
+            <div class="alert alert-danger forecast-resultados" role="alert" *ngIf="valido == false">
+                <ul>
+                    <li class="resultado" *ngFor="let mensaje of mensajes">
+                        <i class="fa fa-square icono"></i>{{ mensaje }}
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </form>
 </div>

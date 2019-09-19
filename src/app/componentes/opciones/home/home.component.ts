@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UsuarioService } from '../../../servicios/usuario.service';
-import { Usuario } from '../../../clases/usuario';
+import { ConfigService } from '../../../servicios/config.service';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +9,10 @@ import { Usuario } from '../../../clases/usuario';
 })
 export class HomeComponent implements OnInit {
 
-  usuarioActual: Usuario;
+  usuario: any;
 
-  constructor(private usuarioService: UsuarioService) {
-    this.usuarioActual = this.usuarioService.getUsuario();
+  constructor(private configService: ConfigService) {
+    this.usuario = this.configService.getUsuario();
    }
 
   ngOnInit() {

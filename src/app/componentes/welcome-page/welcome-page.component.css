@@ -21,7 +21,6 @@
     top: 50px;
     left: 0;
     height: calc(100% - 50px);
-    background: #FFFFFF;
     box-shadow: 5px 0px 5px #afaeae;
     overflow-y: scroll;
 }

@@ -10,11 +10,11 @@ export class UsuarioService {
 
   constructor() { }
 
-  getUsuario(){
+  getUsuario() {
     return this.usuario;
   }
 
-  setUsuario(usuario: Usuario){
-    this.usuario = usuario
+  setUsuario(usuario: Usuario) {
+    this.usuario = usuario;
   }
 }

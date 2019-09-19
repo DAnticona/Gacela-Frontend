@@ -21,6 +21,7 @@ import { TransbordoComponent } from './componentes/opciones/transbordo/transbord
 import { OutstandingComponent } from './componentes/opciones/outstanding/outstanding.component';
 import { HomeComponent } from './componentes/opciones/home/home.component';
 import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proyecciones.component';
+import { CapitalizadoPipe } from './pipes/capitalizado.pipe';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proye
     TransbordoComponent,
     OutstandingComponent,
     HomeComponent,
-    ProyeccionesComponent
+    ProyeccionesComponent,
+    CapitalizadoPipe
   ],
   imports: [
     BrowserModule,

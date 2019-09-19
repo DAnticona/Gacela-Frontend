@@ -9,13 +9,13 @@ import { Token } from '../clases/token';
 })
 export class ParameterService {
 
-  config: Config
+  config: Config;
   usuario: Usuario;
   token: Token;
 
   constructor() { }
 
-  getUsuario(): Usuario{
+  getUsuario(): Usuario {
 
     return this.usuario;
 
@@ -27,7 +27,7 @@ export class ParameterService {
 
   }
 
-  getToken(): Token{
+  getToken(): Token {
 
     return this.token;
 
@@ -39,7 +39,7 @@ export class ParameterService {
 
   }
 
-  getConfig(): Config{
+  getConfig(): Config {
 
     return this.config;
     

@@ -32,14 +32,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     ])
   ]
 })
-export class WelcomePageComponent implements OnInit {
+export class WelcomePageComponent {
 
   isOpen = true;
 
-  constructor() { }
-
-  ngOnInit() {
-    
+  constructor() {
+    console.log('WelcomePage');
   }
 
   onNotify() {

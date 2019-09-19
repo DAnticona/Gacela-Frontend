@@ -1,46 +1,20 @@
-<div class="opciones-container">
-  <nav id="sidebar">
-      <ul #menu class="list-unstyled components">
-        <!--
-          <li>
-              <a [routerLink]="['home']" class="menu" routerLinkActive="active" (click)="activaHome()">HOME</a>
-          </li>
+<div class="accordion" id="menuList">
+  <ul class="menu">
+    <li *ngFor="let menu of menus, let i = index">
+      <a [href]="'#' + menu.nombre" class="nombreMenu" [attr.data-toggle]="'collapse'"
+        [attr.data-target]="'#' + menu.nombre" [attr.aria-controls]="menu.nombre" (click)="clickMenu(i)"
+        [ngClass]="{ 'active': menu.activo }">
+        {{menu.alias | capitalizado}}
+        <i [ngClass]="{ 'fa-caret-right': !menu.expanded, 'fa-caret-down': menu.expanded }" class="fa menuIcon"></i>
+      </a>
 
-          <li *ngFor="let menu of usuarioActual.menus">
-            <a>{{menu.alMenu}}</a>
-          </li>
--->
-<!--
-          <li>
-              <a #menuLogistica href="#subMenuLogistica" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Logística</a>
-              <ul class="collapse list-unstyled" id="subMenuLogistica">
-                <li>
-                  <a #menuOperaciones href="#subMenuOperaciones" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Operaciones</a>
-                  <ul class="collapse list-unstyled" id="subMenuOperaciones">
-                      <li><a [routerLink]="['forecast']" class="submenu" routerLinkActive="active" (click)="activaOperaciones()">Forecast</a></li>
-                  </ul>
-                </li>
-
-                <li>
-                  <a #menuEquipos href="#subMenuEquipos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Equipos</a>
-                  <ul class="collapse list-unstyled" id="subMenuEquipos">
-                    <li><a [routerLink]="['retiros']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Prog. de Retiros</a></li>
-                    <li><a [routerLink]="['rep6040']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">60 - 40</a></li>
-                    <li><a [routerLink]="['gates']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Gates</a></li>
-                    <li><a [routerLink]="['transbordo']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Transbordo</a></li>
-                    <li><a [routerLink]="['proyecciones']" class="submenu" routerLinkActive="active" (click)="activaEquipos()">Proyecciones</a></li>
-                  </ul>
-                  </li>
-              </ul>
-          </li>
-
-          <li>
-              <a #menuFinanzas href="#subMenuFinanzas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Finanzas</a>
-              <ul class="collapse list-unstyled" id="subMenuFinanzas">
-                  <li><a #inventario [routerLink]="['outstanding']" class="submenu" routerLinkActive="active" (click)="activaFinanzas()">Outstanding</a></li>
-              </ul>
-          </li>
--->
+      <ul class="collapse submenu" [id]="menu.nombre" data-parent="#menuList">
+        <li [id]="subMenu.nombre" *ngFor="let subMenu of menu.subMenus" routerLinkActive="active">
+          <a class="nombreSubMenu" [routerLink]="[subMenu.ruta]" (click)="clickSubMenu(i)">
+            {{subMenu.alias | capitalizado}} - {{subMenu.ruta}}
+          </a>
+        </li>
       </ul>
-  </nav>
+    </li>
+  </ul>
 </div>

@@ -1,22 +1,58 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import * as XLSX from 'xlsx';
+import { catchError } from 'rxjs/operators';
+import { ForecastCab } from '../clases/forecast-cab';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ForecastService {
 
-  constructor(private http: HttpClient) { }
+  forecastUrl: string;
+  reportUrl: string;
+  config: any;
+  naves: any;
+  servicios: any;
+
+  constructor(private http: HttpClient,
+              private configService: ConfigService) {
+
+    this.config = this.getConfig();
+
+  }
+
+  getConfig() {
+
+    return this.configService.getConfig();
+
+  }
+
+  getForecastUrl() {
+    
+    return this.config.forecastUrl;
+
+  }
+
+  getReportUrl() {
+
+    return this.config.reportUrl;
+
+  }
+
+  getToken() {
+
+    return this.configService.getToken();
+
+  }
 
   getData(url: string, token: string): Observable<any> {
 
     const httpOptions = {
 
       headers: new HttpHeaders({
-        'token': `${token}`,
+        token: `${token}`,
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body'
@@ -29,12 +65,59 @@ export class ForecastService {
 
   }
 
-  loadFile() {
+  loadFile(url: string, forecastCab: ForecastCab, token: string) {
 
-    // const wb: XLSX.WorkBook = XLSX.read(data, options);
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        token: `${token}`,
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+
+    return this.http.post<any>(url, forecastCab, httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
 
   }
 
+  downloadFile(url: string, token: string) {
+
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        token: `${token}`,
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+
+    return this.http.get<any>(url, httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+
+  }
+
+  deleteFile(url: string, token: string) {
+
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        token: `${token}`,
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+
+    return this.http.delete<any>(url, httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+
+  }
 
   private handleError(errorResponse: HttpErrorResponse) {
 
@@ -55,6 +138,6 @@ export class ForecastService {
     }
     // return an observable with a user-facing error message
     return throwError(errorResponse);
-  };
+  }
 
 }
