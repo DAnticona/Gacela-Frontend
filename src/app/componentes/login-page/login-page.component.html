@@ -5,7 +5,7 @@
     </div>
 
     <div *ngIf="error" class="alert alert-danger">
-      {{error}}
+      {{error.mensaje}}
     </div>
   
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -13,11 +13,12 @@
   
         <div class="inputUsuario">
             
-          <input type="text" class="form-control noUsua" id="noUsua" placeholder="Usuario" formControlName="noUsua" required/>
+          <input type="text" class="form-control noUsua" id="noUsua" placeholder="Usuario" formControlName="noUsua"
+                  [ngClass]="{'valid': loginForm.get('noUsua').valid}"/>
           <i class="fa fa-user errspan" aria-hidden="true"></i>
             
-          <div *ngIf="noUsua.invalid && (noUsua.dirty || noUsua.touched)" class="alert alert-danger">
-            <div *ngIf="noUsua.errors">
+          <div *ngIf="loginForm.get('noUsua').pristine && (loginForm.get('noUsua').dirty || loginForm.get('noUsua').touched)" class="alert alert-danger">
+            <div *ngIf="loginForm.get('noUsua').errors">
               Debe ingresar un usuario
             </div>
           </div>
@@ -32,12 +33,13 @@
   
         <div class="inputPassword">
               
-          <input type="password" class="form-control pasUsua" id="pasUsua" placeholder="Contraseña" formControlName="pasUsua" required/>
+          <input type="password" class="form-control paUsua" id="paUsua" placeholder="Contraseña" formControlName="paUsua"
+                  [ngClass]="{'valid': loginForm.get('paUsua').valid}"/>
           <i class="fa fa-lock errspan" aria-hidden="true"></i>
               
-          <div *ngIf="pasUsua.invalid && (pasUsua.dirty || pasUsua.touched)" class="alert alert-danger">
+          <div *ngIf="loginForm.get('paUsua').invalid && (loginForm.get('paUsua').dirty || loginForm.get('paUsua').touched)" class="alert alert-danger">
   
-            <div *ngIf="pasUsua.errors">
+            <div *ngIf="loginForm.get('paUsua').errors">
               Debe ingresar una contraseña
             </div>
       
@@ -60,7 +62,7 @@
 
     <div class="opciones">
       <ul>
-        <li><a href="#">Olvidé mi contraseña</a></li>
+        <li><a href="https://wollcorp.cloud.invgate.net">Olvidé mi contraseña</a></li>
         <li><a href="https://wollcorp.cloud.invgate.net">Solicita tu acceso</a></li>
       </ul>
     </div>

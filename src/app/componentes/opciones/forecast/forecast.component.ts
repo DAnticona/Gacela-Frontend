@@ -8,6 +8,7 @@ import { ForecastService } from '../../../servicios/forecast.service';
 import * as XLSX from 'xlsx';
 import { ForecastDet } from 'src/app/clases/forecast-det';
 import { ForecastCab } from '../../../clases/forecast-cab';
+import { ParamsService } from '../../../servicios/params.service';
 
 
 @Component({
@@ -81,11 +82,14 @@ export class ForecastComponent implements OnInit {
     return this.forecastForm.get('file');
   }
 
-  constructor(private forecastService: ForecastService) {
+  constructor(
+    private forecastService: ForecastService,
+    private paramsService: ParamsService)
+  {
 
-    this.forecastUrl = this.forecastService.getForecastUrl();
-    this.token = this.forecastService.getToken();
-    this.reportUrl = this.forecastService.getReportUrl();
+    this.token = this.paramsService.conexion.token;
+    this.forecastUrl = this.paramsService.urls.forecastUrl;
+    this.reportUrl = this.paramsService.urls.reportUrl;
 
     this.getData();
   }
@@ -223,7 +227,7 @@ export class ForecastComponent implements OnInit {
     this.valido = null;
 
     let file = fileInput.files.item(0);
-    
+
 
     if (file) {
       this.textLabel = file.name;
@@ -445,9 +449,9 @@ export class ForecastComponent implements OnInit {
           // console.log(res);
           this.fileName = res.body['mensaje'];
           // console.log(fileName);
-          window.open(`${this.reportUrl}${this.fileName}`, '_blank');
+          window.open(`${this.reportUrl}/${this.fileName}`, '_blank');
           this.cargando = false;
-          
+
         });
     }
   }

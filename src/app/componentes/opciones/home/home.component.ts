@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import { ConfigService } from '../../../servicios/config.service';
+import { ParamsService } from '../../../servicios/params.service';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +9,13 @@ import { ConfigService } from '../../../servicios/config.service';
 export class HomeComponent implements OnInit {
 
   usuario: any;
+  perfil: any;
 
-  constructor(private configService: ConfigService) {
-    this.usuario = this.configService.getUsuario();
+  constructor(private paramsService: ParamsService) {
+
+    this.usuario = this.paramsService.usuario;
+    this.perfil = this.paramsService.perfil;
+
    }
 
   ngOnInit() {

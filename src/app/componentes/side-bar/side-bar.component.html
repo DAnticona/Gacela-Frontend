@@ -1,17 +1,18 @@
 <div class="accordion" id="menuList">
   <ul class="menu">
     <li *ngFor="let menu of menus, let i = index">
-      <a [href]="'#' + menu.nombre" class="nombreMenu" [attr.data-toggle]="'collapse'"
-        [attr.data-target]="'#' + menu.nombre" [attr.aria-controls]="menu.nombre" (click)="clickMenu(i)"
+      <a [href]="'#' + menu.noMenu" class="nombreMenu" [attr.data-toggle]="'collapse'"
+        [attr.data-target]="'#' + menu.noMenu" [attr.aria-controls]="menu.noMenu" (click)="clickMenu(i)"
         [ngClass]="{ 'active': menu.activo }">
-        {{menu.alias | capitalizado}}
+        {{menu.alMenu | capitalizado}}
         <i [ngClass]="{ 'fa-caret-right': !menu.expanded, 'fa-caret-down': menu.expanded }" class="fa menuIcon"></i>
       </a>
 
-      <ul class="collapse submenu" [id]="menu.nombre" data-parent="#menuList">
+      <ul class="collapse submenu" [id]="menu.noMenu" data-parent="#menuList">
         <li [id]="subMenu.nombre" *ngFor="let subMenu of menu.subMenus" routerLinkActive="active">
-          <a class="nombreSubMenu" [routerLink]="[subMenu.ruta]" (click)="clickSubMenu(i)">
-            {{subMenu.alias | capitalizado}} - {{subMenu.ruta}}
+          <a class="nombreSubMenu" [routerLink]="[subMenu.ruta, usuario.noUsua | lowercase]" (click)="clickSubMenu(i)">
+            <i class="fa {{subMenu.icono}}"></i>
+            {{subMenu.alSubMenu | capitalizado}}
           </a>
         </li>
       </ul>

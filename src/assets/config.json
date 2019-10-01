@@ -2,5 +2,9 @@
     "loginUrl": "/Gacela-Backend/login",
     "logoutUrl": "/Gacela-Backend/logout",
     "forecastUrl": "/Gacela-Backend/forecast",
-    "reportUrl": "/Gacela-Backend/report/"
+    "reportUrl": "/Gacela-Backend/report",
+    "usuarioUrl": "/Gacela-Backend/usuario",
+    "perfilXUsuarioUrl": "/Gacela-Backend/perfil/usuario",
+    "menuXPerfilUrl": "/Gacela-Backend/menu/perfil",
+    "tipoDocumentoUrl": "/Gacela-Backend/tidoc"
 }

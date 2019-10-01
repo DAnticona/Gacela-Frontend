@@ -22,6 +22,11 @@ import { OutstandingComponent } from './componentes/opciones/outstanding/outstan
 import { HomeComponent } from './componentes/opciones/home/home.component';
 import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proyecciones.component';
 import { CapitalizadoPipe } from './pipes/capitalizado.pipe';
+import { StatusBarComponent } from './componentes/status-bar/status-bar.component';
+import { PerfilComponent } from './componentes/opciones/perfil/perfil.component';
+import { PasswordComponent } from './componentes/password/password.component';
+import { FechaPipe } from './pipes/fecha.pipe';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,12 @@ import { CapitalizadoPipe } from './pipes/capitalizado.pipe';
     OutstandingComponent,
     HomeComponent,
     ProyeccionesComponent,
-    CapitalizadoPipe
+    CapitalizadoPipe,
+    StatusBarComponent,
+    PerfilComponent,
+    PasswordComponent,
+    FechaPipe,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,

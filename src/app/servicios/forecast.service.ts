@@ -4,48 +4,20 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ForecastCab } from '../clases/forecast-cab';
 import { ConfigService } from './config.service';
+import { LoginService } from './login.service';
+import { ParamsService } from './params.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ForecastService {
 
-  forecastUrl: string;
-  reportUrl: string;
-  config: any;
+  token: string;
+  urls: any;
   naves: any;
   servicios: any;
 
-  constructor(private http: HttpClient,
-              private configService: ConfigService) {
-
-    this.config = this.getConfig();
-
-  }
-
-  getConfig() {
-
-    return this.configService.getConfig();
-
-  }
-
-  getForecastUrl() {
-    
-    return this.config.forecastUrl;
-
-  }
-
-  getReportUrl() {
-
-    return this.config.reportUrl;
-
-  }
-
-  getToken() {
-
-    return this.configService.getToken();
-
-  }
+  constructor(private http: HttpClient) { }
 
   getData(url: string, token: string): Observable<any> {
 

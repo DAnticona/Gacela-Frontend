@@ -1,0 +1,89 @@
+<h3>Datos Personales</h3>
+<hr>
+
+<div class="row justify-content-center mt-3">
+
+
+  <div class="col-5 imagen">
+
+    <div class="foto">
+      <img src="assets/Images/usuario.jpg" width="200px" height="200px">
+    </div>
+    <a [routerLink]="['imagen']">Cambiar</a>
+
+  </div>
+
+  <div class="col-7">
+
+    <table class="table table-borderless mt-3">
+      <tbody>
+        <tr>
+          <td>Código</td>
+          <td>{{usuario.coPers}}</td>
+        </tr>
+        <tr>
+          <td>{{usuario.tiDocu}}</td>
+          <td>{{usuario.nuDocu}}</td>
+        </tr>
+        <tr>
+          <td>Nombres</td>
+          <td>{{usuario.noPers}}</td>
+        </tr>
+        <tr>
+          <td>Ap. Paterno</td>
+          <td>{{usuario.apPate}}</td>
+        </tr>
+        <tr>
+          <td>Ap. Materno</td>
+          <td>{{usuario.apMate}}</td>
+        </tr>
+        <tr>
+          <td>Sexo</td>
+          <td>{{usuario.sexo}}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{usuario.email}}</td>
+        </tr>
+        <tr>
+          <td>Fecha Nac.</td>
+          <td>{{usuario.feNaci.toLocaleDateString()}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <button class="btn btn-outline-info" (click)="editarPerfil()">
+      Editar Datos
+    </button>
+  </div>
+</div>
+
+
+<h3 class="mt-5">Datos de Usuario</h3>
+<hr>
+
+<div class="row justify-content-center mt-3">
+
+  <div class="col-5 falsa">
+
+  </div>
+
+  <div class="col-7">
+
+    <table class="table table-borderless mt-3">
+      <tbody>
+        <tr>
+          <td>Usuario</td>
+          <td>{{usuario.noUsua}}</td>
+        </tr>
+        <tr>
+          <td>Perfil</td>
+          <td>{{usuario.noPerf}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

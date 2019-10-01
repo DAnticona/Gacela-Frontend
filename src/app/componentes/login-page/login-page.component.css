@@ -42,7 +42,7 @@
 }
 
 .noUsua,
-.pasUsua {
+.paUsua {
     border-right: 28px solid #D5D5D5;
 }
 
@@ -53,7 +53,7 @@
     font-size: 20pt;
 }
 
-.ng-valid[required], .ng-valid.required {
+.valid {
     border-left: 5px solid #0AA45E;
 }
 

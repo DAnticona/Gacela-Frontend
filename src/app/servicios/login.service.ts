@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-
-import { Login } from '../clases/login';
 import { ConfigService } from './config.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,52 +10,70 @@ import { Router } from '@angular/router';
 export class LoginService {
 
   configUrl = 'assets/config.json';
-  config: any;
+  urls: any;
+  conexion: any;
 
   constructor(private http: HttpClient,
-              private configService: ConfigService,
-              private router: Router) {
+    private configService: ConfigService) {
 
-    // console.log('loginService')
+    this.cargarStorage();
+    this.configService.getUrls()
+      .subscribe(res => {
+        this.urls = res;
+      });
 
-    this.configService.getInitConfig().subscribe(config => {
-      this.config = config;
-    });
+
   }
 
 
-  getLogin(login: Login): Observable<HttpResponse<any>> {
+  getLogin(login: any) {
+
+    console.log(this.urls);
     
     const httpOptions = {
 
       headers: new HttpHeaders({
-        Authorization: 'basic ' + btoa(`${login.noUsua}:${login.pasUsua}`),
+        Authorization: 'basic ' + btoa(`${login.noUsua}:${login.paUsua}`),
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body'
     };
+
+    return this.http.post(this.urls.loginUrl, '', httpOptions);
     
-    return this.http.post<any>(this.config.loginUrl, '', httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
+    // return this.http.post(this.urls.loginUrl, '', httpOptions)
+    // .pipe(
+    //   map((res: any) => {
+    //     console.log(res);
+    //     res.body.usuario.feNaci = new Date(res.body.usuario.feNaci.year, (res.body.usuario.feNaci.monthValue - 1), res.body.usuario.feNaci.dayOfMonth);
+    //     return res
+    //   }),
+    //   catchError(this.handleError)
+    // );
     
   }
 
 
-  routeWelcomePage(usuario: string) {
+  guardarConexion(conexion: any) {
 
-    this.router.navigate([`welcome/${usuario}`]);
+    this.conexion = conexion;
+
+    localStorage.setItem('conexion', JSON.stringify(this.conexion));
 
   }
 
 
-  guardarDatos(usuario: any, token: string) {
+  cargarStorage() {
 
-    this.configService.guardarToken(token);
-    this.configService.guardarUsuario(usuario);
-    this.configService.guardarConfig(this.config);
-    
+    if(localStorage.getItem('conexion')) {
+
+      this.conexion = JSON.parse(localStorage.getItem('conexion'));
+
+    } else {
+
+      this.conexion = '';
+
+    }
   }
 
 

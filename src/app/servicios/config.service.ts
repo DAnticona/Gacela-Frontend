@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -8,9 +7,13 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigService {
 
   configUrl = 'assets/config.json';
-  config: any;
+  urls: any;
   token: string;
   usuario: any;
+  persona: any;
+  perfil: any;
+  menus: any;
+  conexion: any;
 
   constructor(private http: HttpClient) {
 
@@ -19,88 +22,32 @@ export class ConfigService {
   }
 
 
-  getInitConfig() {
+  getUrls() {
 
     return this.http.get(this.configUrl);
     
   }
 
-  getUsuario(): any {
-
-    return this.usuario;
-
-  }
-
-  getToken(): string {
-
-    return this.token;
-
-  }
-
-  getConfig() {
-
-    return this.config;
-
-  }
-
   cargarStorage() {
 
-    if(localStorage.getItem('token')) {
+    if(localStorage.getItem('urls')) {
 
-      this.token = JSON.parse(localStorage.getItem('token'));
-
-    } else {
-
-      this.token = '';
-
-    }
-
-    if(localStorage.getItem('usuario')) {
-
-      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.urls = JSON.parse(localStorage.getItem('urls'));
 
     } else {
 
-      this.usuario = '';
-
-    }
-
-    if(localStorage.getItem('config')) {
-
-      this.config = JSON.parse(localStorage.getItem('config'));
-
-    } else {
-
-      this.config = '';
+      this.urls = '';
 
     }
     
-
   }
 
 
-  guardarToken(token: string) {
+  guardarUrls(urls: any) {
 
-    this.token = token;
+    this.urls = urls;
 
-    localStorage.setItem('token', JSON.stringify(this.token));
-
-  }
-
-  guardarUsuario(usuario: any) {
-
-    this.usuario = usuario;
-
-    localStorage.setItem('usuario', JSON.stringify(this.usuario));
-
-  }
-
-
-  guardarConfig(config: any) {
-
-    this.config = config;
-
-    localStorage.setItem('config', JSON.stringify(this.config));
+    localStorage.setItem('urls', JSON.stringify(this.urls));
 
   }
 
@@ -120,9 +67,27 @@ export class ConfigService {
 
     } 
 
-    if(localStorage.getItem('config')) {
+    if(localStorage.getItem('urls')) {
 
-      localStorage.removeItem('config');
+      localStorage.removeItem('urls');
+
+    }
+
+    if(localStorage.getItem('conexion')) {
+
+      localStorage.removeItem('conexion');
+
+    }
+
+    if(localStorage.getItem('menus')) {
+
+      localStorage.removeItem('menus');
+
+    }
+
+    if(localStorage.getItem('perfil')) {
+
+      localStorage.removeItem('perfil');
 
     }
   }

@@ -1,45 +1,47 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { Login } from '../../clases/login';
-
-import { LoginService } from '../../servicios/login.service';
+import { Router } from '@angular/router';
+import { ParamsService } from '../../servicios/params.service';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
-export class LoginPageComponent  {
+export class LoginPageComponent {
 
-  error: string;
+  urls: any;
 
-  login = new Login();
-  config: any;
+  loginForm: FormGroup;
+
+  error: any;
+
   usuario: any;
-  token: string;
-  headers: string[];
+  perfil: any;
+  menus: any;
+  conexion: any;
 
   cargando = false;
 
-  loginForm = new FormGroup({
-    noUsua: new FormControl(this.login.noUsua, [
-      Validators.required
-    ]),
-    pasUsua: new FormControl(this.login.pasUsua, [
-      Validators.required
-    ]),
-  });
+  constructor(private paramsService: ParamsService,
+              private router: Router) {
+
+      this.paramsService.getUrls()
+        .subscribe(res => {
+
+          this.urls = res;
+          // console.log(this.urls);
+          
+        });
 
 
-  constructor(private loginService: LoginService) { }
+    this.loginForm = new FormGroup({
 
-  get noUsua() {
-    return this.loginForm.get('noUsua');
-  }
+      'noUsua': new FormControl('', Validators.required),
+      'paUsua': new FormControl('', Validators.required)
 
-  get pasUsua() {
-    return this.loginForm.get('pasUsua');
+    });
   }
 
 
@@ -47,27 +49,44 @@ export class LoginPageComponent  {
 
     this.cargando = true;
 
-    this.loginService.getLogin(this.loginForm.value).subscribe(
+    
+    this.paramsService.getLogin(this.loginForm.value, this.urls)
+      .subscribe(
+        (res: any) => {
 
-      res => {
-        this.token = res.headers.get('token');
-        this.usuario = res.body;
-        this.cargaLogin();
-      },
+          this.conexion = res.body.conexion;
+          this.usuario = res.body.usuario;
+          this.perfil = res.body.usuario.perfil;
+          this.menus = res.body.usuario.perfil.menus;
 
-      err => {
-        this.error = `Status: ${err.status} Message: ${err.error}`;
-        this.cargando = false;
-      },
-    );
+          // console.log(this.usuario);
+          this.cargaLogin();
+
+          this.cargando = false;
+
+        },
+      
+        (err: any) => {
+
+          this.error = err.error.error;
+
+          this.cargando = false;
+
+        }
+      );
 
   }
 
 
   cargaLogin() {
 
-    this.loginService.guardarDatos(this.usuario, this.token);
-    this.loginService.routeWelcomePage(this.usuario.usuario.toLowerCase());
+    this.paramsService.guardarUrls(this.urls);
+    this.paramsService.guardarConexion(this.conexion);
+    this.paramsService.guardarUsuario(this.usuario);
+    this.paramsService.guardarPerfil(this.perfil);
+    this.paramsService.guardarMenus(this.menus);
+    
+    this.router.navigate(['welcome/home', this.usuario.noUsua.toLowerCase()]);
 
   }
 

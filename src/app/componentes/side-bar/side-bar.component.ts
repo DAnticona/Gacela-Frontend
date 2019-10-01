@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-
-import { ConfigService } from '../../servicios/config.service';
+import { ParamsService } from '../../servicios/params.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,16 +11,16 @@ export class SideBarComponent {
   usuario: any;
   menus: any[] = [];
 
-  constructor(private configService: ConfigService) {
+  constructor(private paramsServcice: ParamsService) {
 
-    this.usuario = this.configService.getUsuario();
-    this.usuario.menus.sort(
+    this.usuario = this.paramsServcice.usuario;
+    this.paramsServcice.menus.sort(
       (a, b) => a.nrOrde - b.nrOrde
     );
 
 
 
-    this.menus = this.usuario.menus;
+    this.menus = this.paramsServcice.menus
   }
 
   clickMenu(i : number) {

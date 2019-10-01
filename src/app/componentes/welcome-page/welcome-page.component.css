@@ -1,33 +1,33 @@
-.welcome-container{
-    height: 100%;
-}
-.header-container{
-    position: fixed;
-    left: 0;
-	top: 0;
-    width: 100%;
-    z-index: 100;
-    background: #afaeae;
-}
-.content-container{
-    width: 100%;
-    padding-top: 50px;
+.wrapper {
     height: 100%;
 }
 
-.sideBar-container{
+.header{
+    background: #0AA45E;
+    height: 10%;
+}
+
+.content {
+    /* height: calc(100% - 70px); */
+    height: 90%;
+    max-height: 90%;
+
+}
+
+.sideBar {
+    border-right: 1px solid #b8b8b8;
+}
+
+
+.statusBar {
+
     position: fixed;
     z-index: 50;
-    top: 50px;
-    left: 0;
-    height: calc(100% - 50px);
-    box-shadow: 5px 0px 5px #afaeae;
-    overflow-y: scroll;
+    bottom: 0px;
+
 }
 
-.workspace-container{
-    padding-left: 30px;
-    padding-top: 30px;
-    background: #FFFFFF;
-    height: calc(100% - 50px);
+.workspace {
+    overflow: auto;
+    max-height: 100%;
 }

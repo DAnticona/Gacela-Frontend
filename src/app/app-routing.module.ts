@@ -13,20 +13,26 @@ import { Rep6040Component } from './componentes/opciones/rep6040/rep6040.compone
 import { RetirosComponent } from './componentes/opciones/retiros/retiros.component';
 import { TransbordoComponent } from './componentes/opciones/transbordo/transbordo.component';
 import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proyecciones.component';
+import { PerfilComponent } from './componentes/opciones/perfil/perfil.component';
+import { PasswordComponent } from './componentes/password/password.component';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'welcome/:noUsua', component: WelcomePageComponent, children: [
-    { path: 'home', component: HomeComponent },
-    { path: 'forecast', component: ForecastComponent },
-    { path: 'gates', component: GatesComponent },
-    { path: 'outstanding', component: OutstandingComponent },
-    { path: 'rep6040', component: Rep6040Component },
-    { path: 'retiros', component: RetirosComponent },
-    { path: 'transbordo', component: TransbordoComponent },
-    { path: 'proyecciones', component: ProyeccionesComponent },
-    { path: '', redirectTo: 'home', pathMatch: 'prefix' },
-    { path: '**', redirectTo: 'home', pathMatch: 'prefix' }
+  { path: 'welcome', component: WelcomePageComponent, children: [
+    { path: 'home/:noUsua', component: HomeComponent },
+    { path: 'perfil/:noUsua', component: PerfilComponent },
+    { path: 'usuario/:noUsua', component: UsuarioComponent },
+    { path: 'password/:noUsua', component: PasswordComponent },
+    { path: 'forecast/:noUsua', component: ForecastComponent },
+    { path: 'gates/:noUsua', component: GatesComponent },
+    { path: 'outstanding/:noUsua', component: OutstandingComponent },
+    { path: 'rep6040/:noUsua', component: Rep6040Component },
+    { path: 'retiros/:noUsua', component: RetirosComponent },
+    { path: 'transbordo/:noUsua', component: TransbordoComponent },
+    { path: 'proyecciones/:noUsua', component: ProyeccionesComponent },
+    { path: '', redirectTo: 'home/:noUsua', pathMatch: 'prefix' },
+    { path: '**', redirectTo: 'home/:noUsua', pathMatch: 'prefix' }
   ] },
   { path: 'not-found', component: NotFoundPageComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
