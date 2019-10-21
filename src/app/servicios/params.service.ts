@@ -9,10 +9,6 @@ export class ParamsService {
   configUrl = 'assets/config.json';
   urls: any;
   conexion: any;
-  usuario: any;
-  perfil: any;
-  menus: any[] = [];
-
 
   constructor(private http: HttpClient) {
 
@@ -28,8 +24,6 @@ export class ParamsService {
 
 
   getLogin(login: any, urls: any) {
-
-    // console.log(login);
 
     const httpOptions = {
 
@@ -47,8 +41,6 @@ export class ParamsService {
 
   getLogout(noUsua: string) {
 
-
-    // let noUsua = this.configService.getUsuario();
     let token = this.conexion.token;
 
     const httpOptions = {
@@ -98,36 +90,6 @@ export class ParamsService {
 
     }
 
-    if (localStorage.getItem('usuario')) {
-
-      this.usuario = JSON.parse(localStorage.getItem('usuario'));
-
-    } else {
-
-      this.usuario = '';
-
-    }
-
-    if (localStorage.getItem('perfil')) {
-
-      this.perfil = JSON.parse(localStorage.getItem('perfil'));
-
-    } else {
-
-      this.perfil = '';
-
-    }
-
-    if (localStorage.getItem('menus')) {
-
-      this.menus = JSON.parse(localStorage.getItem('menus'));
-
-    } else {
-
-      this.menus = [];
-
-    }
-
   }
 
   guardarUrls(urls: any) {
@@ -146,30 +108,4 @@ export class ParamsService {
 
   }
 
-
-  guardarUsuario(usuario: any) {
-
-    this.usuario = usuario;
-
-    localStorage.setItem('usuario', JSON.stringify(this.usuario));
-
-  }
-
-
-  guardarPerfil(perfil: any) {
-
-    this.perfil = perfil;
-
-    localStorage.setItem('perfil', JSON.stringify(this.perfil));
-
-  }
-
-
-  guardarMenus(menus: any) {
-
-    this.menus = menus;
-
-    localStorage.setItem('menus', JSON.stringify(this.menus));
-
-  }
 }

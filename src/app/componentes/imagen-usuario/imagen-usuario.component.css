@@ -1,0 +1,25 @@
+.enlaces {
+    list-style: none;
+    font-size: 10pt;
+}
+
+img {
+    border-radius: 150px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-input {
+    color: #000000;
+}
+
+.file-input:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.password-input {
+    color: #000000;
+}

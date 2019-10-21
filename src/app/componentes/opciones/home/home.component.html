@@ -1,7 +1,7 @@
-<div>
-  <div class="container">
-    <h1 class="display-4">Hola {{ usuario.noPers.split(' ')[0] | capitalizado }}</h1>
-    <hr>
-    <h4 *ngIf="perfil"><small>Perfil: {{ perfil.noPerf | capitalizado }}</small></h4>
-  </div>
+<div *ngIf="usuario">
+    <div class="container">
+        <h1 class="display-4">Hola {{ usuario.noPers.split(' ')[0] | capitalizado }}</h1>
+        <hr>
+        <h4 *ngIf="perfil"><small>Perfil: {{ perfil.noPerf | capitalizado }}</small></h4>
+    </div>
 </div>

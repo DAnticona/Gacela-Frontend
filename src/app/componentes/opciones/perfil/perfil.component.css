@@ -1,10 +1,8 @@
 
-.foto {
-    width: 200px;
-    height: 200px;
-    background: #838181;
+img {
+    border-radius: 150px;
 }
-.falsa {
-    width: 200px;
-    height: 200px;
+
+.enlaces {
+    list-style: none;
 }

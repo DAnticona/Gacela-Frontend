@@ -24,7 +24,7 @@ export class PerfilService {
   }
 
 
-  getPerfil(coUsua: string, token: string) {
+  getPerfil(noUsua: string, token: string, urls:any) {
 
     const httpOptions = {
 
@@ -33,10 +33,10 @@ export class PerfilService {
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body',
-      params: new HttpParams().set('user', coUsua)
+      params: new HttpParams().set('user', noUsua)
     };
 
-    return this.http.get(this.urls.perfilXUsuarioUrl, httpOptions);
+    return this.http.get(urls.perfilXUsuarioUrl, httpOptions);
   }
 
 

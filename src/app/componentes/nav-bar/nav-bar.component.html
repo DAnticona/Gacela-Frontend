@@ -1,43 +1,21 @@
-<!-- <nav class="navbar-container">
+<nav class="navbar-container pt-2 pb-2" *ngIf="usuario">
 
-  <div class="subnav">
+    <div class="row justify-content-between align-items-center">
+        <div class="col" *ngIf="usuario">
+            <img *ngIf="usuario.rutaImagen" [src]="usuario.rutaImagen" width="30" height="30" class="d-inline-block usuarioImagen" alt="Usuario" />
+            <img *ngIf="!usuario.rutaImagen" src="assets/Images/usuario.png" width="30" height="30" class="d-inline-block usuarioImagen" alt="Usuario" /> {{usuario.noPers | capitalizado}}
+        </div>
 
-    <div class="navbar-menu">
-      <span class="icon-menu" (click)="menu()"><i class="fa fa-bars"></i></span>
-    </div>
-    
-    <div class="navbar-marca">
-      <span class="marca">Gacela</span>
-    </div>
-          
-    <div class="navbar-opciones">
-      <button (click)="logout()" class="btn btn-link logout"><span><i class="fa fa-sign-out salir"></i>Salir</span></button>
-    </div>
+        <div class="col text-center">
+            <span class="marca">GACELA</span>
+        </div>
 
-  </div>
-
-</nav> -->
-
-
-
-<nav class="navbar-container pt-2 pb-2">
-
-  <div class="row justify-content-between align-items-center">
-    <div class="col">
-      <img src="assets/Images/usuario.jpg" width="30" height="30" class="d-inline-block usuarioImagen" alt="Usuario">
-      {{usuario.noPers | capitalizado}}
-    </div>
-
-    <div class="col text-center">
-        <span class="marca">GACELA</span>
-    </div>
-
-    <div class="col text-right">
-      <button class="btn btn-link logout" type="button" (click)="logout()">
+        <div class="col text-right">
+            <button class="btn btn-link logout" type="button" (click)="logout()">
         <i class="fa fa-sign-out salir"></i>
         Salir
       </button>
+        </div>
     </div>
-  </div>
 
 </nav>

@@ -24,7 +24,7 @@ export class MenuService {
 
 
 
-  getMenusXPerfil(coPerf: string, token: string) {
+  getMenusXPerfil(coPerf: string, token: string, urls: any) {
 
     const httpOptions = {
 
@@ -36,7 +36,7 @@ export class MenuService {
       params: new HttpParams().set('perfil', coPerf)
     };
 
-    return this.http.get(this.urls.menuXPerfilUrl, httpOptions);
+    return this.http.get(urls.menuXPerfilUrl, httpOptions);
   }
 
 

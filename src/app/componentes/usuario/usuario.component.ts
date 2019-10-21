@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { ParamsService } from '../../servicios/params.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioModel } from '../../models/usuario.model';
 
 @Component({
@@ -10,21 +10,26 @@ import { UsuarioModel } from '../../models/usuario.model';
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.css']
 })
-export class UsuarioComponent implements OnInit {
+export class UsuarioComponent {
+
+  error: any;
 
   forma: FormGroup;
-  usuarioModel = new UsuarioModel();
+  usuarioModel: UsuarioModel;
 
-  usuario: any;
-  tiDocus: any[];
+  cargando = false;
+  editable = true;
+
+  tiDocus: any[] = [];
 
   token: string;
   noUsua: string;
   urls: any;
 
   constructor(private route: ActivatedRoute,
-    private usuarioService: UsuarioService,
-    private paramsService: ParamsService) {
+              private router: Router,
+              private usuarioService: UsuarioService,
+              private paramsService: ParamsService) {
 
     this.noUsua = this.route.snapshot.paramMap.get('noUsua');
     this.token = this.paramsService.conexion.token;
@@ -33,17 +38,12 @@ export class UsuarioComponent implements OnInit {
     this.usuarioService.getUsuario(this.noUsua, this.token, this.urls)
       .subscribe((res: any) => {
 
-        // console.log(res);
-
-        this.usuario = res.body.usuario;
-        this.usuario.feNaci = new Date(res.body.usuario.feNaci.year, (res.body.usuario.feNaci.monthValue - 1), res.body.usuario.feNaci.dayOfMonth);
-
         this.tiDocus = res.body.tidocs;
 
-        this.usuarioModel = this.usuario;
+        this.usuarioModel = res.body.usuario;
 
-        // console.log('UsuarioModel:', this.usuarioModel);
-        // console.log(this.tiDocus);
+        let fechaStr = res.body.usuario.feNaci + 'T00:00:00';
+        this.usuarioModel.feNaci = new Date(fechaStr);
 
         this.cargaForma();
 
@@ -52,7 +52,9 @@ export class UsuarioComponent implements OnInit {
 
     this.forma = new FormGroup({
 
-      'coPers': new FormControl({ value: '', disabled: true }, Validators.required),
+      'coPers': new FormControl({ value: '', disabled: true }),
+      'noUsua': new FormControl({ value: '', disabled: this.editable }, Validators.required),
+      'noPerf': new FormControl({ value: '', disabled: this.editable }, Validators.required),
       'tiDocu': new FormControl('', Validators.required),
       'nuDocu': new FormControl('', Validators.required),
       'noPers': new FormControl('', Validators.required),
@@ -60,26 +62,56 @@ export class UsuarioComponent implements OnInit {
       'apMate': new FormControl('', Validators.required),
       'sexo': new FormControl('', Validators.required),
       'feNaci': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required),
-      'rutaImagen': new FormControl(''),
-      'noUsua': new FormControl({ value: '', disabled: true }),
-      'noPerf': new FormControl({ value: '', disabled: true })
+      'email': new FormControl('', [
+        Validators.required,
+        Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+      ]),
+      'rutaImagen': new FormControl('')
 
     });
 
-
-
-  }
-
-  ngOnInit() {
   }
 
 
   cargaForma() {
 
-
     this.forma.setValue(this.usuarioModel);
-    // this.forma.controls.
+
+    this.forma.controls['nuDocu'].setValidators([
+      this.validatorNroDoc.bind(this.forma)
+    ]);
+
+  }
+
+  validatorNroDoc(control: FormControl): { [s: string]: boolean } {
+
+    let forma: any = this;
+
+
+    if (forma.controls['tiDocu'].value === '001') {
+
+      if (isNaN(control.value) || control.value.length !== 8) {
+
+        return {
+
+          validatorNroDoc: true
+
+        };
+      }
+
+    } else if (forma.controls['tiDocu'].value === '002') {
+
+      if (control.value.length > 12) {
+
+        return {
+
+          validatorNroDoc: true
+
+        };
+      }
+    }
+
+    return null;
 
   }
 
@@ -87,22 +119,26 @@ export class UsuarioComponent implements OnInit {
   guardarDatos() {
 
     // console.log(this.forma);
-    // console.log(this.forma.getRawValue());
-    // console.log(this.usuarioModel);
+
+    this.cargando = true;
+
     this.usuarioModel = this.forma.getRawValue();
-    this.usuario = this.usuarioModel;
-    //this.usuarioModel = this.forma.value;
-    console.log(this.usuario);
-    this.usuarioService.updateUsuario(this.usuario, this.token, this.urls)
+
+    this.usuarioService.updateUsuario(this.usuarioModel, this.token, this.urls)
       .subscribe(
         res => {
-          console.log(res);
+
+          this.cargando = false;
+          this.router.navigateByUrl(`/welcome/perfil/${this.noUsua}`);
+
         },
         err => {
-          console.log(err);
+
+          this.error = err.body.error;
+          this.cargando = false;
+
         }
       );
   }
-
 
 }

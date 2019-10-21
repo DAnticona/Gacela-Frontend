@@ -1,3 +1,159 @@
-<p>
-  proyecciones works!
-</p>
+<div class="m-5">
+
+    <h1>Reporte de Proyecciones</h1>
+    <hr>
+
+
+    <form class="mt-5">
+
+        <div class="row mt-3 mb-3">
+
+            <div class="col-2">
+
+
+                <h6>Proyecciones</h6>
+
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="dry" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="dry">DRY</label>
+                </div>
+
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="rh" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="rh">RH</label>
+                </div>
+
+            </div>
+
+
+
+            <div class="col-5">
+
+                <h6 class="text-center">Ratio de Devolución Semanal</h6>
+
+                <div class="form-group row">
+                    <label for="2sd" class="col-sm-2 col-form-label">2SD</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="2sd" placeholder="2SD" value="203" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="4sd" class="col-sm-2 col-form-label">4SD</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="4sd" placeholder="4SD" value="496" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="4sh" class="col-sm-2 col-form-label">4SH</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="4sh" placeholder="4SH" value="157" disabled>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-5">
+
+                <h6 class="text-center">Semana</h6>
+
+                <div class="alert alert-dark">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-calendar pr-1" aria-hidden="true"></i>08/10/2019 - Feriado</li>
+                        <li><i class="fa fa-calendar pr-1" aria-hidden="true"></i>13/10/2019 - Domingo</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-3 mb-3">
+
+            <div class="col">
+
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile">
+                    <label class="custom-file-label" for="validatedCustomFile">Proyecciones - Ventas</label>
+                    <div class="invalid-feedback">Debe Seleccionar un archivo</div>
+                    <div></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-1">
+
+                <div><img src="assets/Images/xls.png" width="50px" height="50px"></div>
+                <div>titulo...</div>
+
+
+            </div>
+
+            <div class="col-1">
+                <button class="btn btn-outline-danger"><i class="fa fa-trash fa-1x" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="col-10">
+
+                <div class="alert alert-success">
+                    <i class="fa fa-check-circle pr-1"></i>Validación exitosa
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-3 mb-3">
+
+            <div class="col">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile">
+                    <label class="custom-file-label" for="validatedCustomFile">Proyecciones - SOL</label>
+                    <div class="invalid-feedback">Debe Seleccionar un archivo</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-1">
+                <div><img src="assets/Images/txt.png" width="50px" height="50px"></div>
+                <div>titulo...</div>
+            </div>
+
+            <div class="col-1">
+                <button class="btn btn-outline-danger"><i class="fa fa-trash fa-1x" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="col-10">
+                <div class="alert alert-success">
+                    <i class="fa fa-check-circle pr-1"></i>Validación exitosa
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row mt-3 mb-3">
+
+            <div class="col">
+
+                <button class="btn btn-primary">Procesar</button>
+
+            </div>
+
+        </div>
+
+
+
+
+    </form>
+
+
+</div>

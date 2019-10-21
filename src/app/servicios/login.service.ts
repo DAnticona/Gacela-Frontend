@@ -14,7 +14,7 @@ export class LoginService {
   conexion: any;
 
   constructor(private http: HttpClient,
-    private configService: ConfigService) {
+              private configService: ConfigService) {
 
     this.cargarStorage();
     this.configService.getUrls()
@@ -29,7 +29,7 @@ export class LoginService {
   getLogin(login: any) {
 
     console.log(this.urls);
-    
+
     const httpOptions = {
 
       headers: new HttpHeaders({
@@ -40,7 +40,7 @@ export class LoginService {
     };
 
     return this.http.post(this.urls.loginUrl, '', httpOptions);
-    
+
     // return this.http.post(this.urls.loginUrl, '', httpOptions)
     // .pipe(
     //   map((res: any) => {
@@ -50,7 +50,7 @@ export class LoginService {
     //   }),
     //   catchError(this.handleError)
     // );
-    
+
   }
 
 
@@ -65,7 +65,7 @@ export class LoginService {
 
   cargarStorage() {
 
-    if(localStorage.getItem('conexion')) {
+    if (localStorage.getItem('conexion')) {
 
       this.conexion = JSON.parse(localStorage.getItem('conexion'));
 

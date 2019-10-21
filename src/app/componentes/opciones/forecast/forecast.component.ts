@@ -46,24 +46,25 @@ export class ForecastComponent implements OnInit {
   valido: boolean;
 
   mensajes: string[] = [];
+  warning: string[] = [];
   linea = true;
   pod = true;
   size = true;
   type = true;
   cnd = true;
   vgm = true;
+  imo = true;
+  un = true;
 
   forecastForm = new FormGroup({
-    servicio: new FormControl(this.servicio.codigo, [
-      Validators.required
-    ]),
+    servicio: new FormControl(this.servicio.codigo, Validators.required),
+
     naveSearch: new FormControl(''),
-    nave: new FormControl(this.nave.codigo, [
-      Validators.required
-    ]),
-    file: new FormControl('', [
-      Validators.required
-    ])
+
+    nave: new FormControl(this.nave.codigo, Validators.required),
+
+    file: new FormControl('', Validators.required)
+    
   });
 
   get servicioForm() {
@@ -82,9 +83,8 @@ export class ForecastComponent implements OnInit {
     return this.forecastForm.get('file');
   }
 
-  constructor(
-    private forecastService: ForecastService,
-    private paramsService: ParamsService)
+  constructor(private forecastService: ForecastService,
+              private paramsService: ParamsService)
   {
 
     this.token = this.paramsService.conexion.token;
@@ -211,6 +211,7 @@ export class ForecastComponent implements OnInit {
     this.valido = null;
 
     this.mensajes = [];
+    this.warning = [];
     this.linea = true;
     this.pod = true;
     this.size = true;
@@ -273,6 +274,7 @@ export class ForecastComponent implements OnInit {
           dpw.imo = String(item['IMO']);
           dpw.un = String(item['UN']);
           dpw.temperature = String(item['TEMPERATURE']);
+          dpw.commodity = String(item['COMMODITY']);
 
           this.dataFile.push(dpw);
         });
@@ -349,10 +351,14 @@ export class ForecastComponent implements OnInit {
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'IMO').length > 1) {
       this.mensajes.push('Existen múltiples columnas IMO');
+    } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'IMO').length === 0) {
+      this.imo = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'UN').length > 1) {
       this.mensajes.push('Existen múltiples columnas UN');
+    } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'UN').length === 0) {
+      this.un = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TEMPERATURE').length > 1) {
@@ -421,6 +427,29 @@ export class ForecastComponent implements OnInit {
           this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): Celda vacía, con valor 0 ó datos no válidos`);
         } else if (row.vgm < 2000) {
           this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): no puede ser menor a 2000`);
+        }
+      }
+
+      // VALIDACION DE COMBINACION IMO, UN, COMMDITY
+      if(this.imo && this.un) {
+        if(row.linea === 'EVG') {
+
+          if(row.imo === '9' && row.un === '2216' && 
+          !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
+
+            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+
+          } else if(row.imo === '9' && row.un === '3359/2216' && 
+          !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
+
+            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+        
+          } else if(row.imo === '9' && row.un === '2216/3359' && 
+          !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
+
+            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+      
+          }
         }
       }
     });

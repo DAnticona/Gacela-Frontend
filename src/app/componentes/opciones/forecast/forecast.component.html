@@ -13,8 +13,7 @@
                 <label class="my-1 mr-2" for="servicios">Servicios</label>
                 <div class="servicios" id="servicios">
                     <div class="custom-control custom-radio" *ngFor="let servicio of servicios; index as i">
-                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input"
-                            value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio" />
+                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input" value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio" />
                         <label class="custom-control-label" for="{{ servicio.codigo }}">{{ servicio.nombre }}</label>
                     </div>
                 </div>
@@ -26,8 +25,7 @@
                 <div class="form-group" id="naves" *ngIf="filtroNaves">
 
                     <label class="my-1 mr-2" for="nave">Naves</label>
-                    <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave"
-                        (input)="search(nave.value)" uppercase formControlName="naveSearch" />
+                    <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave" (input)="search(nave.value)" uppercase formControlName="naveSearch" />
                     <select class="custom-select" size="7" formControlName="nave">
                         <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves" (click)="onClickNaves()">
                             {{ n.shortName }} - {{ n.longName }}</option>
@@ -41,9 +39,7 @@
         <div class="forecastBottom-contenedor">
             <div class="input-group mb-3">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                        aria-describedby="inputGroupFileAddon01" (click)="file.value=error=null"
-                        (change)="onChangeFile(file)" formControlName="file" #file accept=".xlsx" />
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" (click)="file.value=error=null" (change)="onChangeFile(file)" formControlName="file" #file accept=".xlsx" />
                     <label class="custom-file-label" for="inputGroupFile01">{{ textLabel }}</label>
                 </div>
             </div>
@@ -61,7 +57,7 @@
                 <span *ngIf="cargando"> Cargando...</span>
             </button>
 
-            <div class="alert alert-success" role="alert" *ngIf="valido == true">
+            <div class="alert alert-success" role="alert" *ngIf="valido == true && warning.length == 0">
                 <ul>
                     <li class="resultado" *ngFor="let mensaje of mensajes">
                         <i class="fa fa-check-square icono"></i>{{ mensaje }}
@@ -70,9 +66,24 @@
             </div>
 
             <div class="alert alert-danger forecast-resultados" role="alert" *ngIf="valido == false">
+                <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>Error</strong>
+                <hr>
                 <ul>
                     <li class="resultado" *ngFor="let mensaje of mensajes">
                         <i class="fa fa-square icono"></i>{{ mensaje }}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="alert alert-warning forecast-resultados" role="alert" *ngIf="warning.length > 0">
+                <strong>
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    <span>Warning</span>
+                </strong>
+                <hr>
+                <ul>
+                    <li class="resultado" *ngFor="let war of warning">
+                        <i class="fa fa-square icono"></i>{{ war }}
                     </li>
                 </ul>
             </div>

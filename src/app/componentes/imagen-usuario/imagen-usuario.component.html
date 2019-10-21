@@ -1,0 +1,17 @@
+<div *ngIf="usuario">
+    <div class="foto">
+        <img *ngIf="usuario.rutaImagen" [src]="usuario.rutaImagen" width="200px" height="200px" />
+        <img *ngIf="!usuario.rutaImagen" src="assets/Images/usuario.png" width="200px" height="200px" />
+    </div>
+    <ul class="enlaces">
+        <li>
+            <label class="file-input">
+                <input type="file" accept="image/png" #file (change)="onChangeFile(file)">
+                Cambiar imagen
+            </label>
+        </li>
+        <li>
+            <a class="password-input" [routerLink]="['/welcome/password', usuario.noUsua | lowercase]">Cambiar contraseña</a>
+        </li>
+    </ul>
+</div>

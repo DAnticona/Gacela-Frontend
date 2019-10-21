@@ -10,5 +10,6 @@ export class ForecastDet {
     imo: string;
     un: string;
     temperature: string;
+    commodity?: string
 }
 

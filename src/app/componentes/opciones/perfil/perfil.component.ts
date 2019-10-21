@@ -1,22 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParamsService } from '../../../servicios/params.service';
+import { UsuarioModel } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css']
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent {
 
-  forma: FormGroup;
-  
-  usuario: any = {
-    feNaci: new Date()
-  };
-  perfil: any = {};
+  usuario: UsuarioModel;
+  tidocs: any = {};
+  perfil: any[] = [];
+  tidoc: any;
 
   noUsua: string;
   token: string;
@@ -35,14 +34,19 @@ export class PerfilComponent implements OnInit {
       .subscribe((res: any) => {
 
         // console.log(res);
+        let fechaStr = res.body.usuario.feNaci + 'T00:00:00';
         this.usuario = res.body.usuario;
-        this.usuario.feNaci = new Date(res.body.usuario.feNaci.year, (res.body.usuario.feNaci.monthValue - 1), res.body.usuario.feNaci.dayOfMonth);
+        this.usuario.feNaci = new Date(fechaStr);
         // console.log(this.usuario);
 
-      });
-  }
+        this.tidocs = res.body.tidocs;
+        // console.log(this.tidocs);
 
-  ngOnInit() {
+        this.tidoc = this.tidocs.filter((tidoc: any) => tidoc.coTiDocu === this.usuario.tiDocu)[0];
+
+        // console.log(this.tidoc);
+
+      });
   }
 
   editarPerfil() {

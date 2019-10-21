@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { ParamsService } from '../../servicios/params.service';
+import { UsuarioService } from '../../servicios/usuario.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,10 +15,18 @@ export class NavBarComponent implements OnInit {
   error: any;
 
   constructor(private router: Router,
-              private paramsService: ParamsService) {
+              private paramsService: ParamsService,
+              private usuarioService: UsuarioService) {
 
-    this.usuario = this.paramsService.usuario;
-    // console.log(this.usuario);
+    this.usuarioService.getUsuario(this.paramsService.conexion.noUsua,
+                                  this.paramsService.conexion.token,
+                                  this.paramsService.urls)
+      .subscribe((res: any) => {
+
+        this.usuario = res.body.usuario;
+
+      });
+    
   }
 
   ngOnInit() {
@@ -29,7 +38,6 @@ export class NavBarComponent implements OnInit {
     this.paramsService.getLogout(this.usuario.noUsua)
       .subscribe(
         res => {
-          // console.log(res);
           this.router.navigate(['login']);
         },
         err => {

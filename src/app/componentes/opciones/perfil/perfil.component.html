@@ -1,89 +1,70 @@
-<h3>Datos Personales</h3>
-<hr>
+<h1 class="m-3">
 
-<div class="row justify-content-center mt-3">
+    Datos Personales</h1>
+<hr class="m-3">
+
+<div class="row justify-content-center m-5" *ngIf="usuario && tidoc">
 
 
-  <div class="col-5 imagen">
+    <div class="col-md-4 imagen text-center">
 
-    <div class="foto">
-      <img src="assets/Images/usuario.jpg" width="200px" height="200px">
+        <app-imagen-usuario></app-imagen-usuario>
     </div>
-    <a [routerLink]="['imagen']">Cambiar</a>
 
-  </div>
+    <div class="col-md-8 datos">
 
-  <div class="col-7">
+        <table class="table table-borderless mt-3">
+            <tbody>
+                <tr>
+                    <td>Código:</td>
+                    <td>{{usuario.coPers}}</td>
+                </tr>
+                <tr>
+                    <td>{{tidoc.alTiDocu}}:</td>
+                    <td>{{usuario.nuDocu}}</td>
+                </tr>
+                <tr>
+                    <td>Nombres:</td>
+                    <td>{{usuario.noPers}}</td>
+                </tr>
+                <tr>
+                    <td>Ap. Paterno:</td>
+                    <td>{{usuario.apPate}}</td>
+                </tr>
+                <tr>
+                    <td>Ap. Materno:</td>
+                    <td>{{usuario.apMate}}</td>
+                </tr>
+                <tr>
+                    <td>Sexo:</td>
+                    <td>
+                        <span *ngIf="usuario.sexo=='M'">Masculino</span>
+                        <span *ngIf="usuario.sexo=='F'">Femenino</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{{usuario.email}}</td>
+                </tr>
+                <tr>
+                    <td>Fecha Nac.:</td>
+                    <td>{{usuario.feNaci | date:'dd-MM-yyyy'}}</td>
+                </tr>
+                <tr>
+                    <td>Usuario:</td>
+                    <td>{{usuario.noUsua}}</td>
+                </tr>
+                <tr>
+                    <td>Perfil:</td>
+                    <td>{{usuario.noPerf}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <table class="table table-borderless mt-3">
-      <tbody>
-        <tr>
-          <td>Código</td>
-          <td>{{usuario.coPers}}</td>
-        </tr>
-        <tr>
-          <td>{{usuario.tiDocu}}</td>
-          <td>{{usuario.nuDocu}}</td>
-        </tr>
-        <tr>
-          <td>Nombres</td>
-          <td>{{usuario.noPers}}</td>
-        </tr>
-        <tr>
-          <td>Ap. Paterno</td>
-          <td>{{usuario.apPate}}</td>
-        </tr>
-        <tr>
-          <td>Ap. Materno</td>
-          <td>{{usuario.apMate}}</td>
-        </tr>
-        <tr>
-          <td>Sexo</td>
-          <td>{{usuario.sexo}}</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>{{usuario.email}}</td>
-        </tr>
-        <tr>
-          <td>Fecha Nac.</td>
-          <td>{{usuario.feNaci.toLocaleDateString()}}</td>
-        </tr>
-      </tbody>
-    </table>
 
-
-    <button class="btn btn-outline-info" (click)="editarPerfil()">
-      Editar Datos
-    </button>
-  </div>
-</div>
-
-
-<h3 class="mt-5">Datos de Usuario</h3>
-<hr>
-
-<div class="row justify-content-center mt-3">
-
-  <div class="col-5 falsa">
-
-  </div>
-
-  <div class="col-7">
-
-    <table class="table table-borderless mt-3">
-      <tbody>
-        <tr>
-          <td>Usuario</td>
-          <td>{{usuario.noUsua}}</td>
-        </tr>
-        <tr>
-          <td>Perfil</td>
-          <td>{{usuario.noPerf}}</td>
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
-
+        <button class="btn btn-outline-primary" (click)="editarPerfil()">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Editar Datos
+        </button>
+    </div>
 </div>

@@ -27,6 +27,7 @@ import { PerfilComponent } from './componentes/opciones/perfil/perfil.component'
 import { PasswordComponent } from './componentes/password/password.component';
 import { FechaPipe } from './pipes/fecha.pipe';
 import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { ImagenUsuarioComponent } from './componentes/imagen-usuario/imagen-usuario.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { UsuarioComponent } from './componentes/usuario/usuario.component';
     PerfilComponent,
     PasswordComponent,
     FechaPipe,
-    UsuarioComponent
+    UsuarioComponent,
+    ImagenUsuarioComponent
   ],
   imports: [
     BrowserModule,

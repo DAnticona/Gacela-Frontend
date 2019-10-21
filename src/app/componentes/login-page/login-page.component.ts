@@ -17,9 +17,6 @@ export class LoginPageComponent {
 
   error: any;
 
-  usuario: any;
-  perfil: any;
-  menus: any;
   conexion: any;
 
   cargando = false;
@@ -31,7 +28,6 @@ export class LoginPageComponent {
         .subscribe(res => {
 
           this.urls = res;
-          // console.log(this.urls);
           
         });
 
@@ -48,18 +44,13 @@ export class LoginPageComponent {
   onSubmit() {
 
     this.cargando = true;
-
     
     this.paramsService.getLogin(this.loginForm.value, this.urls)
       .subscribe(
         (res: any) => {
 
           this.conexion = res.body.conexion;
-          this.usuario = res.body.usuario;
-          this.perfil = res.body.usuario.perfil;
-          this.menus = res.body.usuario.perfil.menus;
 
-          // console.log(this.usuario);
           this.cargaLogin();
 
           this.cargando = false;
@@ -82,11 +73,8 @@ export class LoginPageComponent {
 
     this.paramsService.guardarUrls(this.urls);
     this.paramsService.guardarConexion(this.conexion);
-    this.paramsService.guardarUsuario(this.usuario);
-    this.paramsService.guardarPerfil(this.perfil);
-    this.paramsService.guardarMenus(this.menus);
     
-    this.router.navigate(['welcome/home', this.usuario.noUsua.toLowerCase()]);
+    this.router.navigate(['welcome/home', this.loginForm.controls.noUsua.value.toLowerCase()]);
 
   }
 

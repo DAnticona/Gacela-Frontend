@@ -41,8 +41,13 @@ export class UsuarioService {
 
   updateUsuario(usuario: UsuarioModel, token: string, urls: any) {
 
-    console.log(token);
-    console.log(urls);
+    // console.log("token",token);
+    // console.log("URLS",urls);
+    // console.log("Usuario",usuario.feNaci.toISOString());
+
+
+    // usuario.feNaci = new Date(usuario.feNaci);
+    // console.log(usuario.feNaci);
 
     const httpOptions = {
 
@@ -57,7 +62,7 @@ export class UsuarioService {
 
     };
 
-    return this.http.post(urls.usuarioUrl, usuario, httpOptions)
+    return this.http.put(urls.usuarioUrl, usuario, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -70,6 +75,32 @@ export class UsuarioService {
     this.usuario = usuario;
 
     localStorage.setItem('usuario', JSON.stringify(this.usuario));
+
+  }
+
+
+  cargarImagen(file: any, usuario: UsuarioModel, token: string, urls: any) {
+
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+
+        token: `${token}`,
+        'Content-Type': 'multipart/form-data'
+        
+      }),
+
+      observe: 'response' as 'body',
+      params: new HttpParams().set('user', `${usuario.noUsua}`)
+    };
+
+    let formData: FormData = new FormData();
+    formData.append('file', file);
+
+    return this.http.put(urls.usuarioImagenUrl, file, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
 
   }
 

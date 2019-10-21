@@ -6,5 +6,7 @@
     "usuarioUrl": "/Gacela-Backend/usuario",
     "perfilXUsuarioUrl": "/Gacela-Backend/perfil/usuario",
     "menuXPerfilUrl": "/Gacela-Backend/menu/perfil",
-    "tipoDocumentoUrl": "/Gacela-Backend/tidoc"
+    "tipoDocumentoUrl": "/Gacela-Backend/tidoc",
+    "usuarioImagenUrl": "/Gacela-Backend/usuario/imagen",
+    "cambioPasswordUrl": "/Gacela-Backend/password"
 }
