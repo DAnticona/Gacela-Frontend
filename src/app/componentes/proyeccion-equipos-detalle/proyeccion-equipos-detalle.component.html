@@ -1,0 +1,225 @@
+<!-- #forma="ngForm" -->
+<form [formGroup]="forma">
+
+    <fieldset>
+
+        <table class="table table-sm mt-3 mb-3" *ngIf="proyeccion">
+
+            <thead class="detalle text-sm-center">
+
+                <tr>
+                    <th colspan="3"></th>
+                    <th colspan="4" class="bg-light">2SD</th>
+                    <th colspan="4">4SD</th>
+                    <th colspan="4" class="bg-light">4SH</th>
+                    <th colspan="2"></th>
+                </tr>
+
+                <tr>
+                    <th colspan="3">Stock</th>
+                    <td colspan="4" class="form-group bg-light">
+                        <!-- name="stock2Sd" #stock2Sd="ngModel" [(ngModel)]="proyeccion.stock2Sd"-->
+                        <input type="number" class="form-control form-control-sm" formControlName="stock2Sd" (change)="actualizaTotales()">
+                    </td>
+                    <td colspan="4" class="form-group">
+                        <!-- name="stock4Sd" #stock4Sd="ngModel" [(ngModel)]="proyeccion.stock4Sd"-->
+                        <input type="number" class="form-control form-control-sm" formControlName="stock4Sd" (change)="actualizaTotales()">
+                    </td>
+                    <td colspan="4" class="form-group bg-light">
+                        <!-- name="stock4Sh" #stock4Sh="ngModel" [(ngModel)]="proyeccion.stock4Sh"-->
+                        <input type="number" class="form-control form-control-sm" formControlName="stock4Sh" (change)="actualizaTotales()">
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light" colspan="2">Nave</th>
+                    <th>Viaje</th>
+                    <th class="bg-light">Non F.E.</th>
+                    <th class="bg-light">Picked Up</th>
+                    <th class="bg-light">F.E.</th>
+                    <th class="bg-light">Picked Up</th>
+                    <th>Non F.E.</th>
+                    <th>Picked Up</th>
+                    <th>F.E.</th>
+                    <th>Picked Up</th>
+                    <th class="bg-light">Non F.E.</th>
+                    <th class="bg-light">Picked Up</th>
+                    <th class="bg-light">F.E.</th>
+                    <th class="bg-light">Picked Up</th>
+                    <th colspan="2">ETA</th>
+                </tr>
+
+            </thead>
+
+            <tbody class="detalle table-borderless">
+
+                <tr *ngFor="let eq of detalle; let i = index">
+
+                    <td class="bg-light nave text-center" colspan="2">{{eq.alNave}}</td>
+                    <td class="viaje">{{eq.viaje}}</td>
+                    <td class="bg-light valor">{{eq.ca2SdNoFe}}</td>
+                    <td class="bg-light valor">{{eq.ca2SdNoFePick}}</td>
+                    <td class="bg-light valor">{{eq.ca2SdFe}}</td>
+                    <td class="bg-light valor">{{eq.ca2SdFePick}}</td>
+                    <td class="valor">{{eq.ca4SdNoFe}}</td>
+                    <td class="valor">{{eq.ca4SdNoFePick}}</td>
+                    <td class="valor">{{eq.ca4SdFe}}</td>
+                    <td class="valor">{{eq.ca4SdFePick}}</td>
+                    <td class="bg-light valor">{{eq.ca4ShNoFe}}</td>
+                    <td class="bg-light valor">{{eq.ca4ShNoFePick}}</td>
+                    <td class="bg-light valor">{{eq.ca4ShFe}}</td>
+                    <td class="bg-light valor">{{eq.ca4ShFePick}}</td>
+                    <td class="eta text-center" colspan="2">{{eq.eta | date: 'dd/MM/yyyy'}}</td>
+
+                </tr>
+
+            </tbody>
+
+            <tbody class="detalle">
+
+                <tr>
+
+                    <th colspan="3" class="text-center">Suma</th>
+                    <td class="bg-light valor">{{proyeccion.to2SdNoFe}}</td>
+                    <td class="bg-light valor">{{proyeccion.to2SdNoFePick}}</td>
+                    <td class="bg-light valor">{{proyeccion.to2SdFe}}</td>
+                    <td class="bg-light valor">{{proyeccion.to2SdFePick}}</td>
+                    <td class="valor">{{proyeccion.to4SdNoFe}}</td>
+                    <td class="valor">{{proyeccion.to4SdNoFePick}}</td>
+                    <td class="valor">{{proyeccion.to4SdFe}}</td>
+                    <td class="valor">{{proyeccion.to4SdFePick}}</td>
+                    <td class="bg-light valor">{{proyeccion.to4ShNoFe}}</td>
+                    <td class="bg-light valor">{{proyeccion.to4ShNoFePick}}</td>
+                    <td class="bg-light valor">{{proyeccion.to4ShFe}}</td>
+                    <td class="bg-light valor">{{proyeccion.to4ShFePick}}</td>
+                    <td colspan="2"></td>
+
+                </tr>
+
+                <tr class="text-center">
+
+                    <th colspan="3">TT Booking</th>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.to2SdBook}}</td>
+                    <td class="valor" colspan="4">{{proyeccion.to4SdBook}}</td>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.to4ShBook}}</td>
+                    <td colspan="2"></td>
+
+                </tr>
+
+                <tr class="text-center">
+
+                    <th colspan="3">TT Picked Up</th>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.to2SdPick}}</td>
+                    <td class="valor" colspan="4">{{proyeccion.to4SdPick}}</td>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.to4ShPick}}</td>
+                    <td colspan="2"></td>
+
+                </tr>
+
+                <tr class="text-center">
+
+                    <th colspan="3">Empty return until {{proyeccion.feEmptyReturn | date: 'dd-MMM'}} </th>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.ca2SdEmptyRet}}</td>
+                    <td class="valor" colspan="4">{{proyeccion.ca4SdEmptyRet}}</td>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.ca4ShEmptyRet}}</td>
+                    <td class="text-center badge-secondary" colspan="2">{{proyeccion.nroDiasAlRetorno}}</td>
+
+                </tr>
+
+            </tbody>
+
+
+            <tbody class="detalle" formArrayName="rpoPlan">
+
+                <tr>
+                    <th class="text-center" colspan="17">RPO Plan</th>
+                </tr>
+
+                <tr class="text-center">
+                    <th colspan="2" class="bg-light">Nave</th>
+                    <th>Viaje</th>
+                    <th colspan="4" class="bg-light">2SD</th>
+                    <th colspan="4">4SD</th>
+                    <th colspan="4" class="bg-light">4SH</th>
+                    <th>ETA</th>
+                    <th></th>
+                </tr>
+
+                <!-- *ngFor="let r of rpoPlan; let i = index"-->
+                <tr [formGroupName]="i" *ngFor="let det of forma.get('rpoPlan')['controls']; let i = index" [ngClass]="{'rpo-invalido': !isRpoValido(i)}">
+
+                    <td class="bg-light">
+                        <button class="btn btn-outline-info btn -info btn-sm" (click)="editaAlNaveRpo(i)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td class="bg-light">
+                        <!-- name="alNave{{i}}" [(ngModel)]="rpoPlan[i].alNave" [value]="r.alNave" -->
+                        <input type="text" class="form-control form-control-sm" formControlName="alNaveRpo">
+                    </td>
+                    <td>
+                        <!-- name="viaje{{i}}" [(ngModel)]="rpoPlan[i].viaje" [value]="r.viaje" -->
+                        <input type="text" class="form-control form-control-sm" formControlName="viajeRpo" [ngClass]="{'is-invalid': forma.get('rpoPlan')['controls'][i].controls['viajeRpo'].invalid}" appMayuscula style="text-transform: uppercase;">
+                    </td>
+                    <td colspan="4" class="form-group bg-light">
+                        <!-- name="caRpo2Sd{{i}}" [(ngModel)]="rpoPlan[i].caRpo2Sd" [value]="r.caRpo2Sd" -->
+                        <input type="number" class="form-control form-control-sm" formControlName="ca2SdRpo" (change)="ca2SdRpoValido(i)">
+                    </td>
+                    <td colspan="4" class="form-group">
+                        <!-- name="caRpo4Sd{{i}}" [(ngModel)]="rpoPlan[i].caRpo4Sd" [value]="r.caRpo4Sd" -->
+                        <input type="number" class="form-control form-control-sm" formControlName="ca4SdRpo" (change)="ca4SdRpoValido(i)">
+                    </td>
+                    <td colspan="4" class="form-group bg-light">
+                        <!-- name="caRpo4Sh{{i}}" [(ngModel)]="rpoPlan[i].caRpo4Sh" [value]="r.caRpo4Sh" -->
+                        <input type="number" class="form-control form-control-sm" formControlName="ca4ShRpo" (change)="ca4ShRpoValido(i)">
+                    </td>
+                    <td>
+                        <!-- name="eta{{i}}" [(ngModel)]="rpoPlan[i].eta" [value]="r.eta | date:'yyyy-MM-dd'" -->
+                        <input type="date" class="form-control form-control-sm" formControlName="etaRpo" (change)="etaValido(i)">
+                    </td>
+                    <td class="form-group text-center">
+                        <!--  -->
+                        <button class="btn btn-outline-danger btn-sm" (click)="delRpo(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td colspan="17">
+                        <!-- (click)="addRpo()" [disabled]="forma.controls.rpoPlan.invalid" -->
+                        <button class="btn btn-outline-primary btn-sm" (click)="addRpo(forma)">
+                            <i class="fa fa-plus fa-1x" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+
+            <tbody class="detalle">
+
+                <tr>
+                    <th colspan="3" class="text-center">Available</th>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.available2Sd}}</td>
+                    <td class="valor" colspan="4">{{proyeccion.available4Sd}}</td>
+                    <td class="valor bg-light" colspan="4">{{proyeccion.available4Sh}}</td>
+                    <td colspan="2"></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="row m-3">
+            <div class="col-sm-6">
+                <button class="btn btn-outline-primary" [disabled]="forma.invalid || forma.controls.rpoPlan.invalid || cargando" (click)="exportar()">
+                    <i [ngClass]="{ 'fa-spinner fa-pulse': cargando }" class="fa fa-download fa-fw" aria-hidden="true"></i>
+                    <span *ngIf="!cargando">Exportar</span>
+                    <span *ngIf="cargando">Cargando</span>
+                </button>
+            </div>
+        </div>
+
+    </fieldset>
+
+</form>

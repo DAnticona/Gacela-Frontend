@@ -1,0 +1,67 @@
+.fileSOL:hover,
+.proVenta:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.delete {
+    color: red;
+}
+
+.table .detalle {
+    font-size: 10pt !important;
+}
+
+.table input {
+    font-size: 10pt !important;
+}
+
+.valor {
+    text-align: center;
+}
+
+.rpo {
+    background-color: #F4F9F7;
+}
+
+.error {
+    height: 100px;
+    list-style: none;
+    font-size: 10pt;
+    overflow-y: auto;
+}
+
+.rpo-invalido input {
+    background-color: #FFECEA;
+    /* text-decoration: line-through; */
+    color: red;
+}
+
+
+/* .viaje {
+    width: 15%;
+}
+
+.valor {
+    width: 13%;
+}
+
+.eta {
+    width: 5%;
+} */
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+.invalid {
+    border-color: red;
+    ;
+}
+
+@media (max-width: 800px) {
+    div,
+    input {
+        font-size: 10pt;
+    }
+}

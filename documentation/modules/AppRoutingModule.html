@@ -1,0 +1,196 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>gacela-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">gacela-frontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content module">
+                   <div class="content-data">
+
+
+
+<ol class="breadcrumb">
+    <li>Modules</li>
+    <li>AppRoutingModule</li>
+</ol>
+
+
+<ul class="nav nav-tabs" role="tablist">
+    <li  class="active" >
+        <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+    </li>
+    <li >
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/app-routing.module.ts</code>
+        </p>
+
+
+
+
+        <div class="container-fluid module">
+            <div class="row">
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
+import { Routes, RouterModule } from &#x27;@angular/router&#x27;;
+
+import { LoginPageComponent } from &#x27;./componentes/login-page/login-page.component&#x27;;
+import { WelcomePageComponent } from &#x27;./componentes/welcome-page/welcome-page.component&#x27;;
+import { NotFoundPageComponent } from &#x27;./componentes/not-found-page/not-found-page.component&#x27;;
+
+import { HomeComponent } from &#x27;./componentes/opciones/home/home.component&#x27;;
+import { ForecastComponent } from &#x27;./componentes/opciones/forecast/forecast.component&#x27;;
+import { GatesComponent } from &#x27;./componentes/opciones/gates/gates.component&#x27;;
+import { OutstandingComponent } from &#x27;./componentes/opciones/outstanding/outstanding.component&#x27;;
+import { Rep6040Component } from &#x27;./componentes/opciones/rep6040/rep6040.component&#x27;;
+import { RetirosComponent } from &#x27;./componentes/opciones/retiros/retiros.component&#x27;;
+import { TransbordoComponent } from &#x27;./componentes/opciones/transbordo/transbordo.component&#x27;;
+import { ProyeccionesComponent } from &#x27;./componentes/opciones/proyecciones/proyecciones.component&#x27;;
+import { PerfilComponent } from &#x27;./componentes/opciones/perfil/perfil.component&#x27;;
+import { PasswordComponent } from &#x27;./componentes/password/password.component&#x27;;
+import { UsuarioComponent } from &#x27;./componentes/usuario/usuario.component&#x27;;
+import { CalendarioComponent } from &#x27;./componentes/opciones/calendario/calendario.component&#x27;;
+import { ProyventasComponent } from &#x27;./componentes/opciones/proyventas/proyventas.component&#x27;;
+import { DetproyventasComponent } from &#x27;./componentes/opciones/proyventas/detproyventas/detproyventas.component&#x27;;
+import { NavesComponent } from &#x27;./componentes/opciones/maestros/naves/naves.component&#x27;;
+import { RegistroNavesComponent } from &#x27;./componentes/opciones/maestros/naves/registro-naves/registro-naves.component&#x27;;
+
+const routes: Routes &#x3D; [
+  { path: &#x27;login&#x27;, component: LoginPageComponent },
+  { path: &#x27;welcome&#x27;, component: WelcomePageComponent, children: [
+    { path: &#x27;home/:noUsua&#x27;, component: HomeComponent },
+    { path: &#x27;perfil/:noUsua&#x27;, component: PerfilComponent },
+    { path: &#x27;usuario/:noUsua&#x27;, component: UsuarioComponent },
+    { path: &#x27;password/:noUsua&#x27;, component: PasswordComponent },
+    { path: &#x27;forecast/:noUsua&#x27;, component: ForecastComponent },
+    { path: &#x27;gates/:noUsua&#x27;, component: GatesComponent },
+    { path: &#x27;outstanding/:noUsua&#x27;, component: OutstandingComponent },
+    { path: &#x27;rep6040/:noUsua&#x27;, component: Rep6040Component },
+    { path: &#x27;retiros/:noUsua&#x27;, component: RetirosComponent },
+    { path: &#x27;transbordo/:noUsua&#x27;, component: TransbordoComponent },
+    { path: &#x27;proyecciones/:noUsua&#x27;, component: ProyeccionesComponent },
+    { path: &#x27;calendario/:noUsua&#x27;, component: CalendarioComponent },
+    { path: &#x27;proyventas/:noUsua&#x27;, component: ProyventasComponent },
+    { path: &#x27;proyventas/:noUsua/:coProy&#x27;, component: DetproyventasComponent },
+    { path: &#x27;naves/:noUsua&#x27;, component: NavesComponent },
+    { path: &#x27;naves/:noUsua/:coNave&#x27;, component: RegistroNavesComponent },
+    { path: &#x27;&#x27;, redirectTo: &#x27;home/:noUsua&#x27;, pathMatch: &#x27;prefix&#x27; },
+    { path: &#x27;**&#x27;, redirectTo: &#x27;home/:noUsua&#x27;, pathMatch: &#x27;prefix&#x27; }
+  ] },
+  { path: &#x27;not-found&#x27;, component: NotFoundPageComponent },
+  { path: &#x27;&#x27;, redirectTo: &#x27;/login&#x27;, pathMatch: &#x27;full&#x27; },
+  { path: &#x27;**&#x27;, redirectTo: &#x27;/not-found&#x27; }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {useHash: true, onSameUrlNavigation: &#x27;reload&#x27;})],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
+            var COMPODOC_CURRENT_PAGE_URL = 'AppRoutingModule.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

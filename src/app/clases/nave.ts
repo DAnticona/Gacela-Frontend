@@ -5,5 +5,7 @@ export class Nave {
 	longName: string;
 	shortName: string;
 	servicio: string;
+	linea: string;
+	fgPropLinea: string;
 
 }

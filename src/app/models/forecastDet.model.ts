@@ -1,4 +1,7 @@
 export class ForecastDet {
+
+    coForecast = '';
+    item = 0;
     linea: string;
     pol: string;
     pod: string;
@@ -10,6 +13,6 @@ export class ForecastDet {
     imo: string;
     un: string;
     temperature: string;
-    commodity?: string
+    commodity?: string;
+    
 }
-

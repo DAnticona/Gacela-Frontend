@@ -2,29 +2,25 @@
     height: 100%;
 }
 
-.header{
+.header {
     background: #0AA45E;
-    height: 10%;
+    /* height: 10%; */
 }
 
 .content {
     /* height: calc(100% - 70px); */
     height: 90%;
     max-height: 90%;
-
 }
 
 .sideBar {
     border-right: 1px solid #b8b8b8;
 }
 
-
 .statusBar {
-
     position: fixed;
     z-index: 50;
     bottom: 0px;
-
 }
 
 .workspace {

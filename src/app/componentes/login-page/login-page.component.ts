@@ -24,12 +24,12 @@ export class LoginPageComponent {
   constructor(private paramsService: ParamsService,
               private router: Router) {
 
-      this.paramsService.getUrls()
-        .subscribe(res => {
+    this.paramsService.getUrls()
+      .subscribe(res => {
 
-          this.urls = res;
+        this.urls = res;
           
-        });
+      });
 
 
     this.loginForm = new FormGroup({

@@ -30,8 +30,8 @@ export class SideBarComponent {
                                           this.paramsServcice.urls)
           .subscribe((res1: any) => {
             this.menus = res1.body.menus;
-          })
-      })
+          });
+      });
 
     // this.paramsServcice.menus.sort(
     //   (a, b) => a.nrOrde - b.nrOrde
@@ -47,11 +47,11 @@ export class SideBarComponent {
 
   }
 
-  clickMenu(i : number) {
+  clickMenu(i: number) {
 
     this.menus.forEach((menu, index) => {
 
-      if(index != i) {
+      if(index !== i) {
 
         menu.expanded = false;
 
@@ -68,7 +68,7 @@ export class SideBarComponent {
 
     this.menus.forEach((menu, index) => {
 
-      if(index != i) {
+      if(index !== i) {
 
         menu.activo = false;
 

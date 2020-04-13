@@ -1,0 +1,87 @@
+<div class="m-5">
+    <h1>Proyecciones</h1>
+    <hr>
+
+    <fieldset [disabled]="cargandoProyVenta || cargandoFile || cargandoRatio || cargando">
+
+        <div class="row">
+
+            <div class="col-sm-4">
+
+                <app-file-mtc1r999 (enviaFile)="traeFileMtc1r999($event)"></app-file-mtc1r999>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <app-ratio-devolucion (enviaRatio)="traeRatioDevolucion($event)"></app-ratio-devolucion>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <app-proyeccion-venta-activa (enviaProyeccion)="traeProyeccionVenta($event)"></app-proyeccion-venta-activa>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+
+            <!-- <div class="col-sm-3">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input form-control-sm" id="tieneFechaLimite" [(ngModel)]="tieneFechaLimite" name="tieneFechaLimite" (change)="this.fechaLimite = null;">
+                    <label class="custom-control-label form-control-sm" for="tieneFechaLimite">Fecha Límite</label>
+                </div>
+            </div> -->
+
+            <!-- <div class="col-sm-3">
+                <div *ngIf="tieneFechaLimite">
+                    <input type="date" class="form-control form-control-sm" name="fechaLimite" [(ngModel)]="fechaLimite">
+                </div>
+
+            </div> -->
+
+            <div class="col-sm-12 text-right">
+                <button class="btn btn-outline-primary" [disabled]="!proyeccionVenta" (click)="generaProyeccionEquipos()">Generar proyección</button>
+            </div>
+        </div>
+
+        <div *ngIf="proyeccionGenerada">
+
+            <div class="row">
+                <div class="col">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <button class="btn btn-link nav-link" [ngClass]="{active: muestraSol}" (click)="muestraSol = true">SOL</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-link nav-link" [ngClass]="{active: !muestraSol}" (click)="muestraSol = false">Ventas</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div *ngIf="proyeccionEquipo.detalles" class="row">
+
+                <div *ngIf="!muestraSol" class="col-sm-12">
+
+                    <app-proyeccion-venta-detalle [proyeccion]="proyeccionVenta"></app-proyeccion-venta-detalle>
+
+                </div>
+
+                <div *ngIf="muestraSol" class="col-sm-12">
+
+                    <app-proyeccion-equipos-detalle [proyeccion]="proyeccionEquipo" [proyeccionVenta]="proyeccionVenta"></app-proyeccion-equipos-detalle>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </fieldset>
+
+</div>

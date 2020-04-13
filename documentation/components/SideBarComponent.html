@@ -1,0 +1,730 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>gacela-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">gacela-frontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>SideBarComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/componentes/side-bar/side-bar.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-side-bar</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./side-bar.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./side-bar.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#coPerf">coPerf</a>
+                            </li>
+                            <li>
+                                <a href="#menus">menus</a>
+                            </li>
+                            <li>
+                                <a href="#noUsua">noUsua</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clickMenu">clickMenu</a>
+                            </li>
+                            <li>
+                                <a href="#clickSubMenu">clickSubMenu</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(paramsServcice: <a href="../injectables/ParamsService.html">ParamsService</a>, perfilService: <a href="../injectables/PerfilService.html">PerfilService</a>, menuService: <a href="../injectables/MenuService.html">MenuService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>paramsServcice</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ParamsService.html" target="_self" >ParamsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>perfilService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PerfilService.html" target="_self" >PerfilService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>menuService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MenuService.html" target="_self" >MenuService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clickMenu"></a>
+                    <span class="name">
+                        <b>
+                            clickMenu
+                        </b>
+                        <a href="#clickMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clickMenu(i: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:50</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>i</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clickSubMenu"></a>
+                    <span class="name">
+                        <b>
+                            clickSubMenu
+                        </b>
+                        <a href="#clickSubMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clickSubMenu(i: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:67</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>i</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="coPerf"></a>
+                        <span class="name">
+                            <b>
+                            coPerf</b>
+                            <a href="#coPerf"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:14</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="menus"></a>
+                        <span class="name">
+                            <b>
+                            menus</b>
+                            <a href="#menus"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>any[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noUsua"></a>
+                        <span class="name">
+                            <b>
+                            noUsua</b>
+                            <a href="#noUsua"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/componentes/side-bar/side-bar.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { ParamsService } from &#x27;../../servicios/params.service&#x27;;
+import { MenuService } from &#x27;../../servicios/menu.service&#x27;;
+import { PerfilService } from &#x27;../../servicios/perfil.service&#x27;;
+
+@Component({
+  selector: &#x27;app-side-bar&#x27;,
+  templateUrl: &#x27;./side-bar.component.html&#x27;,
+  styleUrls: [&#x27;./side-bar.component.css&#x27;]
+})
+export class SideBarComponent {
+
+  noUsua: string;
+  coPerf: string;
+  menus: any[] &#x3D; [];
+
+  constructor(private paramsServcice: ParamsService,
+              private perfilService: PerfilService,
+              private menuService: MenuService) {
+
+    this.noUsua &#x3D; this.paramsServcice.conexion.noUsua;
+
+    this.perfilService.getPerfil(this.noUsua, this.paramsServcice.conexion.token, this.paramsServcice.urls)
+      .subscribe((res: any) &#x3D;&gt; {
+        // console.log(res);
+        this.coPerf &#x3D; res.body.perfil.coPerf;
+
+        this.menuService.getMenusXPerfil(this.coPerf,
+                                          this.paramsServcice.conexion.token,
+                                          this.paramsServcice.urls)
+          .subscribe((res1: any) &#x3D;&gt; {
+            this.menus &#x3D; res1.body.menus;
+          });
+      });
+
+    // this.paramsServcice.menus.sort(
+    //   (a, b) &#x3D;&gt; a.nrOrde - b.nrOrde
+    // );
+
+
+
+    // this.menus &#x3D; this.paramsServcice.menus
+
+    this.menus.sort(
+         (a, b) &#x3D;&gt; a.nrOrde - b.nrOrde
+       );
+
+  }
+
+  clickMenu(i: number) {
+
+    this.menus.forEach((menu, index) &#x3D;&gt; {
+
+      if(index !&#x3D;&#x3D; i) {
+
+        menu.expanded &#x3D; false;
+
+      } else {
+
+        menu.expanded &#x3D; !menu.expanded;
+
+      }
+    });
+  
+  }
+
+  clickSubMenu(i: number) {
+
+    this.menus.forEach((menu, index) &#x3D;&gt; {
+
+      if(index !&#x3D;&#x3D; i) {
+
+        menu.activo &#x3D; false;
+
+      } else {
+
+        menu.activo &#x3D; true;
+
+      }
+    });
+    
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;accordion mt-3&quot; id&#x3D;&quot;menuList&quot; *ngIf&#x3D;&quot;menus.length &gt; 0&quot;&gt;
+    &lt;ul class&#x3D;&quot;menu&quot;&gt;
+        &lt;li *ngFor&#x3D;&quot;let menu of menus, let i &#x3D; index&quot;&gt;
+            &lt;a [href]&#x3D;&quot;&#x27;#&#x27; + menu.noMenu&quot; class&#x3D;&quot;nombreMenu&quot; [attr.data-toggle]&#x3D;&quot;&#x27;collapse&#x27;&quot; [attr.data-target]&#x3D;&quot;&#x27;#&#x27; + menu.noMenu&quot; [attr.aria-controls]&#x3D;&quot;menu.noMenu&quot; (click)&#x3D;&quot;clickMenu(i)&quot; [ngClass]&#x3D;&quot;{ &#x27;active&#x27;: menu.activo }&quot;&gt;
+        {{menu.alMenu | capitalizado}}
+        &lt;i [ngClass]&#x3D;&quot;{ &#x27;fa-caret-right&#x27;: !menu.expanded, &#x27;fa-caret-down&#x27;: menu.expanded }&quot; class&#x3D;&quot;fa menuIcon&quot;&gt;&lt;/i&gt;
+      &lt;/a&gt;
+
+            &lt;ul class&#x3D;&quot;collapse submenu&quot; [id]&#x3D;&quot;menu.noMenu&quot; data-parent&#x3D;&quot;#menuList&quot;&gt;
+                &lt;li [id]&#x3D;&quot;subMenu.nombre&quot; *ngFor&#x3D;&quot;let subMenu of menu.subMenus&quot; routerLinkActive&#x3D;&quot;active&quot;&gt;
+                    &lt;a class&#x3D;&quot;nombreSubMenu&quot; [routerLink]&#x3D;&quot;[subMenu.ruta, noUsua | lowercase]&quot; (click)&#x3D;&quot;clickSubMenu(i)&quot;&gt;
+                        &lt;i class&#x3D;&quot;fa {{subMenu.icono}}&quot;&gt;&lt;/i&gt; {{subMenu.alSubMenu | capitalizado}}
+                    &lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./side-bar.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li a {
+    color: #000000;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+}
+
+.nombreMenu:hover {
+    font-weight: bold;
+    border: 0.1px solid #cacaca;
+    border-left: 5px solid #0AA45E;
+}
+
+.menuIcon {
+    float: right;
+}
+
+.nombreSubMenu {
+    margin-left: 30px;
+}
+
+.nombreSubMenu:hover {
+    font-weight: bold;
+}
+
+.active {
+    font-weight: bold;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="accordion mt-3" id="menuList" *ngIf="menus.length > 0">    <ul class="menu">        <li *ngFor="let menu of menus, let i = index">            <a [href]="\'#\' + menu.noMenu" class="nombreMenu" [attr.data-toggle]="\'collapse\'" [attr.data-target]="\'#\' + menu.noMenu" [attr.aria-controls]="menu.noMenu" (click)="clickMenu(i)" [ngClass]="{ \'active\': menu.activo }">        {{menu.alMenu | capitalizado}}        <i [ngClass]="{ \'fa-caret-right\': !menu.expanded, \'fa-caret-down\': menu.expanded }" class="fa menuIcon"></i>      </a>            <ul class="collapse submenu" [id]="menu.noMenu" data-parent="#menuList">                <li [id]="subMenu.nombre" *ngFor="let subMenu of menu.subMenus" routerLinkActive="active">                    <a class="nombreSubMenu" [routerLink]="[subMenu.ruta, noUsua | lowercase]" (click)="clickSubMenu(i)">                        <i class="fa {{subMenu.icono}}"></i> {{subMenu.alSubMenu | capitalizado}}                    </a>                </li>            </ul>        </li>    </ul></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscarProyventasolDialogComponent', 'selector': 'app-buscar-proyventasol-dialog'},{'name': 'CalendarioComponent', 'selector': 'app-calendario'},{'name': 'DetproyventasComponent', 'selector': 'app-detproyventas'},{'name': 'DialogListarNavesComponent', 'selector': 'app-dialog-listar-naves'},{'name': 'DialogRegistrarNavesComponent', 'selector': 'app-dialog-registrar-naves'},{'name': 'ForecastComponent', 'selector': 'app-forecast'},{'name': 'GatesComponent', 'selector': 'app-gates'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ImagenUsuarioComponent', 'selector': 'app-imagen-usuario'},{'name': 'LoginPageComponent', 'selector': 'app-login-page'},{'name': 'NavBarComponent', 'selector': 'app-nav-bar'},{'name': 'NavesComponent', 'selector': 'app-naves'},{'name': 'NotFoundPageComponent', 'selector': 'app-not-found-page'},{'name': 'OutstandingComponent', 'selector': 'app-outstanding'},{'name': 'PasswordComponent', 'selector': 'app-password'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'ProyeccionesComponent', 'selector': 'app-proyecciones'},{'name': 'ProyventasComponent', 'selector': 'app-proyventas'},{'name': 'RegistroNavesComponent', 'selector': 'app-registro-naves'},{'name': 'Rep6040Component', 'selector': 'app-rep6040'},{'name': 'RetirosComponent', 'selector': 'app-retiros'},{'name': 'SideBarComponent', 'selector': 'app-side-bar'},{'name': 'StatusBarComponent', 'selector': 'app-status-bar'},{'name': 'TransbordoComponent', 'selector': 'app-transbordo'},{'name': 'UsuarioComponent', 'selector': 'app-usuario'},{'name': 'WelcomePageComponent', 'selector': 'app-welcome-page'}];
+    var DIRECTIVES = [{'name': 'MayusculaDirective', 'selector': '[appMayuscula]'}];
+    var ACTUAL_COMPONENT = {'name': 'SideBarComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SideBarComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

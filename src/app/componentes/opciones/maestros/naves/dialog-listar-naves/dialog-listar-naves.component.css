@@ -1,0 +1,12 @@
+.fila:hover {
+    cursor: pointer;
+}
+
+.selected {
+    background: #0004ff;
+    color: #FFFFFF;
+}
+
+.cuerpo {
+    overflow: auto;
+}

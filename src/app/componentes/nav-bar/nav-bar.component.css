@@ -1,36 +1,40 @@
 .navbar-container {
-  background: #0AA45E;
-  color: #FFFFFF;
-  font-size: 14pt;
+    background: #0AA45E;
+    color: #FFFFFF;
+    font-size: 14pt;
 }
 
 .usuarioImagen {
-  border-radius:150px;
+    border-radius: 150px;
 }
 
 .marca {
-  font-size: 20pt;
+    font-size: 20pt;
 }
 
-.logout{
-  text-decoration: none;
-  color: #FFFFFF;
-  font-size: 14pt;
+.logout {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 14pt;
 }
 
-.logout:hover{
-  cursor: pointer !important;
-  color: rgb(182, 69, 69) !important;
+.logout:hover {
+    cursor: pointer !important;
+    color: rgb(182, 69, 69) !important;
+}
+
+.menu {
+    color: #FFFFFF;
 }
 
 @media screen and (max-width: 800px) {
-    .subnav{
-      width: 95%;
+    .subnav {
+        width: 95%;
     }
-  }
-  
-  @media screen and (max-width: 500px) {
-    .subnav{
-      width: 95%;
+}
+
+@media screen and (max-width: 500px) {
+    .subnav {
+        width: 95%;
     }
-  }
+}

@@ -1,0 +1,44 @@
+/* th,
+td {
+    border: 1px solid black;
+} */
+
+.delete {
+    color: red;
+}
+
+.nave {
+    width: 13%;
+}
+
+.table input {
+    font-size: 10pt !important;
+}
+
+.viaje {
+    width: 15%;
+}
+
+.valor {
+    width: 13%;
+}
+
+.eta {
+    width: 5%;
+}
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+.invalid {
+    border-color: red;
+    ;
+}
+
+@media (max-width: 800px) {
+    div,
+    input {
+        font-size: 10pt;
+    }
+}

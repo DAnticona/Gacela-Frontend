@@ -1,0 +1,17 @@
+.fila:hover {
+    cursor: pointer;
+}
+
+.selected {
+    background: #AED6F1;
+    color: #000000;
+}
+
+.cuerpo {
+    overflow: auto;
+}
+
+.activated {
+    text-decoration: underline;
+    background-color: #EBEBEB;
+}

@@ -22,11 +22,12 @@
             "kebab-case"
         ],
         "forin": false,
+        "eofline": false,
         "import-blacklist": [
             true,
             "rxjs/Rx"
         ],
-        "indent":false,
+        "indent": false,
         "interface-name": false,
         "max-classes-per-file": false,
         "max-line-length": [

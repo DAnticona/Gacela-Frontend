@@ -25,6 +25,8 @@ export class ParamsService {
 
   getLogin(login: any, urls: any) {
 
+    // console.log(urls.loginUrl);
+
     const httpOptions = {
 
       headers: new HttpHeaders({

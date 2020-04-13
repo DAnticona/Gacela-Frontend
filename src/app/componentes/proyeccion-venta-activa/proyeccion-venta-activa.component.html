@@ -1,0 +1,29 @@
+<div class="card border-secondary mb-3" style="max-width: 18rem;">
+
+    <div class="card-header"><span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span></div>
+
+    <div *ngIf="!cargando">
+
+        <div *ngIf="!proyeccion" class="card-body text-danger">
+
+            <p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección</p>
+
+        </div>
+
+        <ul *ngIf="proyeccion" lass="list-group list-group-flush text-secondary">
+
+            <li class="list-group-item border-white">Tipo: {{proyeccion.tipo}}</li>
+            <li class="list-group-item border-white">Código: {{proyeccion.coProyeccion}}</li>
+            <li class="list-group-item border-white">Cód. File: {{proyeccion.coFile}}</li>
+            <li class="list-group-item border-white">Fecha: {{proyeccion.feProyeccion | date: 'dd/MM/yyyy'}}</li>
+
+        </ul>
+
+    </div>
+
+    <div *ngIf="cargando" class="card-body text-center">
+        <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+    </div>
+
+
+</div>

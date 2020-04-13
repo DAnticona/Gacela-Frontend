@@ -1,0 +1,9 @@
+table {
+    font-size: 10pt;
+}
+
+.rpo-invalido input {
+    background-color: #FFECEA;
+    /* text-decoration: line-through; */
+    color: red;
+}

@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Archivos SOL</h1>
+
+<div mat-dialog-content>
+
+    <form>
+        <div class="row">
+
+            <table class="table">
+                <caption>{{archivosFiltrados.length}} registros encontrados</caption>
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">#</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Archivo</th>
+                        <th scope="col">Desde</th>
+                        <th scope="col">Hasta</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td scope="col"><input #codigo type="text" class="form-control" id="codigo" placeholder="Código" (keyup)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)"></td>
+                        <td scope="col"><input #noFile type="text" class="form-control" id="noFile" placeholder="Archivo" (keyup)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)"></td>
+                        <td scope="col"><input #fechaIni value="{{lastWeek | date: 'yyyy-MM-dd'}}" type="date" class="form-control" id="fechaIni" placeholder="31/01/2019" (change)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)" (keyup)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)"></td>
+                        <td scope="col"><input #fechaFin value="{{today | date: 'yyyy-MM-dd'}}" type="date" class="form-control" id="fechaFin" placeholder="31/01/2019" (change)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)" (keyup)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)"></td>
+                        <td scope="col">
+                            <select #estado class="custom-select custom-select mb-3" (change)="filtrar(codigo.value, noFile.value, fechaIni.value, fechaFin.value, estado.value)">
+                              <option value="99">Todos</option>
+                              <option value="A" selected>A: Activo</option>
+                              <option value="I">I: Inactivo</option>
+                          </select>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody *ngIf="archivosFiltrados.length > 0">
+                    <tr *ngFor="let archivo of archivosFiltrados; let i = index" class="text-center fila" (click)="seleccionar(i)" (dblclick)="onAceptar()" [ngClass]="{selected: archivo.coFile == codigoSel, noSelected: archivo.coFile != codigo}">
+                        <th>{{i + 1}}</th>
+                        <td>{{archivo.coFile}}</td>
+                        <td>{{archivo.noFile}}</td>
+                        <td colspan="2">{{archivo.feCargaFile | date: 'dd-MM-yyyy'}}</td>
+                        <td>{{archivo.fgActi}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+
+</div>
+
+<div mat-dialog-actions>
+    <button class="btn btn-outline-primary m-1" (click)="onAceptar()">Aceptar</button>
+    <button class="btn btn-outline-danger m-1" (click)="onCancelar()">Cancelar</button>
+</div>

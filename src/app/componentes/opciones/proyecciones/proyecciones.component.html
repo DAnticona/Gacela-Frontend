@@ -1,159 +1,518 @@
 <div class="m-5">
 
-    <h1>Reporte de Proyecciones</h1>
+    <h1>Proyecciones</h1>
     <hr>
 
+    <form [formGroup]="forma">
 
-    <form class="mt-5">
-
-        <div class="row mt-3 mb-3">
-
-            <div class="col-2">
+        <fieldset [disabled]="cargando">
 
 
-                <h6>Proyecciones</h6>
 
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="dry" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="dry">DRY</label>
+
+            <div class="row m-3">
+
+                <div class="col-sm-4">
+
+                    <div class="row">
+
+                        <div class="col-sm-12">
+
+                            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+
+                                <div class="card-header"><span><i class="fa fa-eye fa-fw" aria-hidden="true"></i>Tipo Proyección</span></div>
+
+                                <div class="card-body text-left">
+
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="DR" name="tipo" class="custom-control-input" value="DR" formControlName="tipo">
+                                        <label class="custom-control-label" for="DR">DRY</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="RH" name="tipo" class="custom-control-input" value="RH" formControlName="tipo">
+                                        <label class="custom-control-label" for="RH">RH</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12">
+
+                            <div class="card border-secondary mb-3" style="max-width: 18rem;" formGroupName="ratioDevolucion">
+
+                                <fieldset [disabled]="!ratioDisponible">
+
+                                    <div class="card-header"><span><i class="fa fa-undo fa-fw" aria-hidden="true"></i>Ratio de Devolución Mensual</span></div>
+
+                                    <div class="card-body text-left">
+
+
+                                        <div class="row">
+                                            <div class=" form-group col">
+                                                <label class="col-form-label-sm">2SD</label>
+                                                <input type="number" class="form-control form-control-sm" placeholder="2SD" formControlName="ra2Sd">
+                                            </div>
+                                            <div class="form-group col">
+                                                <label class="col-form-label-sm">4SD</label>
+                                                <input type="number" class="form-control form-control-sm" placeholder="4SD" formControlName="ra4Sd">
+                                            </div>
+                                            <div class="form-group col">
+                                                <label class="col-form-label-sm">4SH</label>
+                                                <input type="number" class="form-control form-control-sm" placeholder="4SH" formControlName="ra4Sh">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-sm-12">
+                                                <p class="text-muted font-italic">Ult. Actualización: {{ratioDevolucion.feModi | date: 'dd/MM/yyyy'}}</p>
+                                            </div>
+                                            <div class="col-sm-12">
+
+                                                <button class="btn btn-outline-primary" (click)="guardarRatio()">
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </fieldset>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
                 </div>
 
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="rh" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="rh">RH</label>
+                <div class="col-sm-4">
+
+                    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"><span><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>Archivo SOL</span></div>
+                        <div *ngIf="!fileCabMTC1R999" class="card-body text-danger">
+                            <p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ningún archivo</p>
+                        </div>
+                        <div *ngIf="!cargandoFile" class="card-body">
+
+                            <ul *ngIf="fileCabMTC1R999" class="list-group list-group-flush text-secondary">
+                                <li class="list-group-item border-white">File: {{fileCabMTC1R999.noFile}}</li>
+                                <li class="list-group-item border-white">Cód. File: {{fileCabMTC1R999.coFile}}</li>
+                                <li class="list-group-item border-white">Fecha: {{fileCabMTC1R999.feCargaFile | date: 'dd/MM/yyyy'}}</li>
+                            </ul>
+                            <div class="text-right">
+                                <label class="fileSOL" for="fileSOL">Cargar archivo</label>
+                                <input type="file" id="fileSOL" (change)="cargarFile($event.target.files)" accept=".txt" hidden>
+                            </div>
+
+                            <div *ngIf="navesNoRegistradas.length > 0">
+                                <div class="alert alert-warning" role="alert">
+                                    <p class="alert-heading"><i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Naves no registradas</p>
+                                    <ul class="error">
+                                        <li class="text-sm" *ngFor="let nave of navesNoRegistradas; let i = index">
+                                            <span><i class="fa fa-square fa-fw" aria-hidden="true"></i>{{nave}}</span>
+                                            <button class="btn btn-link btn-sm" (click)="registraNave(i)">Agregar</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="cargandoFile" class="card-body text-center">
+
+                            <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-4">
+
+                    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"><span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span></div>
+                        <div *ngIf="!proyVenta" class="card-body text-danger">
+                            <p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección</p>
+                        </div>
+                        <ul *ngIf="proyVenta" class="list-group list-group-flush text-secondary">
+                            <li class="list-group-item border-white">Tipo: {{proyVenta.tipo}}</li>
+                            <li class="list-group-item border-white">Código: {{proyVenta.coProyeccion}}</li>
+                            <li class="list-group-item border-white">Cód. File: {{proyVenta.coFile}}</li>
+                            <li class="list-group-item border-white">Fecha: {{proyVenta.feProyeccion | date: 'dd/MM/yyyy'}}</li>
+                        </ul>
+                    </div>
+
                 </div>
 
             </div>
 
 
+            <div class="row m-3">
+                <div class="col-sm-6">
+                    <button [disabled]="cargandoFile" class="btn btn-outline-primary" (click)="generaProyeccionEquipos()">Generar proyección</button>
+                </div>
+            </div>
 
-            <div class="col-5">
 
-                <h6 class="text-center">Ratio de Devolución Semanal</h6>
 
-                <div class="form-group row">
-                    <label for="2sd" class="col-sm-2 col-form-label">2SD</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="2sd" placeholder="2SD" value="203" disabled>
+
+
+            <div *ngIf="generar">
+
+                <div class="row">
+                    <label for="codigo" class="col-sm-2 col-form-label">Código</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="codigo" class="form-control" formControlName="coProyEquipo">
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="4sd" class="col-sm-2 col-form-label">4SD</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="4sd" placeholder="4SD" value="496" disabled>
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <button class="btn btn-link nav-link" [ngClass]="{active: linkReal}" (click)="linkReal = true">SOL</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-link nav-link" [ngClass]="{active: !linkReal}" (click)="linkReal = false">Ventas</button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="4sh" class="col-sm-2 col-form-label">4SH</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="4sh" placeholder="4SH" value="157" disabled>
+
+
+                <div class="row" *ngIf="proyeccionEquipo">
+
+
+                    <div *ngIf="linkReal">
+
+                        <div class="col">
+
+                            <table class="table table-sm mt-3 mb-3">
+
+                                <thead class="detalle text-sm-center">
+
+                                    <tr>
+                                        <th colspan="3"></th>
+                                        <th colspan="4" class="bg-light">2SD</th>
+                                        <th colspan="4">4SD</th>
+                                        <th colspan="4" class="bg-light">4SH</th>
+                                        <th colspan="2"></th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3">Stock</th>
+                                        <td colspan="4" class="form-group bg-light">
+                                            <input type="number" class="form-control" formControlName="stock2Sd" (change)="actualizaTotales()">
+                                        </td>
+                                        <td colspan="4" class="form-group">
+                                            <input type="number" class="form-control" formControlName="stock4Sd" (change)="actualizaTotales()">
+                                        </td>
+                                        <td colspan="4" class="form-group bg-light">
+                                            <input type="number" class="form-control" formControlName="stock4Sh" (change)="actualizaTotales()">
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="bg-light" colspan="2">Nave</th>
+                                        <th>Viaje</th>
+                                        <th class="bg-light">Non F.E.</th>
+                                        <th class="bg-light">Picked Up</th>
+                                        <th class="bg-light">F.E.</th>
+                                        <th class="bg-light">Picked Up</th>
+                                        <th>Non F.E.</th>
+                                        <th>Picked Up</th>
+                                        <th>F.E.</th>
+                                        <th>Picked Up</th>
+                                        <th class="bg-light">Non F.E.</th>
+                                        <th class="bg-light">Picked Up</th>
+                                        <th class="bg-light">F.E.</th>
+                                        <th class="bg-light">Picked Up</th>
+                                        <th colspan="2">ETA</th>
+                                    </tr>
+
+
+                                </thead>
+
+                                <tbody class="detalle table-borderless">
+
+                                    <tr *ngFor="let eq of proyeccionEquipo.detalles; let i = index">
+
+                                        <td class="bg-light nave text-center" colspan="2">{{eq.alNave}}</td>
+                                        <td class="viaje">{{eq.viaje}}</td>
+                                        <td class="bg-light valor">{{eq.ca2SdNoFe}}</td>
+                                        <td class="bg-light valor">{{eq.ca2SdNoFePick}}</td>
+                                        <td class="bg-light valor">{{eq.ca2SdFe}}</td>
+                                        <td class="bg-light valor">{{eq.ca2SdFePick}}</td>
+                                        <td class="valor">{{eq.ca4SdNoFe}}</td>
+                                        <td class="valor">{{eq.ca4SdNoFePick}}</td>
+                                        <td class="valor">{{eq.ca4SdFe}}</td>
+                                        <td class="valor">{{eq.ca4SdFePick}}</td>
+                                        <td class="bg-light valor">{{eq.ca4ShNoFe}}</td>
+                                        <td class="bg-light valor">{{eq.ca4ShNoFePick}}</td>
+                                        <td class="bg-light valor">{{eq.ca4ShFe}}</td>
+                                        <td class="bg-light valor">{{eq.ca4ShFePick}}</td>
+                                        <td class="eta text-center" colspan="2">{{eq.eta | date: 'dd/MM/yyyy'}}</td>
+
+                                    </tr>
+
+                                </tbody>
+
+
+                                <tbody class="detalle">
+
+                                    <tr>
+
+                                        <th colspan="3" class="text-center">Suma</th>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to2SdNoFe}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to2SdNoFePick}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to2SdFe}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to2SdFePick}}</td>
+                                        <td class="valor">{{proyeccionEquipo.to4SdNoFe}}</td>
+                                        <td class="valor">{{proyeccionEquipo.to4SdNoFePick}}</td>
+                                        <td class="valor">{{proyeccionEquipo.to4SdFe}}</td>
+                                        <td class="valor">{{proyeccionEquipo.to4SdFePick}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to4ShNoFe}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to4ShNoFePick}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to4ShFe}}</td>
+                                        <td class="bg-light valor">{{proyeccionEquipo.to4ShFePick}}</td>
+                                        <td colspan="2"></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3" class="text-center">TT Booking</th>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.to2SdBook}}</td>
+                                        <td class="valor" colspan="4">{{proyeccionEquipo.to4SdBook}}</td>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.to4ShBook}}</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" class="text-center">TT Picked Up</th>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.to2SdPick}}</td>
+                                        <td class="valor" colspan="4">{{proyeccionEquipo.to4SdPick}}</td>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.to4ShPick}}</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" class="text-center">Empty return until {{this.proyeccionEquipo.ratioDevolucion.fechaRatioStr}}</th>
+                                        <td class="valor bg-light" colspan="4">{{to2SdRatio}}</td>
+                                        <td class="valor" colspan="4">{{to4SdRatio}}</td>
+                                        <td class="valor bg-light" colspan="4">{{to4ShRatio}}</td>
+                                        <td class="text-center badge-secondary" colspan="2">{{this.proyeccionEquipo.ratioDevolucion.nroDiasHoyARetorno}}</td>
+                                    </tr>
+
+                                </tbody>
+
+
+                                <tbody class="detalle" formArrayName="rpoPlan">
+
+                                    <tr>
+                                        <th class="text-center" colspan="17">RPO Plan</th>
+                                    </tr>
+
+                                    <tr class="text-center">
+                                        <th colspan="2" class="bg-light">Nave</th>
+                                        <th>Viaje</th>
+                                        <th colspan="4" class="bg-light">2SD</th>
+                                        <th colspan="4">4SD</th>
+                                        <th colspan="4" class="bg-light">4SH</th>
+                                        <th>ETA</th>
+                                        <th></th>
+                                    </tr>
+
+                                    <tr [formGroupName]="i" *ngFor="let det of forma.get('rpoPlan')['controls']; let i = index" [ngClass]="{'rpo-invalido': validaRpo(i) == 'D'}">
+                                        <td class="bg-light">
+                                            <button class="btn btn-outline-info btn-sm" (click)="setNaveRPO(i)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                        </td>
+                                        <td class="bg-light">
+                                            <input type="text" class="form-control" formControlName="alNaveRpo">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" formControlName="viajeRpo" [ngClass]="{'is-invalid': forma.controls['rpoPlan'].controls[i].controls['viajeRpo'].invalid}" appMayuscula style="text-transform: uppercase;">
+                                        </td>
+                                        <td colspan="4" class="form-group bg-light">
+                                            <input type="number" class="form-control" formControlName="ca2SdRpo" (change)="ca2SdRpoValido(i)">
+                                        </td>
+                                        <td colspan="4" class="form-group">
+                                            <input type="number" class="form-control" formControlName="ca4SdRpo" (change)="ca4SdRpoValido(i)">
+                                        </td>
+                                        <td colspan="4" class="form-group bg-light">
+                                            <input type="number" class="form-control" formControlName="ca4ShRpo" (change)="ca4ShRpoValido(i)">
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control" formControlName="etaRpo" (change)="etaValido(i)">
+                                        </td>
+                                        <td class="form-group text-center">
+                                            <button class="btn btn-outline-danger btn-sm" (click)="delRPO(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="17">
+                                            <button class="btn btn-outline-primary btn-sm" (click)="addRpo()" [disabled]="forma.controls.rpoPlan.invalid">
+                                                <i class="fa fa-plus fa-1x" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+
+                                <tbody class="detalle">
+                                    <tr>
+                                        <th colspan="3" class="text-center">Available</th>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.available2Sd}}</td>
+                                        <td class="valor" colspan="4">{{proyeccionEquipo.available4Sd}}</td>
+                                        <td class="valor bg-light" colspan="4">{{proyeccionEquipo.available4Sh}}</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row" *ngIf="!linkReal">
+                    <div class="col">
+
+                        <table class="table table-sm mt-3 mb-3">
+
+                            <thead class="detalle text-sm-center">
+
+                                <tr>
+                                    <th colspan="2"></th>
+                                    <th colspan="4" class="bg-light">2SD</th>
+                                    <th colspan="4">4SD</th>
+                                    <th colspan="4" class="bg-light">4SH</th>
+                                    <th></th>
+                                </tr>
+
+                                <tr>
+                                    <th class="bg-light">Nave</th>
+                                    <th>Viaje</th>
+                                    <th class="bg-light">Non F.E.</th>
+                                    <th class="bg-light">Picked Up</th>
+                                    <th class="bg-light">F.E.</th>
+                                    <th class="bg-light">Picked Up</th>
+                                    <th>Non F.E.</th>
+                                    <th>Picked Up</th>
+                                    <th>F.E.</th>
+                                    <th>Picked Up</th>
+                                    <th class="bg-light">Non F.E.</th>
+                                    <th class="bg-light">Picked Up</th>
+                                    <th class="bg-light">F.E.</th>
+                                    <th class="bg-light">Picked Up</th>
+                                    <th>ETA</th>
+                                </tr>
+
+
+                            </thead>
+
+                            <tbody class="detalle table-borderless">
+
+                                <tr *ngFor="let venta of proyVenta.detalles; let i = index">
+
+                                    <td class="bg-light nave text-center">{{venta.alNave}}</td>
+                                    <td class="viaje">{{venta.viaje}}</td>
+                                    <td class="bg-light valor">{{venta.ca2SdNoFe}}</td>
+                                    <td class="bg-light valor">{{venta.ca2SdNoFePick}}</td>
+                                    <td class="bg-light valor">{{venta.ca2SdFe}}</td>
+                                    <td class="bg-light valor">{{venta.ca2SdFePick}}</td>
+                                    <td class="valor">{{venta.ca4SdNoFe}}</td>
+                                    <td class="valor">{{venta.ca4SdNoFePick}}</td>
+                                    <td class="valor">{{venta.ca4SdFe}}</td>
+                                    <td class="valor">{{venta.ca4SdFePick}}</td>
+                                    <td class="bg-light valor">{{venta.ca4ShNoFe}}</td>
+                                    <td class="bg-light valor">{{venta.ca4ShNoFePick}}</td>
+                                    <td class="bg-light valor">{{venta.ca4ShFe}}</td>
+                                    <td class="bg-light valor">{{venta.ca4ShFePick}}</td>
+                                    <td class="eta">{{venta.eta | date: 'dd/MM/yyyy'}}</td>
+
+                                </tr>
+
+                            </tbody>
+
+
+                            <tbody class="detalle">
+
+                                <tr>
+
+                                    <th colspan="2" class="text-center">Suma</th>
+                                    <td class="bg-light valor">{{proyVenta.to2SdNoFe}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to2SdNoFePick}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to2SdFe}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to2SdFePick}}</td>
+                                    <td class="valor">{{proyVenta.to4SdNoFe}}</td>
+                                    <td class="valor">{{proyVenta.to4SdNoFePick}}</td>
+                                    <td class="valor">{{proyVenta.to4SdFe}}</td>
+                                    <td class="valor">{{proyVenta.to4SdFePick}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to4ShNoFe}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to4ShNoFePick}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to4ShFe}}</td>
+                                    <td class="bg-light valor">{{proyVenta.to4ShFePick}}</td>
+
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="text-center">TT Booking</th>
+                                    <td class="valor bg-light" colspan="4">{{proyVenta.to2SdBook}}</td>
+                                    <td class="valor" colspan="4">{{proyVenta.to4SdBook}}</td>
+                                    <td class="valor bg-light" colspan="4">{{proyVenta.to4ShBook}}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="text-center">TT Picked Up</th>
+                                    <td class="valor bg-light" colspan="4">{{proyVenta.to2SdPick}}</td>
+                                    <td class="valor" colspan="4">{{proyVenta.to4SdPick}}</td>
+                                    <td class="valor bg-light" colspan="4">{{proyVenta.to4ShPick}}</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+                <div class="row m-3">
+                    <div class="col-sm-6">
+                        <button class="btn btn-outline-primary" [disabled]="forma.invalid || forma.controls.rpoPlan.invalid" (click)="guardarProyeccion()">
+                            <i [ngClass]="{ 'fa-spinner fa-pulse': cargando }" class="fa fa-download fa-fw" aria-hidden="true"></i>
+                            <span *ngIf="!cargando">Exportar</span>
+                            <span *ngIf="cargando">Cargando</span>
+                        </button>
                     </div>
                 </div>
 
 
             </div>
 
-
-            <div class="col-5">
-
-                <h6 class="text-center">Semana</h6>
-
-                <div class="alert alert-dark">
-                    <ul class="list-unstyled">
-                        <li><i class="fa fa-calendar pr-1" aria-hidden="true"></i>08/10/2019 - Feriado</li>
-                        <li><i class="fa fa-calendar pr-1" aria-hidden="true"></i>13/10/2019 - Domingo</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="row mt-3 mb-3">
-
-            <div class="col">
-
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile">
-                    <label class="custom-file-label" for="validatedCustomFile">Proyecciones - Ventas</label>
-                    <div class="invalid-feedback">Debe Seleccionar un archivo</div>
-                    <div></div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="col-1">
-
-                <div><img src="assets/Images/xls.png" width="50px" height="50px"></div>
-                <div>titulo...</div>
-
-
-            </div>
-
-            <div class="col-1">
-                <button class="btn btn-outline-danger"><i class="fa fa-trash fa-1x" aria-hidden="true"></i></button>
-            </div>
-
-            <div class="col-10">
-
-                <div class="alert alert-success">
-                    <i class="fa fa-check-circle pr-1"></i>Validación exitosa
-                </div>
-            </div>
-
-        </div>
-
-        <div class="row mt-3 mb-3">
-
-            <div class="col">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile">
-                    <label class="custom-file-label" for="validatedCustomFile">Proyecciones - SOL</label>
-                    <div class="invalid-feedback">Debe Seleccionar un archivo</div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-1">
-                <div><img src="assets/Images/txt.png" width="50px" height="50px"></div>
-                <div>titulo...</div>
-            </div>
-
-            <div class="col-1">
-                <button class="btn btn-outline-danger"><i class="fa fa-trash fa-1x" aria-hidden="true"></i></button>
-            </div>
-
-            <div class="col-10">
-                <div class="alert alert-success">
-                    <i class="fa fa-check-circle pr-1"></i>Validación exitosa
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="row mt-3 mb-3">
-
-            <div class="col">
-
-                <button class="btn btn-primary">Procesar</button>
-
-            </div>
-
-        </div>
-
-
+        </fieldset>
 
 
     </form>
+
+
+
 
 
 </div>

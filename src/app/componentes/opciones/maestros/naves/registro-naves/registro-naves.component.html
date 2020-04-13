@@ -1,0 +1,120 @@
+<div class="m-5">
+
+    <h1>Registro de Naves</h1>
+    <hr>
+
+    <form [formGroup]="forma" (submit)="guardar()">
+
+        <fieldset [disabled]="cargando">
+
+            <div class="row">
+
+                <div class="col-sm-6 form-group">
+                    <label for="coNave">Id.</label>
+                    <input type="text" class="form-control" id="coNave" formControlName="coNave">
+                </div>
+                <div class="col-sm-6  form-group">
+                    <label for="alNave">Código</label>
+                    <input type="text" class="form-control" id="alNave" placeholder="Ejemplo: CPRT" formControlName="alNave" [ngClass]="{'is-invalid': forma.controls.alNave.invalid, 'is-valid': forma.controls.alNave.valid}" appMayuscula style="text-transform: uppercase;">
+                    <div class="invalid-feedback" *ngIf="forma.controls.alNave.errors?.existeNave">
+                        Éste código de nave ya fue registrado, ingrese otro
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12 form-group">
+                    <label for="noNave">Nombre de la Nave</label>
+                    <input type="text" class="form-control" id="noNave" placeholder="Ejemplo: COSCO PRINCE RUPPERT" formControlName="noNave" [ngClass]="{'is-invalid': forma.controls.noNave.invalid, 'is-valid': forma.controls.noNave.valid}" appMayuscula style="text-transform: uppercase;">
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-6 form-group">
+                    <label for="coServ">Servicio</label>
+                    <select class="custom-select" id="coServ" formControlName="coServ" [ngClass]="{'is-invalid': forma.controls.coServ.invalid, 'is-valid': forma.controls.coServ.valid}">
+                          <option selected disabled value="">Seleccione...</option>
+                          <option *ngFor="let servicio of servicios" [value]="servicio.coServ">{{servicio.noServ}}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    <label for="coLine">Tipo Línea</label>
+                    <select class="custom-select" id="coLine" formControlName="coLine" [ngClass]="{'is-invalid': forma.controls.coLine.invalid, 'is-valid': forma.controls.coLine.valid}">
+                        <option selected disabled value="">Seleccione...</option>
+                        <option *ngFor="let linea of lineas" [value]="linea.coLine">{{linea.noLine}}</option>
+                      </select>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-12">
+
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="fgActi" formControlName="fgActi">
+                        <label class="custom-control-label" for="fgActi">Activo</label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+
+                <div class="col-sm-6 text-left">
+
+                    <button type="submit" class="btn btn-outline-primary" [disabled]="forma.invalid">
+                      <i [ngClass]="{ 'fa-spinner fa-pulse': cargando }" class="fa fa-floppy-o fa-fw" aria-hidden="true"></i>
+                      <span *ngIf="!cargando">Guardar</span>
+                      <span *ngIf="cargando">Cargando</span>
+                    </button>
+
+                </div>
+
+                <div class="col-sm-6 text-right">
+
+                    <button class="btn btn-outline-danger" (click)="volver()">
+                      <i class="fa fa-arrow-left fa-fw" aria-hidden="true"></i>
+                      <span>Volver</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </fieldset>
+
+    </form>
+
+
+    <div class="row mt-5">
+
+        <div class="col-sm-3">
+            <label>Creado por: {{usCrea}}</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Creado el: {{feCrea | date: 'dd/MM/yyyy HH:mm'}}</label>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-3">
+            <label>Actualizado por: {{usModi}}</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Actualizado el: {{feModi | date: 'dd/MM/yyyy HH:mm'}}</label>
+        </div>
+
+    </div>
+
+
+
+</div>

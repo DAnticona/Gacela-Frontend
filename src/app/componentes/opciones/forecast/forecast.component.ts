@@ -1,52 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
-import { Nave } from 'src/app/clases/nave';
-import { Servicio } from 'src/app/clases/servicio';
+import { ForecastCab } from 'src/app/models/forecastCab.model';
+import { ForecastDet } from 'src/app/models/forecastDet.model';
 
 import { ForecastService } from '../../../servicios/forecast.service';
-import * as XLSX from 'xlsx';
-import { ForecastDet } from 'src/app/clases/forecast-det';
-import { ForecastCab } from '../../../clases/forecast-cab';
 import { ParamsService } from '../../../servicios/params.service';
+import { ServicioService } from '../../../servicios/servicio.service';
+import { NavesService } from '../../../servicios/naves.service';
 
+import * as XLSX from 'xlsx';
+import Swal from 'sweetalert2';
+import { FileService } from '../../../servicios/file.service';
 
 @Component({
   selector: 'app-forecast',
   templateUrl: './forecast.component.html',
   styleUrls: ['./forecast.component.css']
 })
-export class ForecastComponent implements OnInit {
+export class ForecastComponent {
 
-  forecastUrl: string;
+  forma: FormGroup;
+
+  // forecastUrl: string;
+  urls: any;
   token: string;
   error: string;
-  reportUrl: string;
-  fileName: string;
+  // reportUrl: string;
+  
+  naves: any[] = [];
+  filtroNaves: any[] = [];
+  servicios: any[] = [];
 
-  naves: Nave[];
-  filtroNaves: Nave[];
-  servicios: Servicio[];
 
-
-  forecasCab = new ForecastCab();
-  dataFile: ForecastDet[];
-
-  servicio = new Servicio();
-  nave = new Nave();
-
-  forecast: any[] = [];
+  forecastCab = new ForecastCab();
+  forecastDet: ForecastDet[];
 
   cargando = false;
 
-  textLabel = 'Seleccione un Archivo';
+  fileLabel = 'Seleccione un Archivo';
   file: File = null;
 
+  errorFile: string[] = [];
+  warningFile: string[] = [];
 
-  valido: boolean;
-
-  mensajes: string[] = [];
-  warning: string[] = [];
   linea = true;
   pod = true;
   size = true;
@@ -56,182 +53,106 @@ export class ForecastComponent implements OnInit {
   imo = true;
   un = true;
 
-  forecastForm = new FormGroup({
-    servicio: new FormControl(this.servicio.codigo, Validators.required),
-
-    naveSearch: new FormControl(''),
-
-    nave: new FormControl(this.nave.codigo, Validators.required),
-
-    file: new FormControl('', Validators.required)
-    
-  });
-
-  get servicioForm() {
-    return this.forecastForm.get('servicio');
-  }
-
-  get naveSearch() {
-    return this.forecastForm.get('naveSearch');
-  }
-
-  get naveForm() {
-    return this.forecastForm.get('nave');
-  }
-
-  get fileForm() {
-    return this.forecastForm.get('file');
-  }
-
   constructor(private forecastService: ForecastService,
-              private paramsService: ParamsService)
-  {
+              private paramsService: ParamsService,
+              private servicioService: ServicioService,
+              private navesService: NavesService,
+              private fileService: FileService) {
+
+    this.forma = new FormGroup({
+
+      'coForecast': new FormControl(''),
+      'coServ': new FormControl('', Validators.required),
+      'fgProp': new FormControl('', Validators.required),
+      'coNave': new FormControl('', Validators.required),
+      'detalle': new FormArray([], Validators.required)
+                  
+    });
 
     this.token = this.paramsService.conexion.token;
-    this.forecastUrl = this.paramsService.urls.forecastUrl;
-    this.reportUrl = this.paramsService.urls.reportUrl;
+    this.urls = this.paramsService.urls;
 
-    this.getData();
+    this.servicioService.getServicios(this.token, this.urls)
+      .subscribe((ser: any) => {
+
+        this.servicios = ser.body.servicios;
+
+        this.navesService.getNaves(this.token, this.urls)
+          .subscribe((nav: any) => {
+
+            // console.log(nav);
+  
+            this.naves = nav.body.navesTemp;
+
+            this.forecastCab.coServ = this.servicios[0].coServ;
+            this.forecastCab.fgProp = 'S';
+            this.filtroNaves = this.naves.filter(nave => nave.servicio === this.forecastCab.coServ && nave.fgPropLinea === this.forecastCab.fgProp);
+            this.forecastCab.coNave = this.filtroNaves[0].codigo;
+
+            this.forecastCab.detalle = new Array<ForecastDet>();
+
+            this.forma.setValue(this.forecastCab);
+            
+          });
+      });
   }
 
-  ngOnInit() {
+  onChangeService() {
 
-  }
+    (this.forma.controls.detalle as FormArray).clear();
+    
+    this.fileLabel = 'Seleccione un archivo';
+    this.errorFile = [];
+    this.warningFile = [];
+    
 
-  getData() {
+    this.filtroNaves = this.naves.filter(nave => nave.servicio === this.forma.controls.coServ.value && nave.fgPropLinea === this.forma.controls.fgProp.value);
 
-    this.forecastService.getData(this.forecastUrl, this.token).subscribe(
-      res => {
+    if(this.filtroNaves.length > 0) {
 
-        this.naves = res.body.naves;
-        this.servicios = res.body.servicios;
-
-        this.servicio = this.servicios[0];
-
-        this.filtroNaves = this.naves.filter(
-          nave => nave.servicio === this.servicio.codigo
-        );
-
-        this.nave = this.filtroNaves[0];
-
-        this.naveForm.setValue(this.nave.codigo);
-        this.servicioForm.setValue(this.servicio.codigo);
-
-      },
-
-      err => {
-
-        this.error = `Status: ${err.status} Message: ${err.error}`;
-
-      },
-
-      () => {
-
-      }
-    );
-  }
-
-  onChangeServicio() {
-
-    this.resetForm();
-
-    let coServicio = this.servicioForm.value;
-
-
-    for (let serv of this.servicios) {
-      if (serv.codigo === coServicio) {
-        this.servicio = serv;
-        break;
-      }
-    }
-
-    this.filtroNaves = this.naves.filter(
-      nave => nave.servicio === this.servicio.codigo
-    );
-
-    this.getPrimeraNave(this.filtroNaves);
-
-  }
-
-  onClickNaves() {
-    let coNave = this.naveForm.value;
-
-    for (let nave of this.naves) {
-      if (nave.codigo === coNave) {
-        this.nave = nave;
-        break;
-      }
-    }
-
-  }
-
-  search(term: string) {
-
-    term = term.toUpperCase();
-
-    this.filtroNaves = this.naves.filter(
-      nave => (nave.longName.includes(term) || nave.shortName.includes(term)) && (nave.servicio === this.servicio.codigo)
-    );
-
-    this.getPrimeraNave(this.filtroNaves);
-
-  }
-
-
-  getPrimeraNave(filtroNaves: Nave[]) {
-
-    if (filtroNaves.length) {
-
-      this.naveForm.setValue(this.filtroNaves[0].codigo);
-      let coNave = this.naveForm.value;
-
-      for (let nave of this.naves) {
-        if (nave.codigo === coNave) {
-          this.nave = nave;
-          break;
-        }
-      }
+      this.forma.controls.coNave.setValue(this.filtroNaves[0].codigo);
 
     } else {
 
-      this.nave = null;
+      this.forma.controls.coNave.setValue(null);
 
     }
-
-
+    
   }
 
+  search(naveSearch: string) {
 
-  resetForm() {
+    this.filtroNaves = this.naves.filter(nave => {
+      return (nave.longName.includes(naveSearch.toUpperCase()) ||
+              nave.shortName.includes(naveSearch.toUpperCase())) && 
+              nave.servicio === this.forma.controls.coServ.value && 
+              nave.fgPropLinea === this.forma.controls.fgProp.value;
+    });
 
-    this.fileForm.setValue(null);
-    this.textLabel = 'Seleccione un Archivo';
-    this.file = null;
+    
+    if(this.filtroNaves.length === 0) {
 
-    this.valido = null;
+      this.forma.controls.coNave.setValue(null);
 
-    this.mensajes = [];
-    this.warning = [];
-    this.linea = true;
-    this.pod = true;
-    this.size = true;
-    this.type = true;
-    this.cnd = true;
-    this.vgm = true;
+    } else {
+
+      this.forma.controls.coNave.setValue(this.filtroNaves[0].codigo);
+
+    }
 
   }
 
 
   onChangeFile(fileInput: any) {
 
-    this.mensajes = [];
-    this.valido = null;
+    this.errorFile = [];
+    this.warningFile = [];
 
-    let file = fileInput.files.item(0);
+    this.file = fileInput.files.item(0);
 
+    if (this.file) {
 
-    if (file) {
-      this.textLabel = file.name;
+      this.fileLabel = this.file.name;
 
       let fileReader = new FileReader();
 
@@ -257,49 +178,71 @@ export class ForecastComponent implements OnInit {
 
         this.validaColumnas(dataCruda);
 
-        this.dataFile = [];
+        this.forecastDet = new Array<ForecastDet>();
 
         dataCruda.forEach((item, i) => {
 
-          let dpw = new ForecastDet();
+          let detalle = new ForecastDet();
 
-          dpw.linea = String(item['LINEA']);
-          dpw.pol = String(item['POD']);
-          dpw.pod = String(item['POD']);
-          dpw.size = Number(item['SIZE']);
-          dpw.type = String(item['TYPE']);
-          dpw.cnd = String(item['CND']);
-          dpw.vgm = Number(item['VGM(KG)']);
-          dpw.nbrCont = String(item['CONTAINER NBR']);
-          dpw.imo = String(item['IMO']);
-          dpw.un = String(item['UN']);
-          dpw.temperature = String(item['TEMPERATURE']);
-          dpw.commodity = String(item['COMMODITY']);
+          detalle.linea = String(item['LINEA']);
+          detalle.pol = String(item['POD']);
+          detalle.pod = String(item['POD']);
+          detalle.size = Number(item['SIZE']);
+          detalle.type = String(item['TYPE']);
+          detalle.cnd = String(item['CND']);
+          detalle.vgm = Number(item['VGM(KG)']);
+          detalle.nbrCont = String(item['CONTAINER NBR']);
+          detalle.imo = String(item['IMO']);
+          detalle.un = String(item['UN']);
+          detalle.temperature = String(item['TEMPERATURE']);
+          detalle.commodity = String(item['COMMODITY']);
 
-          this.dataFile.push(dpw);
+          this.forecastDet.push(detalle);
         });
 
-        this.validaData(this.dataFile);
+        this.validaData(this.forecastDet);
 
-        if (this.mensajes.length === 0) {
-
-          this.valido = true;
-          this.mensajes.push('Validación exitosa');
-
-        } else {
-
-          this.valido = false;
-
-        }
+        this.forecastDet.forEach(det => {
+          this.agregaDetalle(det);
+        });
       };
 
-      fileReader.readAsArrayBuffer(file);
+      fileReader.readAsArrayBuffer(this.file);
 
     } else {
 
-      this.textLabel = 'Seleccione un Archivo';
+      this.fileLabel = 'Seleccione un archivo';
 
     }
+  }
+
+
+  agregaDetalle(det: ForecastDet) {
+
+    let item = (this.forma.controls['detalle'] as FormArray).length + 1;
+
+    (this.forma.controls['detalle'] as FormArray).push(
+
+      new FormGroup({
+
+        'coForecast': new FormControl(''),
+        'item': new FormControl(item, Validators.required),
+        'linea': new FormControl(det.linea, Validators.required),
+        'pol': new FormControl(det.pol, Validators.required),
+        'pod': new FormControl(det.pod, Validators.required),
+        'size': new FormControl(det.size, Validators.required),
+        'type': new FormControl(det.type, Validators.required),
+        'cnd': new FormControl(det.cnd, Validators.required),
+        'vgm': new FormControl(det.vgm, Validators.required),
+        'nbrCont': new FormControl(det.nbrCont),
+        'imo': new FormControl(det.imo),
+        'un': new FormControl(det.un),
+        'temperature': new FormControl(det.temperature),
+        'commodity': new FormControl(det.commodity)
+
+      })
+
+    );
   }
 
 
@@ -308,61 +251,61 @@ export class ForecastComponent implements OnInit {
   validaColumnas(data: object[]) {
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'LINEA').length > 1) {
-      this.mensajes.push('Existen múltiples columnas LINEA');
+      this.errorFile.push('Existen múltiples columnas LINEA');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'LINEA').length === 0) {
-      this.mensajes.push('Columna LINEA NO existe');
+      this.errorFile.push('Columna LINEA NO existe');
       this.linea = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'POD').length > 1) {
-      this.mensajes.push('Existen múltiples columnas POD');
+      this.errorFile.push('Existen múltiples columnas POD');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'POD').length === 0) {
-      this.mensajes.push('Columna POD NO existe');
+      this.errorFile.push('Columna POD NO existe');
       this.pod = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'SIZE').length > 1) {
-      this.mensajes.push('Existen múltiples columnas SIZE');
+      this.errorFile.push('Existen múltiples columnas SIZE');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'SIZE').length === 0) {
-      this.mensajes.push('Columna SIZE NO existe');
+      this.errorFile.push('Columna SIZE NO existe');
       this.size = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TYPE').length > 1) {
-      this.mensajes.push('Existen múltiples columnas TYPE');
+      this.errorFile.push('Existen múltiples columnas TYPE');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TYPE').length === 0) {
-      this.mensajes.push('Columna TYPE NO existe');
+      this.errorFile.push('Columna TYPE NO existe');
       this.type = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'CND').length > 1) {
-      this.mensajes.push('Existen múltiples columnas CND');
+      this.errorFile.push('Existen múltiples columnas CND');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'CND').length === 0) {
-      this.mensajes.push('Columna CND NO existe');
+      this.errorFile.push('Columna CND NO existe');
       this.cnd = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'VGM(KG)').length > 1) {
-      this.mensajes.push('Existen múltiples columnas VGM(KG)');
+      this.errorFile.push('Existen múltiples columnas VGM(KG)');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'VGM(KG)').length === 0) {
-      this.mensajes.push('Columna VGM(KG) NO existe');
+      this.errorFile.push('Columna VGM(KG) NO existe');
       this.vgm = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'IMO').length > 1) {
-      this.mensajes.push('Existen múltiples columnas IMO');
+      this.errorFile.push('Existen múltiples columnas IMO');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'IMO').length === 0) {
       this.imo = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'UN').length > 1) {
-      this.mensajes.push('Existen múltiples columnas UN');
+      this.errorFile.push('Existen múltiples columnas UN');
     } else if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'UN').length === 0) {
       this.un = false;
     }
 
     if (Object.keys(data[0]).filter(key => key.toUpperCase() === 'TEMPERATURE').length > 1) {
-      this.mensajes.push('Existen múltiples columnas TEMPERATURE');
+      this.errorFile.push('Existen múltiples columnas TEMPERATURE');
     }
 
   }
@@ -371,9 +314,11 @@ export class ForecastComponent implements OnInit {
 
     data.forEach((row, index) => {
 
+      let servicioSeleccionado: any = this.servicios.filter(s => s.coServ === this.forma.controls.coServ.value)[0];
+
       if (this.linea) {
         if (!row.linea) {
-          this.mensajes.push(`Fila ${index + 2} Columna LINEA: Celda vacía`);
+          this.errorFile.push(`Fila ${index + 2} Columna LINEA: Celda vacía`);
         } else {
           row.linea = row.linea.trim().toUpperCase();
         }
@@ -381,9 +326,9 @@ export class ForecastComponent implements OnInit {
 
       if (this.pod) {
         if (!row.pod) {
-          this.mensajes.push(`Fila ${index + 2} Columna POD: Celda vacía`);
-        } else if (this.servicio.puertos.filter(puer => (puer.coIso === row.pod.toUpperCase())).length === 0) {
-          this.mensajes.push(`Fila ${index + 2} Columna POD: puerto no válido para el servicio seleccionado`);
+          this.errorFile.push(`Fila ${index + 2} Columna POD: Celda vacía`);
+        } else if (servicioSeleccionado.puertos.filter(puer => (puer.coIso === row.pod.toUpperCase())).length === 0) {
+          this.errorFile.push(`Fila ${index + 2} Columna POD: puerto no válido para el servicio seleccionado`);
         } else {
           row.pod = row.pod.trim().toUpperCase();
         }
@@ -391,22 +336,24 @@ export class ForecastComponent implements OnInit {
 
       if (this.size) {
         if (!row.size) {
-          this.mensajes.push(`Fila ${index + 2} Columna SIZE: Celda vacía, con valor 0, o datos no válidos`);
+          this.errorFile.push(`Fila ${index + 2} Columna SIZE: Celda vacía, con valor 0, o datos no válidos`);
         } else if (!(row.size === 20 || row.size === 40)) {
-          this.mensajes.push(`Fila ${index + 2} Columna SIZE: El valor solo debe ser 20 ó 40`);
+          this.errorFile.push(`Fila ${index + 2} Columna SIZE: El valor solo debe ser 20 ó 40`);
         }
       }
 
       if (this.type) {
         if (!row.type) {
-          this.mensajes.push(`Fila ${index + 2} Columna TYPE: Celda vacía`);
+          this.errorFile.push(`Fila ${index + 2} Columna TYPE: Celda vacía`);
         } else if (!(row.type.toUpperCase() === 'DR' || row.type.toUpperCase() === 'ST' ||
-          row.type.toUpperCase() === 'PL' || row.type.toUpperCase() === 'FC' ||
-          row.type.toUpperCase() === 'OT' || row.type.toUpperCase() === 'FO' ||
-          row.type.toUpperCase() === 'RH' || row.type.toUpperCase() === 'HC' ||
-          row.type.toUpperCase() === 'SD' || row.type.toUpperCase() === 'FR' ||
-          row.type.toUpperCase() === 'SH')) {
-          this.mensajes.push(`Fila ${index + 2} Columna TYPE: Contiene datos inválidos`);
+                      row.type.toUpperCase() === 'PL' || row.type.toUpperCase() === 'FC' ||
+                      row.type.toUpperCase() === 'OT' || row.type.toUpperCase() === 'FO' ||
+                      row.type.toUpperCase() === 'RH' || row.type.toUpperCase() === 'HC' ||
+                      row.type.toUpperCase() === 'SD' || row.type.toUpperCase() === 'FR' ||
+                      row.type.toUpperCase() === 'SH')) {
+
+          this.errorFile.push(`Fila ${index + 2} Columna TYPE: Contiene datos inválidos`);
+
         } else {
           row.type = row.type.trim().toUpperCase();
         }
@@ -414,9 +361,9 @@ export class ForecastComponent implements OnInit {
 
       if (this.cnd) {
         if (!row.cnd) {
-          this.mensajes.push(`Fila ${index + 2} Columna CND: Celda vacía`);
+          this.errorFile.push(`Fila ${index + 2} Columna CND: Celda vacía`);
         } else if (!(row.cnd.toUpperCase() === 'F' || row.cnd.toUpperCase() === 'E')) {
-          this.mensajes.push(`Fila ${index + 2} Columna CND: Contiene datos inválidos, solo se permiten F o E`);
+          this.errorFile.push(`Fila ${index + 2} Columna CND: Contiene datos inválidos, solo se permiten F o E`);
         } else {
           row.cnd = row.cnd.trim().toUpperCase();
         }
@@ -424,9 +371,9 @@ export class ForecastComponent implements OnInit {
 
       if (this.vgm) {
         if (!row.vgm) {
-          this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): Celda vacía, con valor 0 ó datos no válidos`);
+          this.errorFile.push(`Fila ${index + 2} Columna VGM(KG): Celda vacía, con valor 0 ó datos no válidos`);
         } else if (row.vgm < 2000) {
-          this.mensajes.push(`Fila ${index + 2} Columna VGM(KG): no puede ser menor a 2000`);
+          this.errorFile.push(`Fila ${index + 2} Columna VGM(KG): no puede ser menor a 2000`);
         }
       }
 
@@ -437,17 +384,17 @@ export class ForecastComponent implements OnInit {
           if(row.imo === '9' && row.un === '2216' && 
           !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
 
-            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+            this.warningFile.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`);
 
           } else if(row.imo === '9' && row.un === '3359/2216' && 
           !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
 
-            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+            this.warningFile.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`);
         
           } else if(row.imo === '9' && row.un === '2216/3359' && 
           !(row.commodity === 'FISHMEAL' || row.commodity === 'FISH MEAL')) {
 
-            this.warning.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`)
+            this.warningFile.push(`Fila ${index + 2}: Revisar IMO, UN y COMMODITY`);
       
           }
         }
@@ -458,40 +405,61 @@ export class ForecastComponent implements OnInit {
 
   onProcesar() {
 
-    if (!this.valido) {
+    this.cargando = true;
+     
+    this.forecastCab = this.forma.getRawValue();
 
-      this.error = `Debe seleccionar un SERVICIO, una NAVE y un ARCHIVO válidos`;
+    // console.log(this.forecastCab);
 
-    } else {
+      
+    this.forecastService.loadFile(this.urls, this.forecastCab, this.token)
+      .subscribe(
+        (res: any) => {
 
-      this.cargando = true;
-
-      this.forecasCab.coNave = this.nave.codigo;
-      this.forecasCab.noNave = this.nave.longName;
-      this.forecasCab.alNave = this.nave.shortName;
-      this.forecasCab.coServ = this.servicio.codigo;
-      this.forecasCab.noServ = this.servicio.nombre;
-      this.forecasCab.detalles = this.dataFile;
-
-      this.forecastService.loadFile(this.forecastUrl, this.forecasCab, this.token)
-        .subscribe(res => {
           // console.log(res);
-          this.fileName = res.body['mensaje'];
-          // console.log(fileName);
-          window.open(`${this.reportUrl}/${this.fileName}`, '_blank');
-          this.cargando = false;
+          
+          let fileName = res.body.fileName;
 
-        });
-    }
-  }
+          Swal.fire({
+            icon: 'success',
+            title: 'Datos Procesados',
+            text: 'Se procesó el archivo: ' + fileName,
+            showConfirmButton: false,
+            timer: 2000,
+            onBeforeOpen: () => {
 
+              this.fileService.downloadFile(this.urls, fileName);
 
-  deleteFile(url: string, fileName: string) {
+            },
+            onClose: () => {
 
-    this.forecastService.deleteFile(`${url}${fileName}`, this.token)
-      .subscribe(res => {
-        console.log(res);
-      });
+              this.cargando = false;
 
+              this.fileService.deleteFile(this.urls, fileName, this.token)
+                .subscribe(del => {
+                  console.log(del);
+                });
+              
+            }
+          });
+        },
+
+        (err: any) => {
+
+          console.log(err);
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.error.error.mensaje,
+            footer: 'Comuníquese con el administrador del sistema',
+            onClose: () => {
+              this.cargando = false;
+            }
+          });
+        }
+      );
+
+      
   }
 }

@@ -1,93 +1,162 @@
-<h1>Forecast</h1>
-<hr>
-<div class="alert alert-danger" *ngIf="error">
-    {{ error }}
-</div>
-<div>
-    <form [formGroup]="forecastForm">
+<div class="m-5">
 
-        <div class="forecastUp-contenedor">
+    <h1 class="m-3">Forecast</h1>
+    <hr>
+    <div>
+        <form [formGroup]="forma">
 
-            <div class="forecastRight-contenedor">
+            <fieldset [disabled]="cargando">
 
-                <label class="my-1 mr-2" for="servicios">Servicios</label>
-                <div class="servicios" id="servicios">
-                    <div class="custom-control custom-radio" *ngFor="let servicio of servicios; index as i">
-                        <input type="radio" id="{{ servicio.codigo }}" name="servicio" class="custom-control-input" value="{{ servicio.codigo }}" (change)="onChangeServicio()" formControlName="servicio" />
-                        <label class="custom-control-label" for="{{ servicio.codigo }}">{{ servicio.nombre }}</label>
+                <div class="row mb-3">
+
+                    <div class="col-sm-4">
+
+                        <div class="card border-secondary" style="max-width: 20rem;">
+                            <div class="card-header">
+                                <span><i class="fa fa-globe fa-fw" aria-hidden="true"></i>Servicios</span>
+                            </div>
+
+                            <div class="card-body text-left">
+                                <div class="custom-control custom-radio" *ngFor="let servicio of servicios; index as i">
+                                    <input type="radio" id="{{ servicio.coServ }}" name="coServ" class="custom-control-input" value="{{ servicio.coServ }}" (change)="fileInput.value=error=null" (change)="naveSearch.value = ''" (change)="onChangeService()" formControlName="coServ" />
+                                    <label class="custom-control-label" for="{{ servicio.coServ }}">{{ servicio.noServ }}</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+
+
+                    <div class="col-sm-4">
+
+                        <div class="card border-secondary" style="max-width: 20rem;">
+                            <div class="card-header">
+                                <span><i class="fa fa-industry fa-fw" aria-hidden="true"></i>Líneas</span>
+                            </div>
+
+                            <div class="card-body text-left">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="S" name="fgProp" class="custom-control-input" (change)="fileInput.value=error=null" (change)="naveSearch.value = ''" (change)="onChangeService()" value="S" formControlName="fgProp" />
+                                    <label class="custom-control-label" for="S">Local</label>
+                                </div>
+
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="N" name="fgProp" class="custom-control-input" (change)="fileInput.value=error=null" (change)="naveSearch.value = ''" (change)="onChangeService()" value="N" formControlName="fgProp" />
+                                    <label class="custom-control-label" for="N">Partner</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-sm-4">
+
+                        <div class="form-group" id="naves">
+                            <label class="my-1 mr-2" for="nave">Naves</label>
+                            <input type="text" #naveSearch class="form-control filtroNave" id="nave" name="naveSearch" placeholder="Ingrese una nave" (input)="search(naveSearch.value)" uppercase />
+
+                            <select class="custom-select" size="7" formControlName="coNave" *ngIf="filtroNaves.length > 0">
+                                <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves">{{ n.shortName }} - {{ n.longName }}</option>
+                            </select>
+                            <div class="alert alert-danger" role="alert" *ngIf="filtroNaves.length == 0">
+                                No se encontraron naves
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
 
-            <div class="forecastLeft-contenedor">
 
-                <div class="form-group" id="naves" *ngIf="filtroNaves">
 
-                    <label class="my-1 mr-2" for="nave">Naves</label>
-                    <input type="text" class="form-control filtroNave" id="nave" #nave placeholder="Ingrese una nave" (input)="search(nave.value)" uppercase formControlName="naveSearch" />
-                    <select class="custom-select" size="7" formControlName="nave">
-                        <option value="{{ n.codigo }}" *ngFor="let n of filtroNaves" (click)="onClickNaves()">
-                            {{ n.shortName }} - {{ n.longName }}</option>
-                    </select>
+                <div class="row mb-3">
+
+                    <div class="col input-group mb-3">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="fileName" aria-describedby="inputGroupFileAddon01" (click)="fileInput.value=error=null" (change)="onChangeFile(fileInput)" #fileInput accept=".xlsx" />
+                            <label class="custom-file-label" for="inputGroupFile01">{{ fileLabel }}</label>
+                        </div>
+                    </div>
 
                 </div>
 
-            </div>
-        </div>
 
-        <div class="forecastBottom-contenedor">
-            <div class="input-group mb-3">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" (click)="file.value=error=null" (change)="onChangeFile(file)" formControlName="file" #file accept=".xlsx" />
-                    <label class="custom-file-label" for="inputGroupFile01">{{ textLabel }}</label>
+
+
+
+                <div class="row mb-3">
+
+                    <div class="col">
+
+                        <div class="alert alert-success" role="alert" *ngIf="forma.controls.detalle.valid && errorFile.length == 0 && warningFile.length == 0">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-check-square fa-fw"></i>
+                                        <span>Validación exitosa</span>
+                                    </h4>
+                                    <hr>
+                                    <p class="mb-0">El archivo ha sido validado de forma exitosa</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-danger forecast-resultados" role="alert" *ngIf="errorFile.length > 0">
+                            <h4 class="alert-heading">
+                                <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+                                <span>Error</span>
+                            </h4>
+                            <hr>
+                            <ul class="list-unstyled">
+                                <li *ngFor="let err of errorFile">
+                                    <i class="fa fa-square fa-fw"></i>
+                                    <span>{{ err }}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-warning forecast-resultados" role="alert" *ngIf="warningFile.length > 0">
+                            <h4 class="alert-heading">
+                                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                                <span>Warning</span>
+                            </h4>
+                            <hr>
+                            <ul class="list-unstyled">
+                                <li *ngFor="let war of warningFile">
+                                    <i class="fa fa-square fa-fw"></i>
+                                    <span>{{ war }}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
-
-            <!-- <button *ngIf="!cargando" type="button" class="btn btn-primary" (click)="onProcesar()">Procesar</button>
-            <button *ngIf="cargando" class="btn btn-primary" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Cargando...
-            </button> -->
 
 
-            <button type="button" class="btn btn-primary" (click)="onProcesar()" [disabled]="cargando">
-                <i [ngClass]=" { 'fa-spinner fa-pulse': cargando } " class="fa"></i>
-                <span *ngIf="!cargando"> Procesar</span>
-                <span *ngIf="cargando"> Cargando...</span>
-            </button>
 
-            <div class="alert alert-success" role="alert" *ngIf="valido == true && warning.length == 0">
-                <ul>
-                    <li class="resultado" *ngFor="let mensaje of mensajes">
-                        <i class="fa fa-check-square icono"></i>{{ mensaje }}
-                    </li>
-                </ul>
-            </div>
 
-            <div class="alert alert-danger forecast-resultados" role="alert" *ngIf="valido == false">
-                <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>Error</strong>
-                <hr>
-                <ul>
-                    <li class="resultado" *ngFor="let mensaje of mensajes">
-                        <i class="fa fa-square icono"></i>{{ mensaje }}
-                    </li>
-                </ul>
-            </div>
+                <div class="row mb-3">
 
-            <div class="alert alert-warning forecast-resultados" role="alert" *ngIf="warning.length > 0">
-                <strong>
-                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    <span>Warning</span>
-                </strong>
-                <hr>
-                <ul>
-                    <li class="resultado" *ngFor="let war of warning">
-                        <i class="fa fa-square icono"></i>{{ war }}
-                    </li>
-                </ul>
-            </div>
+                    <div class="col">
 
-        </div>
-    </form>
+                        <button type="button" class="btn btn-primary" (click)="onProcesar()" [disabled]="forma.invalid || errorFile.length > 0">
+                            <i [ngClass]=" { 'fa-spinner fa-pulse': cargando } " class="fa"></i>
+                            <span *ngIf="!cargando"> Procesar</span>
+                            <span *ngIf="cargando"> Cargando...</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+        </form>
+    </div>
+
 </div>

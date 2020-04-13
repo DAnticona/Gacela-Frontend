@@ -16,6 +16,13 @@ import { ProyeccionesComponent } from './componentes/opciones/proyecciones/proye
 import { PerfilComponent } from './componentes/opciones/perfil/perfil.component';
 import { PasswordComponent } from './componentes/password/password.component';
 import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { CalendarioComponent } from './componentes/opciones/calendario/calendario.component';
+import { ProyventasComponent } from './componentes/opciones/proyventas/proyventas.component';
+import { DetproyventasComponent } from './componentes/opciones/proyventas/detproyventas/detproyventas.component';
+import { NavesComponent } from './componentes/opciones/maestros/naves/naves.component';
+import { RegistroNavesComponent } from './componentes/opciones/maestros/naves/registro-naves/registro-naves.component';
+import { ProyeccionEquiposComponent } from './componentes/proyeccion-equipos/proyeccion-equipos.component';
+import { ProyeccionVentasComponent } from './componentes/proyeccion-ventas/proyeccion-ventas.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -30,7 +37,15 @@ const routes: Routes = [
     { path: 'rep6040/:noUsua', component: Rep6040Component },
     { path: 'retiros/:noUsua', component: RetirosComponent },
     { path: 'transbordo/:noUsua', component: TransbordoComponent },
-    { path: 'proyecciones/:noUsua', component: ProyeccionesComponent },
+    // { path: 'proyecciones/:noUsua', component: ProyeccionesComponent },
+    { path: 'proyecciones/equipos/:noUsua', component: ProyeccionEquiposComponent },
+    // { path: 'proyecciones/ventas/:noUsua', component: ProyeccionVentasComponent },
+    { path: 'calendario/:noUsua', component: CalendarioComponent },
+    // { path: 'proyventas/:noUsua', component: ProyventasComponent },
+    { path: 'proyventas/:noUsua', component: ProyventasComponent },
+    { path: 'proyventas/:noUsua/:coProy', component: DetproyventasComponent },
+    { path: 'naves/:noUsua', component: NavesComponent },
+    { path: 'naves/:noUsua/:coNave', component: RegistroNavesComponent },
     { path: '', redirectTo: 'home/:noUsua', pathMatch: 'prefix' },
     { path: '**', redirectTo: 'home/:noUsua', pathMatch: 'prefix' }
   ] },
@@ -40,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes, {useHash: true, onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

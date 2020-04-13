@@ -24,7 +24,7 @@ export class PerfilService {
   }
 
 
-  getPerfil(noUsua: string, token: string, urls:any) {
+  getPerfil(noUsua: string, token: string, urls: any) {
 
     const httpOptions = {
 

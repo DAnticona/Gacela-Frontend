@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Lista de Naves</h1>
+
+<hr>
+
+<div mat-dialog-content>
+
+    <form>
+        <div class="row">
+
+            <table class="table">
+                <caption>{{navesFiltradas.length}} registros encontrados</caption>
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">#</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nombre Corto</th>
+                        <th scope="col">Nombre Largo</th>
+                        <th scope="col">Activo</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td scope="col"><input #codigo type="text" class="form-control" id="codigo" placeholder="Código" (keyup)="filtrar(codigo.value, nombreCorto.value, nombreLargo.value, estado.value)"></td>
+                        <td scope="col"><input #nombreCorto type="text" class="form-control" id="nombreCorto" placeholder="Nombre Corto" (keyup)="filtrar(codigo.value, nombreCorto.value, nombreLargo.value, estado.value)"></td>
+                        <td scope="col"><input #nombreLargo type="text" class="form-control" id="nombreLargo" placeholder="Nombre Largo" (keyup)="filtrar(codigo.value, nombreCorto.value, nombreLargo.value, estado.value)"></td>
+                        <td scope="col">
+                            <select #estado class="custom-select custom-select mb-3" (change)="filtrar(codigo.value, nombreCorto.value, nombreLargo.value, estado.value)">
+                              <option value="99" selected>Todos</option>
+                              <option value="S">S</option>
+                              <option value="N">N</option>
+                          </select>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody *ngIf="navesFiltradas.length > 0">
+                    <tr *ngFor="let n of navesFiltradas; let i = index" class="fila" (click)="seleccionar(i)" (dblclick)="onAceptar()" [ngClass]="{selected: n.shortName == codigoSol, noSelected: n.shortName != codigoSol}">
+                        <th>{{i + 1}}</th>
+                        <td>{{n.codigo}}</td>
+                        <td>{{n.shortName}}</td>
+                        <td>{{n.longName}}</td>
+                        <td>{{n.fgActi}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+
+</div>
+
+<div mat-dialog-actions>
+    <button class="btn btn-outline-primary m-1" (click)="onAceptar()">Aceptar</button>
+    <button class="btn btn-outline-danger m-1" (click)="onCancelar()">Cancelar</button>
+</div>

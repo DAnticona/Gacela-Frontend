@@ -1,0 +1,84 @@
+<table class="table table-sm mt-3 mb-3">
+
+    <thead class="detalle text-sm-center">
+        <tr>
+            <th colspan="2"></th>
+            <th colspan="4" class="bg-light">2SD</th>
+            <th colspan="4">4SD</th>
+            <th colspan="4" class="bg-light">4SH</th>
+            <th></th>
+        </tr>
+
+        <tr>
+            <th class="bg-light">Nave</th>
+            <th>Viaje</th>
+            <th class="bg-light">Non F.E.</th>
+            <th class="bg-light">Picked Up</th>
+            <th class="bg-light">F.E.</th>
+            <th class="bg-light">Picked Up</th>
+            <th>Non F.E.</th>
+            <th>Picked Up</th>
+            <th>F.E.</th>
+            <th>Picked Up</th>
+            <th class="bg-light">Non F.E.</th>
+            <th class="bg-light">Picked Up</th>
+            <th class="bg-light">F.E.</th>
+            <th class="bg-light">Picked Up</th>
+            <th>ETA</th>
+        </tr>
+    </thead>
+
+    <tbody class="detalle table-borderless text-sm-left">
+        <tr *ngFor="let det of proyeccion.detalles; let i = index">
+            <td class="bg-light nave text-center">{{det.alNave}}</td>
+            <td class="viaje">{{det.viaje}}</td>
+            <td class="bg-light valor">{{det.ca2SdNoFe}}</td>
+            <td class="bg-light valor">{{det.ca2SdNoFePick}}</td>
+            <td class="bg-light valor">{{det.ca2SdFe}}</td>
+            <td class="bg-light valor">{{det.ca2SdFePick}}</td>
+            <td class="valor">{{det.ca4SdNoFe}}</td>
+            <td class="valor">{{det.ca4SdNoFePick}}</td>
+            <td class="valor">{{det.ca4SdFe}}</td>
+            <td class="valor">{{det.ca4SdFePick}}</td>
+            <td class="bg-light valor">{{det.ca4ShNoFe}}</td>
+            <td class="bg-light valor">{{det.ca4ShNoFePick}}</td>
+            <td class="bg-light valor">{{det.ca4ShFe}}</td>
+            <td class="bg-light valor">{{det.ca4ShFePick}}</td>
+            <td class="eta">{{det.eta | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+    </tbody>
+
+
+    <tbody class="detalle text-sm-center">
+        <tr>
+            <th colspan="2">Suma</th>
+            <td class="bg-light valor">{{proyeccion.to2SdNoFe}}</td>
+            <td class="bg-light valor">{{proyeccion.to2SdNoFePick}}</td>
+            <td class="bg-light valor">{{proyeccion.to2SdFe}}</td>
+            <td class="bg-light valor">{{proyeccion.to2SdFePick}}</td>
+            <td class="valor">{{proyeccion.to4SdNoFe}}</td>
+            <td class="valor">{{proyeccion.to4SdNoFePick}}</td>
+            <td class="valor">{{proyeccion.to4SdFe}}</td>
+            <td class="valor">{{proyeccion.to4SdFePick}}</td>
+            <td class="bg-light valor">{{proyeccion.to4ShNoFe}}</td>
+            <td class="bg-light valor">{{proyeccion.to4ShNoFePick}}</td>
+            <td class="bg-light valor">{{proyeccion.to4ShFe}}</td>
+            <td class="bg-light valor">{{proyeccion.to4ShFePick}}</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">TT Booking</th>
+            <td class="valor bg-light" colspan="4">{{proyeccion.to2SdBook}}</td>
+            <td class="valor" colspan="4">{{proyeccion.to4SdBook}}</td>
+            <td class="valor bg-light" colspan="4">{{proyeccion.to4ShBook}}</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">TT Picked Up</th>
+            <td class="valor bg-light" colspan="4">{{proyeccion.to2SdPick}}</td>
+            <td class="valor" colspan="4">{{proyeccion.to4SdPick}}</td>
+            <td class="valor bg-light" colspan="4">{{proyeccion.to4ShPick}}</td>
+        </tr>
+    </tbody>
+
+</table>
