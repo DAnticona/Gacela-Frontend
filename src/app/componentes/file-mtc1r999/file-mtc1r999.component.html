@@ -1,56 +1,68 @@
 <div class="card border-secondary mb-3" style="max-width: 18rem;">
-
-    <div class="card-header"><span><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>Archivo SOL</span></div>
+    <div class="card-header">
+        <span>
+			<i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>
+			Archivo SOL
+		</span>
+    </div>
 
     <div *ngIf="!cargando" class="card-body">
-
         <div *ngIf="!fileMtc1r999" class="card-body text-danger">
-            <p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ningún archivo</p>
+            <p>
+                <i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i> Ningún archivo
+            </p>
         </div>
 
         <ul *ngIf="fileMtc1r999" class="list-unstyled text-secondary">
-
-            <li class="border-white mb-2">File: {{fileMtc1r999.noFile}}</li>
-            <li class="border-white mb-2">Cód. File: {{fileMtc1r999.coFile}}</li>
-            <li class="border-white mb-2">Fecha: {{fileMtc1r999.feCargaFile | date: 'dd/MM/yyyy'}}</li>
-
+            <li class="border-white mb-2">File: {{ fileMtc1r999.noFile }}</li>
+            <li class="border-white mb-2">Cód. File: {{ fileMtc1r999.coFile }}</li>
+            <li class="border-white mb-2">Fecha: {{ fileMtc1r999.feCargaFile | date: 'dd/MM/yyyy' }}</li>
         </ul>
 
         <div class="text-right">
             <label class="labelLink" for="fileSOL">Cargar archivo</label>
-            <input type="file" id="fileSOL" accept=".txt" hidden (change)="cargarFile($event.target.files)">
+            <input type="file" id="fileSOL" accept=".txt" hidden (change)="cargarFile($event.target.files)" />
         </div>
 
-        <div *ngIf="navesNoRegistradas.length == 0  && fileMtc1r999" class="alert alert-success" role="alert">
-            <span><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i>Validación exitosa</span>
+        <div *ngIf="navesNoRegistradas.length == 0 && fileMtc1r999" class="alert alert-success" role="alert">
+            <span>
+				<i class="fa fa-check-circle fa-fw" aria-hidden="true"></i>
+				Validación exitosa
+			</span>
         </div>
 
         <div *ngIf="navesNoRegistradas.length > 0 && fileMtc1r999" class="alert alert-warning" role="alert">
-
             <span>
-              <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-              Existen naves no registradas
-              <label class="labelLink text-dark alert-link" *ngIf="!mostrarDetalle" (click)="mostrarDetalle = !mostrarDetalle">Ver más</label>
-              <label class="labelLink text-dark alert-link" *ngIf="mostrarDetalle" (click)="mostrarDetalle = !mostrarDetalle">Ver menos</label>
-            </span>
+				<i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+				Existen naves no registradas
+				<label
+					class="labelLink text-dark alert-link"
+					*ngIf="!mostrarDetalle"
+					(click)="mostrarDetalle = !mostrarDetalle"
+				>
+					Ver más
+				</label>
+				<label
+					class="labelLink text-dark alert-link"
+					*ngIf="mostrarDetalle"
+					(click)="mostrarDetalle = !mostrarDetalle"
+				>
+					Ver menos
+				</label>
+			</span>
 
             <div *ngIf="mostrarDetalle">
                 <ul class="error list-unstyled text-sm-left">
                     <li class="text-sm" *ngFor="let nave of navesNoRegistradas; let i = index">
-                        <span>{{nave}}</span>
+                        <span>{{ nave }}</span>
                         <button class="btn btn-link btn-sm" (click)="registraNave(i)">Agregar</button>
                     </li>
                 </ul>
             </div>
-
         </div>
-
     </div>
 
     <div *ngIf="cargando" class="card-body text-center">
-
         <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
-
     </div>
-
 </div>

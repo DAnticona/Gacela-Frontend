@@ -1,3 +1,7 @@
 {
-    "tslint.suppressWhileTypeErrorsPresent": true
+    "tslint.suppressWhileTypeErrorsPresent": true,
+    "prettier.printWidth": 110,
+    "editor.rulers": [
+    110
+    ]
 }

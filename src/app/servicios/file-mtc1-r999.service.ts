@@ -56,5 +56,19 @@ export class FileMTC1R999Service {
 
   }
 
+  getFileActivo(token: string, urls: any) {
+
+    const httpOptions = {
+
+      headers: new HttpHeaders({
+        token: `${token}`,
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+
+    return this.http.get(urls.fileMTC1R999GetActivoUrl, httpOptions);
+
+  }
   
 }

@@ -17,10 +17,9 @@ import { DialogRegistrarNavesComponent } from '../opciones/maestros/naves/dialog
 @Component({
   selector: 'app-file-mtc1r999',
   templateUrl: './file-mtc1r999.component.html',
-  styleUrls: ['./file-mtc1r999.component.css']
+  styleUrls: ['./file-mtc1r999.component.css'],
 })
 export class FileMtc1r999Component {
-
   /**
    * Variable que almacena las rutas para la conexión con el backend.
    */
@@ -34,7 +33,11 @@ export class FileMtc1r999Component {
   /**
    * Variable que almacena de fecha actual sin las horas.
    */
-  private today = new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate());
+  private today = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate()
+  );
 
   /**
    * Variable que almacena los datos del file MTC1R999,
@@ -45,7 +48,7 @@ export class FileMtc1r999Component {
   /**
    * Variable que controla si se esta cargando información de la BD.
    */
-  public cargando = true;
+  public cargando = false;
 
   /**
    * Variable que controla si se muestran las naves no registradas
@@ -64,47 +67,70 @@ export class FileMtc1r999Component {
    */
   @Output() protected enviaFile = new EventEmitter();
 
-  constructor(private paramsService: ParamsService,
-              private fileService: FileMTC1R999Service,
-              private navesService: NavesService,
-              public dialog: MatDialog) {
+  /**
+   * Variable de salida, envía el estado al componente padre.
+   */
+  @Output() protected enviaCargando = new EventEmitter();
 
+  constructor(
+    private paramsService: ParamsService,
+    private fileService: FileMTC1R999Service,
+    private navesService: NavesService,
+    public dialog: MatDialog
+  ) {
     this.token = this.paramsService.conexion.token;
     this.urls = this.paramsService.urls;
 
     this.obtieneFileActivo();
-
   }
 
   /**
-   * Método que obtiene el último file registrado (activo).
+   * Método que obtiene el último file activo (último registrado).
    * Almacena el resultado en la variable fileMtc1r999
    */
   private obtieneFileActivo() {
 
-    this.fileService.listarFiles(this.token, this.urls)
-      .subscribe((res1: any) => {
+    this.cargando = true;
+    this.enviaCargando.emit(this.cargando);
 
-        let files = res1.body.filesCab;
-  
-        if(files.filter(f => f.fgActi === 'A').length > 0) {
-  
-          let coFileAct = files.filter(f => f.fgActi === 'A')[0].coFile;
-          
-          this.fileService.getFile(this.token, this.urls, coFileAct)
-            .subscribe((res2: any) => {
+    // this.fileService
+    //   .listarFiles(this.token, this.urls)
+    //   .subscribe((res1: any) => {
+    //     let files = res1.body.filesCab;
 
-              this.fileMtc1r999 = res2.body.fileCab;
+    //     if (files.filter((f) => f.fgActi === 'A').length > 0) {
+    //       let coFileAct = files.filter((f) => f.fgActi === 'A')[0].coFile;
 
-              this.obtieneNavesNoRegistradas(this.fileMtc1r999.detalle);
+    //       this.fileService
+    //         .getFile(this.token, this.urls, coFileAct)
+    //         .subscribe((res2: any) => {
+    //           this.fileMtc1r999 = res2.body.fileCab;
 
-              this.enviaFile.emit(this.fileMtc1r999);
-              
-            });
+    //           this.obtieneNavesNoRegistradas(this.fileMtc1r999.detalle);
+    //         });
+    //     } else {
+    //       this.cargando = false;
+    //       this.enviaFile.emit(this.fileMtc1r999);
+    //       this.enviaCargando.emit(this.cargando);
+    //     }
+    //   });
+
+    this.fileService.getFileActivo(this.token, this.urls)
+      .subscribe((res: any) => {
+
+        this.fileMtc1r999 = res.body.fileCab;
+
+        if (this.fileMtc1r999) {
+
+          this.obtieneNavesNoRegistradas(this.fileMtc1r999.detalle);
+
         } else {
 
+          this.fileMtc1r999 = null;
           this.cargando = false;
           this.enviaFile.emit(this.fileMtc1r999);
+          this.enviaCargando.emit(this.cargando);
+
         }
 
       });
@@ -118,7 +144,6 @@ export class FileMtc1r999Component {
    * @returns El detalle del archivo cargado.
    */
   private leerTxt(txt: any) {
-    
     let detalles: FileMTC1R999Det[] = [];
 
     let lines = txt.toString().split('\n');
@@ -128,8 +153,7 @@ export class FileMtc1r999Component {
 
     let idItem = 0;
 
-    lines.forEach(line => {
-
+    lines.forEach((line) => {
       let det = new FileMTC1R999Det();
       let posActual = 0;
 
@@ -174,63 +198,67 @@ export class FileMtc1r999Component {
       posActual = posActual + t_qty + 1;
       det.pick = Number(line.substr(posActual, t_pick).trim());
       posActual = posActual + t_pick + 1;
-      det.balance = Number(line.substr(posActual , t_balance).trim());
+      det.balance = Number(line.substr(posActual, t_balance).trim());
       posActual = posActual + t_balance + 1;
-      det.mode = line.substr(posActual , t_mode).trim();
+      det.mode = line.substr(posActual, t_mode).trim();
       posActual = posActual + t_mode + 1;
-      det.mta = line.substr(posActual , t_mta).trim();
+      det.mta = line.substr(posActual, t_mta).trim();
       posActual = posActual + t_mta + 1;
-      det.tpe = line.substr(posActual , t_tpe).trim();
+      det.tpe = line.substr(posActual, t_tpe).trim();
       posActual = posActual + t_tpe + 1;
-      det.rct = line.substr(posActual , t_rct).trim();
+      det.rct = line.substr(posActual, t_rct).trim();
       posActual = posActual + t_rct + 1;
-      det.pol = line.substr(posActual , t_pol).trim();
+      det.pol = line.substr(posActual, t_pol).trim();
       posActual = posActual + t_pol + 1;
-      det.pod = line.substr(posActual , t_pod).trim();
+      det.pod = line.substr(posActual, t_pod).trim();
       posActual = posActual + t_pod + 1;
-      det.dly = line.substr(posActual , t_dly).trim();
+      det.dly = line.substr(posActual, t_dly).trim();
       posActual = posActual + t_dly + 1;
 
-      let release_aux = line.substr(posActual , t_release).trim();
-      det.release = new Date(Number(release_aux.substr(0, 4)), Number(release_aux.substr(4, 2)) - 1, Number(release_aux.substr(6, 2)));
+      let release_aux = line.substr(posActual, t_release).trim();
+      det.release = new Date(
+        Number(release_aux.substr(0, 4)),
+        Number(release_aux.substr(4, 2)) - 1,
+        Number(release_aux.substr(6, 2))
+      );
       posActual = posActual + t_release + 1;
-      
-      let cut_off_aux = line.substr(posActual , t_cut_off).trim();
-      det.cut_off = new Date(Number(cut_off_aux.substr(0, 4)), Number(cut_off_aux.substr(4, 2)) - 1, Number(cut_off_aux.substr(6, 2)));
+
+      let cut_off_aux = line.substr(posActual, t_cut_off).trim();
+      det.cut_off = new Date(
+        Number(cut_off_aux.substr(0, 4)),
+        Number(cut_off_aux.substr(4, 2)) - 1,
+        Number(cut_off_aux.substr(6, 2))
+      );
       posActual = posActual + t_cut_off + 1;
-      
-      det.dry_use = line.substr(posActual , t_dry_use).trim();
+
+      det.dry_use = line.substr(posActual, t_dry_use).trim();
       posActual = posActual + t_dry_use + 1;
-      det.pre_cool = line.substr(posActual , t_pre_cool).trim();
+      det.pre_cool = line.substr(posActual, t_pre_cool).trim();
       posActual = posActual + t_pre_cool + 1;
-      det.temp = line.substr(posActual , t_temp).trim();
+      det.temp = line.substr(posActual, t_temp).trim();
       posActual = posActual + t_temp + 1;
-      det.vent = Number(line.substr(posActual , t_vent).trim());
+      det.vent = Number(line.substr(posActual, t_vent).trim());
       posActual = posActual + t_vent + 1;
-      det.commodity = line.substr(posActual , t_commodity).trim();
+      det.commodity = line.substr(posActual, t_commodity).trim();
       posActual = posActual + t_commodity + 1;
-      det.special_handling = line.substr(posActual , t_special_handling).trim();
+      det.special_handling = line.substr(posActual, t_special_handling).trim();
       posActual = posActual + t_special_handling + 1;
-      det.customer_ac = line.substr(posActual , t_customer_ac).trim();
+      det.customer_ac = line.substr(posActual, t_customer_ac).trim();
       posActual = posActual + t_customer_ac + 1;
-      det.customer_name = line.substr(posActual , t_customer_name).trim();
+      det.customer_name = line.substr(posActual, t_customer_name).trim();
       posActual = posActual + t_customer_name + 1;
-      det.remark = line.substr(posActual , t_remark).trim();
+      det.remark = line.substr(posActual, t_remark).trim();
       posActual = posActual + t_remark + 1;
 
       det.nave = det.vsl_voy_s.split('/')[0].trim();
       det.viaje = det.vsl_voy_s.split('/')[1].trim();
 
-      if(det.nave.trim().length > 0) {
-
+      if (det.nave.trim().length > 0) {
         detalles.push(det);
-        
       }
-      
     });
 
     return detalles;
-
   }
 
   /**
@@ -239,36 +267,34 @@ export class FileMtc1r999Component {
    * @param detalle Obtenido del archivo leido.
    */
   private obtieneNavesNoRegistradas(detalle: Array<FileMTC1R999Det>) {
-    
     let naves: any[] = [];
 
     let navesNoRegistradas: any[] = [];
 
-    this.navesService.obtieneNaves(this.token, this.urls)
+    this.navesService
+      .obtieneNaves(this.token, this.urls)
       .subscribe((res: any) => {
-
         naves = res.body.naves;
 
-        for(let d of detalle) {
-
-          if(naves.filter(n => d.nave === n.alNave).length === 0) {
-    
+        for (let d of detalle) {
+          if (naves.filter((n) => d.nave === n.alNave).length === 0) {
             navesNoRegistradas.push(d.nave);
-    
           }
         }
-    
+
         // ELIMINA DUPLICADOS
-        navesNoRegistradas = navesNoRegistradas.filter((valor, indiceActual, arreglo) => arreglo.indexOf(valor) === indiceActual);
-    
+        navesNoRegistradas = navesNoRegistradas.filter(
+          (valor, indiceActual, arreglo) =>
+            arreglo.indexOf(valor) === indiceActual
+        );
+
         this.navesNoRegistradas = navesNoRegistradas;
 
         this.cargando = false;
-
+        this.enviaFile.emit(this.fileMtc1r999);
+        this.enviaCargando.emit(this.cargando);
       });
-
   }
-
 
   /**
    * Método lanzado al hacer click en el boton "cargar archivo"
@@ -277,15 +303,14 @@ export class FileMtc1r999Component {
    * - Lanza el método "obtieneFileActivo" para traer los datos del archivo guardado
    */
   protected cargarFile(fileList: FileList) {
-
     this.cargando = true;
+    this.enviaCargando.emit(this.cargando);
 
     let f = fileList[0];
 
     if (f) {
-
       this.fileMtc1r999 = new FileMTC1R999Cab();
-    
+
       this.fileMtc1r999.noFile = f.name;
       this.fileMtc1r999.feCargaFile = new Date(this.today);
       this.fileMtc1r999.fgActi = 'A';
@@ -293,35 +318,27 @@ export class FileMtc1r999Component {
       let fileReader = new FileReader();
 
       fileReader.onload = (e) => {
-
         this.fileMtc1r999.detalle = this.leerTxt(fileReader.result);
 
-        this.fileService.registrarFile(this.token, this.urls, this.fileMtc1r999)
-        .subscribe(
-          (res: any) => {
+        this.fileService
+          .registrarFile(this.token, this.urls, this.fileMtc1r999)
+          .subscribe(
+            (res: any) => {
+              this.obtieneFileActivo();
+            },
 
-            this.obtieneFileActivo();
-            this.cargando = false;
-           
-          },
- 
-          (err: any) => {
-
-            this.cargando = false;
-            this.navesNoRegistradas = [];
-            this.fileMtc1r999 = null;
-
-          }
- 
-        );
-
+            (err: any) => {
+              this.cargando = false;
+              this.navesNoRegistradas = [];
+              this.fileMtc1r999 = null;
+              this.enviaCargando.emit(this.cargando);
+            }
+          );
       };
 
       fileReader.readAsText(f);
     }
-
   }
-
 
   /**
    * Método lanzado al dar click al boton "agregar"
@@ -330,27 +347,23 @@ export class FileMtc1r999Component {
    * @param index Es el índice del listado de la snaves no registradas en BD
    */
   registraNave(index: number) {
-
     let naves: any[] = [];
 
     const dialogRef = this.dialog.open(DialogRegistrarNavesComponent, {
       width: '1000px',
       height: '800px',
       data: {
-        alNave: this.navesNoRegistradas[index]
-      }
+        alNave: this.navesNoRegistradas[index],
+      },
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      
-      this.navesService.obtieneNaves(this.token, this.urls)
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.navesService
+        .obtieneNaves(this.token, this.urls)
         .subscribe((res: any) => {
           naves = res.body.naves;
           this.obtieneNavesNoRegistradas(this.fileMtc1r999.detalle);
         });
-
     });
-
   }
-
 }

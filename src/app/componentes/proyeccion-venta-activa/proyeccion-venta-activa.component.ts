@@ -37,11 +37,22 @@ export class ProyeccionVentaActivaComponent {
    * Variable que envía la proyección al componente padre
    */
   @Output() protected enviaProyeccion = new EventEmitter();
+
+  /**
+   * Variable que envía el estado del componente al padre.
+   */
+  @Output() protected enviaCargando = new EventEmitter();
   
+  /**
+   * Variable que controla el checkbox(switch) para activar o no la proyección de ventas
+   * en el resultado.
+   */
+  public ventaActiva = false;
+
   /**
    * Variable que controla si el programa se encuentra bajando datos del servidor
    */
-  public cargando = true;
+  public cargando = false;
 
   constructor(private paramService: ParamsService,
               private proyeccionService: ProyeccionService) { 
@@ -60,6 +71,10 @@ export class ProyeccionVentaActivaComponent {
    */
   private obtieneProyeccionVentaActiva() {
 
+    this.cargando = true;
+
+    this.enviaCargando.emit(this.cargando);
+
     this.proyeccionService.getProyecciones(this.token, this.urls)
       .subscribe((res1: any) => {
   
@@ -69,22 +84,50 @@ export class ProyeccionVentaActivaComponent {
   
           this.proyeccionService.getProyeccion(this.token, this.urls, coProyAct)
             .subscribe((res2: any) => {
-
-              // this.proyeccion
   
               this.proyeccion = res2.body.proyeccionVenta;
 
               this.cargando = false;
 
+              if(this.proyeccion) {
+                this.ventaActiva = true;
+              } else {
+                this.ventaActiva = false;
+              }
+
               this.enviaProyeccion.emit(this.proyeccion);
+              this.enviaCargando.emit(this.cargando);
               
             });
+            
         } else {
+
           this.cargando = false;
-          // console.log(this.proyeccion);
           this.enviaProyeccion.emit(this.proyeccion);
+
         }
       });
+  }
+
+  /**
+   * Método lanzado al activar o desactivar el checkbox ventaActiva
+   * Si la venta esta activa, entonces recupera dicha proyección de ventas y la emite al componente padre
+   * Si la venta esta inactiva, entonces iguala la variable a null y la emite al padre.
+   */
+  public setVentaActiva() {
+
+    if(this.ventaActiva) {
+
+      this.obtieneProyeccionVentaActiva();
+
+    } else {
+
+      this.proyeccion = null;
+      this.enviaProyeccion.emit(this.proyeccion);
+      this.enviaCargando.emit(this.cargando);
+
+    }
+    
   }
   
 }

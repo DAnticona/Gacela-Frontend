@@ -19,6 +19,7 @@
     "fileMTC1R999RegUrl": "/Gacela-Backend/mtc1r999",
     "fileMTC1R999LisUrl": "/Gacela-Backend/mtc1r999/files",
     "fileMTC1R999GetUrl": "/Gacela-Backend/mtc1r999/file",
+    "fileMTC1R999GetActivoUrl": "/Gacela-Backend/mtc1r999/file-activo",
     "proyeccionEquExcel": "/Gacela-Backend/proyecciones/equipo/excel",
     "rpoPlanLisUrl": "/Gacela-Backend/rpoplan",
     "rpoPlanRegUrl": "/Gacela-Backend/rpoplan/registrar",

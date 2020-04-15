@@ -7,8 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class ProyeccionVentaDetalleComponent {
 
+  /**
+   * Variable que trae la proyección desde el componente padre
+   */
   @Input() proyeccion: any;
-
+  
   constructor() { }
 
 }

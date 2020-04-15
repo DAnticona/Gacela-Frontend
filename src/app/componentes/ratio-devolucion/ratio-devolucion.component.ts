@@ -59,14 +59,17 @@ export class RatioDevolucionComponent {
   /**
    * Indica si el componente está cargando.
    */
-  public cargando = true;
+  public cargando = false;
 
   /**
    * Variable que envía el ratio de devolución al componente padre
    */
   @Output() protected enviaRatio = new EventEmitter();
 
-
+  /**
+   * Variable de estado que se envía al componente padre
+   */
+  @Output() protected enviaCargando = new EventEmitter();
 
   //#endregion VARIABLES
 
@@ -98,6 +101,9 @@ export class RatioDevolucionComponent {
    */
   private obtieneRatioDevolucion() {
 
+    this.cargando = true;
+    this.enviaCargando.emit(this.cargando);
+
     this.ratioDevolucionService.obtieneRatio(this.token, this.urls)
       .subscribe((res: any) => {
 
@@ -106,6 +112,7 @@ export class RatioDevolucionComponent {
         this.ratioEditable = this.esEditable();
         this.cargando = false;
         this.enviaRatio.emit(this.ratioDevolucion);
+        this.enviaCargando.emit(this.cargando);
 
       });
 

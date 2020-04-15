@@ -1,29 +1,45 @@
 <div class="card border-secondary mb-3" style="max-width: 18rem;">
 
-    <div class="card-header"><span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span></div>
+    <div class="card-header">
+
+        <span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span>
+
+    </div>
+
+    <div *ngIf="cargando" class="card-body text-center">
+
+        <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+
+    </div>
 
     <div *ngIf="!cargando">
 
-        <div *ngIf="!proyeccion" class="card-body text-danger">
+        <ul *ngIf="!proyeccion" class="list-group list-unstyled list-group-flush text-danger">
 
-            <p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección</p>
+            <li class="list-group-item border-0">
+                <i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección
+            </li>
 
-        </div>
+        </ul>
 
-        <ul *ngIf="proyeccion" lass="list-group list-group-flush text-secondary">
+        <ul *ngIf="proyeccion" class="list-group list-unstyled list-group-flush text-secondary">
 
-            <li class="list-group-item border-white">Tipo: {{proyeccion.tipo}}</li>
-            <li class="list-group-item border-white">Código: {{proyeccion.coProyeccion}}</li>
-            <li class="list-group-item border-white">Cód. File: {{proyeccion.coFile}}</li>
-            <li class="list-group-item border-white">Fecha: {{proyeccion.feProyeccion | date: 'dd/MM/yyyy'}}</li>
+            <li class="list-group-item border-0">Tipo: {{proyeccion.tipo}}</li>
+            <li class="list-group-item border-0">Código: {{proyeccion.coProyeccion}}</li>
+            <li class="list-group-item border-0">Cód. File: {{proyeccion.coFile}}</li>
+            <li class="list-group-item border-0">Fecha: {{proyeccion.feProyeccion | date: 'dd/MM/yyyy'}}</li>
 
         </ul>
 
     </div>
 
-    <div *ngIf="cargando" class="card-body text-center">
-        <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
-    </div>
+    <div *ngIf="!cargando" class="card-body">
 
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="ventaActiva" name="ventaActiva" [(ngModel)]="ventaActiva" (change)="setVentaActiva()">
+            <label class="custom-control-label" for="ventaActiva">Usar proyección ventas</label>
+        </div>
+
+    </div>
 
 </div>
