@@ -1,59 +1,105 @@
 <div class="m-5">
-    <h1>Proyecciones</h1>
-    <hr />
+	<h1>Proyecciones</h1>
+	<hr />
 
-    <fieldset [disabled]="cargandoProyVenta || cargandoFile || cargandoRatio || cargando">
-        <div class="row">
-            <div class="col-sm-4">
-                <app-file-mtc1r999 (enviaFile)="traeFileMtc1r999($event)" (enviaCargando)="traeCargandoFile($event)"></app-file-mtc1r999>
-            </div>
+	<fieldset
+		[disabled]="
+			cargandoProyVenta || cargandoFile || cargandoRatio || cargandoRpoPlan || cargandoExportar || cargando
+		"
+	>
+		<div class="row">
+			<div class="col-sm-4">
+				<app-file-mtc1r999
+					(enviaFile)="traeFileMtc1r999($event)"
+					(enviaCargando)="traeCargandoFile($event)"
+				></app-file-mtc1r999>
+			</div>
 
-            <div class="col-sm-4">
-                <app-ratio-devolucion (enviaRatio)="traeRatioDevolucion($event)" (enviaCargando)="traeCargandoRatio($event)"></app-ratio-devolucion>
-            </div>
+			<div class="col-sm-4">
+				<app-ratio-devolucion
+					(enviaRatio)="traeRatioDevolucion($event)"
+					(enviaCargando)="traeCargandoRatio($event)"
+				></app-ratio-devolucion>
+			</div>
 
-            <div class="col-sm-4">
-                <app-proyeccion-venta-activa (enviaProyeccion)="traeProyeccionVenta($event)" (enviaCargando)="traeCargandoProyVenta($event)"></app-proyeccion-venta-activa>
-            </div>
-        </div>
+			<div class="col-sm-4">
+				<app-proyeccion-venta-activa
+					(enviaProyeccion)="traeProyeccionVenta($event)"
+					(enviaCargando)="traeCargandoProyVenta($event)"
+				></app-proyeccion-venta-activa>
+			</div>
+		</div>
 
-        <hr />
+		<div class="row">
+			<div class="col-md-12">
+				<app-planes-rpo
+					(enviaRpoPlan)="traeRpoPlan($event)"
+					(enviaCargando)="traeCargandoRpoPlan($event)"
+				></app-planes-rpo>
+			</div>
+		</div>
 
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button class="btn btn-outline-primary" (click)="generaProyeccionEquipos()">
-					Generar proyección
+		<hr />
+
+		<div class="row">
+			<div class="col-sm-12 text-right">
+				<button class="btn btn-outline-primary" (click)="generaProyeccionEquipos()">
+					<i [ngClass]="{ 'fa fa-spinner fa-pulse fa-fw': cargando }" aria-hidden="true"></i>
+					<span *ngIf="!cargando">Generar Proyección</span>
+					<span *ngIf="cargando">Cargando</span>
 				</button>
-            </div>
-        </div>
+			</div>
+		</div>
 
-        <div *ngIf="proyeccionGenerada">
-            <div class="row">
-                <div class="col">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <button class="btn btn-link nav-link" [ngClass]="{ active: muestraSol }" (click)="muestraSol = true">
+		<div *ngIf="generar">
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<app-proyeccion-equipos-stocks (enviaStock)="traeStocks($event)"></app-proyeccion-equipos-stocks>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<button
+								class="btn btn-link nav-link"
+								[ngClass]="{ active: muestraSol }"
+								(click)="muestraSol = true"
+							>
 								Proy. Equipos
 							</button>
-                        </li>
-                        <li *ngIf="proyeccionVenta" class="nav-item">
-                            <button class="btn btn-link nav-link" [ngClass]="{ active: !muestraSol }" (click)="muestraSol = false">
+						</li>
+						<li *ngIf="proyeccionVentaFinal" class="nav-item">
+							<button
+								class="btn btn-link nav-link"
+								[ngClass]="{ active: !muestraSol }"
+								(click)="muestraSol = false"
+							>
 								Proy. Ventas
 							</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+						</li>
+					</ul>
+				</div>
+			</div>
 
-            <div *ngIf="proyeccionEquipo.detalles" class="row">
-                <div *ngIf="!muestraSol" class="col-sm-12">
-                    <app-proyeccion-venta-detalle [proyeccion]="proyeccionVenta"></app-proyeccion-venta-detalle>
-                </div>
-
-                <div *ngIf="muestraSol" class="col-sm-12">
-                    <app-proyeccion-equipos-detalle [proyeccion]="proyeccionEquipo" [proyeccionVenta]="proyeccionVenta"></app-proyeccion-equipos-detalle>
-                </div>
-            </div>
-        </div>
-    </fieldset>
+			<div *ngIf="proyeccionEquipo.detalles" class="row">
+				<div *ngIf="muestraSol" class="col-sm-12">
+					<app-proyeccion-equipos-detalle
+						[proyeccion]="proyeccionEquipo"
+						[proyeccionVenta]="proyeccionVentaFinal"
+						[stock]="stock"
+						(enviaCargando)="traeCargandoExportar($event)"
+					></app-proyeccion-equipos-detalle>
+				</div>
+				<div *ngIf="!muestraSol" class="col-sm-12">
+					<app-proyeccion-venta-detalle
+						[proyeccion]="proyeccionVentaFinal"
+						[stock]="stock"
+					></app-proyeccion-venta-detalle>
+				</div>
+			</div>
+		</div>
+	</fieldset>
 </div>

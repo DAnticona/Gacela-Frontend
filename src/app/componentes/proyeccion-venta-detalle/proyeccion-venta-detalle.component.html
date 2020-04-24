@@ -1,84 +1,159 @@
 <table *ngIf="proyeccion" class="table table-sm mt-3 mb-3">
+	<thead class="text-sm-center">
+		<tr>
+			<th colspan="2"></th>
+			<th colspan="4" class="bg-light">2SD</th>
+			<th colspan="4">4SD</th>
+			<th colspan="4" class="bg-light">4SH</th>
+			<th></th>
+		</tr>
+		<tr>
+			<th colspan="2">Stock</th>
+			<td colspan="4" class="bg-light">
+				{{ proyeccion.stock2Sd }}
+			</td>
+			<td colspan="4">
+				{{ proyeccion.stock4Sd }}
+			</td>
+			<td colspan="4" class="bg-light">
+				{{ proyeccion.stock4Sh }}
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th class="bg-light">Nave</th>
+			<th>Viaje</th>
+			<th class="bg-light">Non F.E.</th>
+			<th class="bg-light">Picked Up</th>
+			<th class="bg-light">F.E.</th>
+			<th class="bg-light">Picked Up</th>
+			<th>Non F.E.</th>
+			<th>Picked Up</th>
+			<th>F.E.</th>
+			<th>Picked Up</th>
+			<th class="bg-light">Non F.E.</th>
+			<th class="bg-light">Picked Up</th>
+			<th class="bg-light">F.E.</th>
+			<th class="bg-light">Picked Up</th>
+			<th>ETA</th>
+		</tr>
+	</thead>
 
-    <thead class="detalle text-sm-center">
-        <tr>
-            <th colspan="2"></th>
-            <th colspan="4" class="bg-light">2SD</th>
-            <th colspan="4">4SD</th>
-            <th colspan="4" class="bg-light">4SH</th>
-            <th></th>
-        </tr>
+	<tbody class="table-borderless text-sm-left">
+		<tr *ngFor="let det of detalle; let i = index">
+			<td class="bg-light">{{ det.alNave }}</td>
+			<td>{{ det.viaje }}</td>
+			<td class="bg-light text-center">{{ det.ca2SdNoFe }}</td>
+			<td class="bg-light text-center">{{ det.ca2SdNoFePick }}</td>
+			<td class="bg-light text-center">{{ det.ca2SdFe }}</td>
+			<td class="bg-light text-center">{{ det.ca2SdFePick }}</td>
+			<td class="text-center">{{ det.ca4SdNoFe }}</td>
+			<td class="text-center">{{ det.ca4SdNoFePick }}</td>
+			<td class="text-center">{{ det.ca4SdFe }}</td>
+			<td class="text-center">{{ det.ca4SdFePick }}</td>
+			<td class="bg-light text-center">{{ det.ca4ShNoFe }}</td>
+			<td class="bg-light text-center">{{ det.ca4ShNoFePick }}</td>
+			<td class="bg-light text-center">{{ det.ca4ShFe }}</td>
+			<td class="bg-light text-center">{{ det.ca4ShFePick }}</td>
+			<td class="text-center">{{ det.eta | date: 'dd/MM/yyyy' }}</td>
+		</tr>
+	</tbody>
 
-        <tr>
-            <th class="bg-light">Nave</th>
-            <th>Viaje</th>
-            <th class="bg-light">Non F.E.</th>
-            <th class="bg-light">Picked Up</th>
-            <th class="bg-light">F.E.</th>
-            <th class="bg-light">Picked Up</th>
-            <th>Non F.E.</th>
-            <th>Picked Up</th>
-            <th>F.E.</th>
-            <th>Picked Up</th>
-            <th class="bg-light">Non F.E.</th>
-            <th class="bg-light">Picked Up</th>
-            <th class="bg-light">F.E.</th>
-            <th class="bg-light">Picked Up</th>
-            <th>ETA</th>
-        </tr>
-    </thead>
+	<tbody class="text-sm-center">
+		<tr>
+			<th colspan="2">Suma</th>
+			<td class="bg-light">{{ proyeccion.to2SdNoFe }}</td>
+			<td class="bg-light">{{ proyeccion.to2SdNoFePick }}</td>
+			<td class="bg-light">{{ proyeccion.to2SdFe }}</td>
+			<td class="bg-light">{{ proyeccion.to2SdFePick }}</td>
+			<td>{{ proyeccion.to4SdNoFe }}</td>
+			<td>{{ proyeccion.to4SdNoFePick }}</td>
+			<td>{{ proyeccion.to4SdFe }}</td>
+			<td>{{ proyeccion.to4SdFePick }}</td>
+			<td class="bg-light">{{ proyeccion.to4ShNoFe }}</td>
+			<td class="bg-light">{{ proyeccion.to4ShNoFePick }}</td>
+			<td class="bg-light">{{ proyeccion.to4ShFe }}</td>
+			<td class="bg-light">{{ proyeccion.to4ShFePick }}</td>
+			<td></td>
+		</tr>
 
-    <tbody class="detalle table-borderless text-sm-left">
-        <tr *ngFor="let det of proyeccion.detalles; let i = index">
-            <td class="bg-light nave text-center">{{det.alNave}}</td>
-            <td class="viaje">{{det.viaje}}</td>
-            <td class="bg-light valor">{{det.ca2SdNoFe}}</td>
-            <td class="bg-light valor">{{det.ca2SdNoFePick}}</td>
-            <td class="bg-light valor">{{det.ca2SdFe}}</td>
-            <td class="bg-light valor">{{det.ca2SdFePick}}</td>
-            <td class="valor">{{det.ca4SdNoFe}}</td>
-            <td class="valor">{{det.ca4SdNoFePick}}</td>
-            <td class="valor">{{det.ca4SdFe}}</td>
-            <td class="valor">{{det.ca4SdFePick}}</td>
-            <td class="bg-light valor">{{det.ca4ShNoFe}}</td>
-            <td class="bg-light valor">{{det.ca4ShNoFePick}}</td>
-            <td class="bg-light valor">{{det.ca4ShFe}}</td>
-            <td class="bg-light valor">{{det.ca4ShFePick}}</td>
-            <td class="eta">{{det.eta | date: 'dd/MM/yyyy'}}</td>
-        </tr>
-    </tbody>
+		<tr class="text-center">
+			<th colspan="2">TT Booking</th>
+			<td class="bg-light" colspan="4">{{ proyeccion.to2SdBook }}</td>
+			<td colspan="4">{{ proyeccion.to4SdBook }}</td>
+			<td class="bg-light" colspan="4">{{ proyeccion.to4ShBook }}</td>
+			<td></td>
+		</tr>
 
+		<tr>
+			<th colspan="2">TT Picked Up</th>
+			<td class="bg-light" colspan="4">{{ proyeccion.to2SdPick }}</td>
+			<td colspan="4">{{ proyeccion.to4SdPick }}</td>
+			<td class="bg-light" colspan="4">{{ proyeccion.to4ShPick }}</td>
+			<td></td>
+		</tr>
 
-    <tbody class="detalle text-sm-center">
-        <tr>
-            <th colspan="2">Suma</th>
-            <td class="bg-light valor">{{proyeccion.to2SdNoFe}}</td>
-            <td class="bg-light valor">{{proyeccion.to2SdNoFePick}}</td>
-            <td class="bg-light valor">{{proyeccion.to2SdFe}}</td>
-            <td class="bg-light valor">{{proyeccion.to2SdFePick}}</td>
-            <td class="valor">{{proyeccion.to4SdNoFe}}</td>
-            <td class="valor">{{proyeccion.to4SdNoFePick}}</td>
-            <td class="valor">{{proyeccion.to4SdFe}}</td>
-            <td class="valor">{{proyeccion.to4SdFePick}}</td>
-            <td class="bg-light valor">{{proyeccion.to4ShNoFe}}</td>
-            <td class="bg-light valor">{{proyeccion.to4ShNoFePick}}</td>
-            <td class="bg-light valor">{{proyeccion.to4ShFe}}</td>
-            <td class="bg-light valor">{{proyeccion.to4ShFePick}}</td>
-        </tr>
+		<tr class="text-center">
+			<th colspan="2">Empty return until {{ proyeccion.feEmptyReturn | date: 'dd-MMM' }}</th>
+			<td class="bg-light" colspan="4">
+				{{ proyeccion.ca2SdEmptyRet }}
+			</td>
+			<td colspan="4">{{ proyeccion.ca4SdEmptyRet }}</td>
+			<td class="bg-light" colspan="4">
+				{{ proyeccion.ca4ShEmptyRet }}
+			</td>
+			<td class="text-center badge-secondary">
+				{{ proyeccion.nroDiasAlRetorno }}
+			</td>
+		</tr>
+	</tbody>
 
-        <tr>
-            <th colspan="2">TT Booking</th>
-            <td class="valor bg-light" colspan="4">{{proyeccion.to2SdBook}}</td>
-            <td class="valor" colspan="4">{{proyeccion.to4SdBook}}</td>
-            <td class="valor bg-light" colspan="4">{{proyeccion.to4ShBook}}</td>
-        </tr>
+	<tbody class="detalle" *ngIf="rpoPlan.length > 0">
+		<tr>
+			<th class="text-center" colspan="15">RPO Plan</th>
+		</tr>
 
-        <tr>
-            <th colspan="2">TT Picked Up</th>
-            <td class="valor bg-light" colspan="4">{{proyeccion.to2SdPick}}</td>
-            <td class="valor" colspan="4">{{proyeccion.to4SdPick}}</td>
-            <td class="valor bg-light" colspan="4">{{proyeccion.to4ShPick}}</td>
-        </tr>
-    </tbody>
+		<tr class="text-center">
+			<th class="bg-light">Nave</th>
+			<th>Viaje</th>
+			<th colspan="4" class="bg-light">2SD</th>
+			<th colspan="4">4SD</th>
+			<th colspan="4" class="bg-light">4SH</th>
+			<th>ETA</th>
+		</tr>
+		<tr *ngFor="let det of rpoPlan; let i = index">
+			<td class="bg-light">
+				{{ det.alNave }}
+			</td>
+			<td>
+				{{ det.viaje }}
+			</td>
+			<td colspan="4" class="text-center bg-light">
+				{{ det.caRpo2Sd }}
+			</td>
+			<td colspan="4" class="text-center">
+				{{ det.caRpo4Sd }}
+			</td>
+			<td colspan="4" class="text-center bg-light">
+				{{ det.caRpo4Sh }}
+			</td>
+			<td>
+				{{ det.eta | date: 'dd/MM/yyyy' }}
+			</td>
+		</tr>
+	</tbody>
 
+	<tbody class="detalle text-center">
+		<tr>
+			<th colspan="2">Available</th>
+			<td class="bg-light" colspan="4">
+				{{ proyeccion.available2Sd }}
+			</td>
+			<td colspan="4">{{ proyeccion.available4Sd }}</td>
+			<td class="bg-light" colspan="4">
+				{{ proyeccion.available4Sh }}
+			</td>
+			<td></td>
+		</tr>
+	</tbody>
 </table>

@@ -32,7 +32,6 @@ import { CalendarioComponent } from './componentes/opciones/calendario/calendari
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { ProyventasComponent } from './componentes/opciones/proyventas/proyventas.component';
 
-
 import { MaterialModule } from './material.module';
 import { BuscarProyventasolDialogComponent } from './componentes/opciones/proyventas/buscar-proyventasol-dialog/buscar-proyventasol-dialog.component';
 import { DetproyventasComponent } from './componentes/opciones/proyventas/detproyventas/detproyventas.component';
@@ -48,63 +47,70 @@ import { FileMtc1r999Component } from './componentes/file-mtc1r999/file-mtc1r999
 import { ProyeccionVentaActivaComponent } from './componentes/proyeccion-venta-activa/proyeccion-venta-activa.component';
 import { ProyeccionVentaDetalleComponent } from './componentes/proyeccion-venta-detalle/proyeccion-venta-detalle.component';
 import { ProyeccionEquiposDetalleComponent } from './componentes/proyeccion-equipos-detalle/proyeccion-equipos-detalle.component';
+import { ProyeccionEquiposStocksComponent } from './componentes/proyeccion-equipos-stocks/proyeccion-equipos-stocks.component';
+import { PlanesRpoComponent } from './componentes/planes-rpo/planes-rpo.component';
+import { DialogRegistroRpoPlanComponent } from './componentes/modales/dialog-registro-rpo-plan/dialog-registro-rpo-plan.component';
 
 @NgModule({
-  entryComponents: [
-    BuscarProyventasolDialogComponent,
-    DialogListarNavesComponent,
-    DialogRegistrarNavesComponent
-  ],
-  declarations: [
-    AppComponent,
-    LoginPageComponent,
-    WelcomePageComponent,
-    NotFoundPageComponent,
-    NavBarComponent,
-    SideBarComponent,
-    ForecastComponent,
-    RetirosComponent,
-    Rep6040Component,
-    GatesComponent,
-    TransbordoComponent,
-    OutstandingComponent,
-    HomeComponent,
-    ProyeccionesComponent,
-    CapitalizadoPipe,
-    StatusBarComponent,
-    PerfilComponent,
-    PasswordComponent,
-    FechaPipe,
-    UsuarioComponent,
-    ImagenUsuarioComponent,
-    CalendarioComponent,
-    ProyventasComponent,
-    BuscarProyventasolDialogComponent,
-    DetproyventasComponent,
-    NavesComponent,
-    DialogListarNavesComponent,
-    DialogRegistrarNavesComponent,
-    MayusculaDirective,
-    RegistroNavesComponent,
-    ProyeccionVentasComponent,
-    ProyeccionEquiposComponent,
-    RatioDevolucionComponent,
-    FileMtc1r999Component,
-    ProyeccionVentaActivaComponent,
-    ProyeccionVentaDetalleComponent,
-    ProyeccionEquiposDetalleComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    CalendarModule,
-    MaterialModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+	entryComponents: [
+		BuscarProyventasolDialogComponent,
+		DialogListarNavesComponent,
+		DialogRegistrarNavesComponent,
+		DialogRegistroRpoPlanComponent,
+	],
+	declarations: [
+		AppComponent,
+		LoginPageComponent,
+		WelcomePageComponent,
+		NotFoundPageComponent,
+		NavBarComponent,
+		SideBarComponent,
+		ForecastComponent,
+		RetirosComponent,
+		Rep6040Component,
+		GatesComponent,
+		TransbordoComponent,
+		OutstandingComponent,
+		HomeComponent,
+		ProyeccionesComponent,
+		CapitalizadoPipe,
+		StatusBarComponent,
+		PerfilComponent,
+		PasswordComponent,
+		FechaPipe,
+		UsuarioComponent,
+		ImagenUsuarioComponent,
+		CalendarioComponent,
+		ProyventasComponent,
+		BuscarProyventasolDialogComponent,
+		DetproyventasComponent,
+		NavesComponent,
+		DialogListarNavesComponent,
+		DialogRegistrarNavesComponent,
+		MayusculaDirective,
+		RegistroNavesComponent,
+		ProyeccionVentasComponent,
+		ProyeccionEquiposComponent,
+		RatioDevolucionComponent,
+		FileMtc1r999Component,
+		ProyeccionVentaActivaComponent,
+		ProyeccionVentaDetalleComponent,
+		ProyeccionEquiposDetalleComponent,
+		ProyeccionEquiposStocksComponent,
+		PlanesRpoComponent,
+		DialogRegistroRpoPlanComponent,
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		ReactiveFormsModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		CalendarModule,
+		MaterialModule,
+	],
+	providers: [],
+	bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

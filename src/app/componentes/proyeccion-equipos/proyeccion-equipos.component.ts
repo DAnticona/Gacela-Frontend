@@ -8,9 +8,22 @@ import { ProyeccionEquipoCab } from 'src/app/modelos/proyeccion-equipo-cab.model
 import { ProyeccionEquipoDet } from 'src/app/modelos/proyeccion-equipo-det.model';
 import { CalendarioService } from '../../servicios/calendario.service';
 import { DatePipe } from '@angular/common';
-import { RpoPlanService } from '../../servicios/rpo-plan.service';
 import { RpoPlan } from '../../models/rpoPlan.model';
+import { ProyeccionEquiposStocks } from '../../modelos/proyeccion-equipos-stocks.model';
 
+/**
+ * Controla la generación de la proyección de equipos.
+ * Trae datos de los siguientes componentes:
+ * - FileMtc1r999: Datos del archivo SOL activo.
+ * - ProyeccionVentas: Proyección de ventas activa.
+ * - RatioDevolucion: Ratios de devolución registrados.
+ * - ProyeccionEquiposStock: Stock para la proyección.
+ * -
+ *
+ * Envía los datos al componente ProyeccionEquiposDetalles.
+ * - Autor: David Anticona - <danticona@wollcorp.com>
+ * - Creado el: 16/04/2020
+ */
 @Component({
 	selector: 'app-proyeccion-equipos',
 	templateUrl: './proyeccion-equipos.component.html',
@@ -29,14 +42,9 @@ export class ProyeccionEquiposComponent {
 	private token: string;
 
 	/**
-	 * Variable que almacena los datos de la proyección generada por el equipo de ventas
-	 */
-	public proyeccionVenta = new ProyeccionVentaCab();
-
-	/**
 	 * Variable que almacena la proyección de equipos generada.
 	 */
-	protected proyeccionEquipo = new ProyeccionEquipoCab();
+	protected proyeccionEquipo: ProyeccionEquipoCab;
 
 	/**
 	 * Variable que almacena los Planes RPO
@@ -69,9 +77,20 @@ export class ProyeccionEquiposComponent {
 	protected today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
 	/**
+	 * Variable que almacena los datos de la proyección generada por el equipo de ventas.
+	 */
+	public proyeccionVenta = new ProyeccionVentaCab();
+	public proyeccionVentaFinal: ProyeccionEquipoCab;
+
+	/**
+	 * Variable que almacena los stocks de la proyección de equipos.
+	 */
+	public stock = new ProyeccionEquiposStocks();
+
+	/**
 	 * Variable que controla si se hizo click en el boton proyeccionGenerada.
 	 */
-	public proyeccionGenerada = false;
+	public generar = false;
 
 	/**
 	 * Variable que controla el estado de la página, si esta cargando algun componente.
@@ -81,23 +100,32 @@ export class ProyeccionEquiposComponent {
 	/**
 	 * Variable que controla el estado del componente FileMtc1r999
 	 */
-	public cargandoFile = true;
+	public cargandoFile = false;
 
 	/**
 	 * Variable que controla el estado del componente RatioDevolucion
 	 */
-	public cargandoRatio = true;
+	public cargandoRatio = false;
 
 	/**
 	 * Variable que controla el estado del componente ProyeccionVentaActiva
 	 */
-	public cargandoProyVenta = true;
+	public cargandoProyVenta = false;
+
+	/**
+	 * Variable que controla el estado del componente RpoPlan
+	 */
+	public cargandoRpoPlan = false;
+
+	/**
+	 * Variable que controla el estado del componente ProyeccionDetalle
+	 */
+	public cargandoExportar = false;
 
 	constructor(
 		private paramService: ParamsService,
 		private proyeccionService: ProyeccionService,
 		private calendarioService: CalendarioService,
-		private rpoPlanService: RpoPlanService,
 		private datepipe: DatePipe
 	) {
 		this.urls = this.paramService.urls;
@@ -106,12 +134,17 @@ export class ProyeccionEquiposComponent {
 
 	/**
 	 * Método que se emite desde el componente ProyeccionVentaActiva,
-	 * Trae la proyección de ventas desde la BD
+	 * Trae la proyección de ventas desde la BD.
+	 * Es necesario volver a generar la proyeccion
 	 * @param event Es el valor retornado desde el componente (proyección de ventas)
 	 */
 	public traeProyeccionVenta(event) {
-		this.proyeccionVenta = event;
-		this.proyeccionGenerada = null;
+		if (event) {
+			this.proyeccionVenta = event;
+		} else {
+			this.proyeccionVenta = null;
+		}
+		this.generar = false;
 	}
 
 	/**
@@ -126,6 +159,7 @@ export class ProyeccionEquiposComponent {
 	/**
 	 * Método que se emite desde el componente RatioDevolucion,
 	 * trae los ratios de devolución desde la BD.
+	 * Es necesario volver a generar la proyeccion
 	 * @param event Es el valor de retorno del componente (Ratio de devolución)
 	 */
 	public traeRatioDevolucion(event) {
@@ -134,6 +168,7 @@ export class ProyeccionEquiposComponent {
 		} else {
 			this.ratioDevolucion = null;
 		}
+		this.generar = false;
 	}
 
 	/**
@@ -148,6 +183,7 @@ export class ProyeccionEquiposComponent {
 	/**
 	 * Método que se emite desde el componente FileMtc1r999,
 	 * trae el último archivo MTC1R999.
+	 * Es necesario volver a generar la proyeccion
 	 * @param event Es el valor de retorno del componente (File MTC1R999)
 	 */
 	public traeFileMtc1r999(event) {
@@ -156,6 +192,7 @@ export class ProyeccionEquiposComponent {
 		} else {
 			this.fileMtc1r999 = null;
 		}
+		this.generar = false;
 	}
 
 	/**
@@ -168,35 +205,76 @@ export class ProyeccionEquiposComponent {
 	}
 
 	/**
+	 * Método que se emite desde el componente DialogRegistroRpoPlan,
+	 * trae los planes RPO registrados en base de datos.
+	 * Es necesario volver a generar la proyeccion
+	 * @param event Son los planes RPO obtenidos de la base de datos
+	 */
+	public traeRpoPlan(event) {
+		if (event) {
+			this.rpoPlan = event;
+		} else {
+			this.rpoPlan = null;
+		}
+		this.generar = false;
+	}
+
+	/**
+	 * Método que se emite desde el componente DialogRegistroRpoPlan,
+	 * trae el estado del componente si esta cargando o no.
+	 * @param event Es el estado del componente hijo.
+	 */
+	public traeCargandoRpoPlan(event) {
+		this.cargandoRpoPlan = event;
+	}
+
+	/**
+	 * Método que se emite desde el componente ProyeccionEquiposStocks,
+	 * trae los stocks ingresados.
+	 * NO es necesario volver a generar la proyeccion.
+	 * @param event Es el stock ingresado en el componente.
+	 */
+	public traeStocks(event) {
+		this.stock = new ProyeccionEquiposStocks();
+		if (event) {
+			this.stock = event;
+		} else {
+			this.stock = null;
+		}
+	}
+
+	public traeCargandoExportar(event) {
+		this.cargandoExportar = event;
+	}
+
+	/**
 	 * Método lanzado al hacer click en el boton "Generar Proyeccion".
 	 * Muestra la proyección de ventas y esquipos
 	 */
 	public generaProyeccionEquipos() {
 		this.cargando = true;
+		this.generar = false;
 
-		this.proyeccionGenerada = false;
-
-		this.proyeccionEquipo = new ProyeccionEquipoCab();
+		let proyeccionEquipo = new ProyeccionEquipoCab();
+		let proyeccionVenta = new ProyeccionEquipoCab();
 
 		this.proyeccionService
 			.generaResumenProyeccion(this.token, this.urls, this.fileMtc1r999.coFile)
 			.subscribe((res: any) => {
 				this.resumen = res.body.proyeccionGenerada;
 
-				this.iniciaDatosCabecera();
+				proyeccionEquipo = this.iniciaDatosCabecera(proyeccionEquipo);
 
-				this.resumenToDetalle(this.resumen);
+				proyeccionEquipo = this.resumenToDetalle(this.resumen, proyeccionEquipo);
 
-				this.proyeccionEquipo.ratio2Sd = this.ratioDevolucion.ratio2Sd;
-				this.proyeccionEquipo.ratio4Sd = this.ratioDevolucion.ratio4Sd;
-				this.proyeccionEquipo.ratio4Sh = this.ratioDevolucion.ratio4Sh;
+				proyeccionEquipo.ratio2Sd = this.ratioDevolucion.ratio2Sd;
+				proyeccionEquipo.ratio4Sd = this.ratioDevolucion.ratio4Sd;
+				proyeccionEquipo.ratio4Sh = this.ratioDevolucion.ratio4Sh;
+				proyeccionEquipo.nroDiasHabiles = 24;
 
-				this.proyeccionEquipo.nroDiasHabiles = 24;
+				let lastEta = new Date(proyeccionEquipo.detalles[proyeccionEquipo.detalles.length - 1].eta.getTime());
 
-				let lastEta = new Date(
-					this.proyeccionEquipo.detalles[this.proyeccionEquipo.detalles.length - 1].eta.getTime()
-				);
-				this.proyeccionEquipo.feEmptyReturn = new Date(
+				proyeccionEquipo.feEmptyReturn = new Date(
 					lastEta.getFullYear(),
 					lastEta.getMonth(),
 					lastEta.getDate() - 7
@@ -204,7 +282,7 @@ export class ProyeccionEquiposComponent {
 
 				let fechaIni = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 				let fechaFin = new Date(
-					this.proyeccionEquipo.detalles[this.proyeccionEquipo.detalles.length - 1].eta.getTime()
+					proyeccionEquipo.detalles[proyeccionEquipo.detalles.length - 1].eta.getTime()
 				);
 
 				this.calendarioService
@@ -217,87 +295,75 @@ export class ProyeccionEquiposComponent {
 					.subscribe(res2 => {
 						let calendario = res2.body.calendario;
 
-						this.proyeccionEquipo.nroDiasAlRetorno = calendario.filter(
+						proyeccionEquipo.nroDiasAlRetorno = calendario.filter(
 							c =>
 								c.fecha.getTime() > this.today.getTime() &&
 								c.fecha.getTime() <= lastEta &&
 								c.fgFeriado === 'N'
 						).length;
 
-						this.proyeccionEquipo.ca2SdEmptyRet = Math.round(
-							(this.ratioDevolucion.ratio2Sd / this.proyeccionEquipo.nroDiasHabiles) *
-								this.proyeccionEquipo.nroDiasAlRetorno
+						proyeccionEquipo.ca2SdEmptyRet = Math.round(
+							(proyeccionEquipo.ratio2Sd / proyeccionEquipo.nroDiasHabiles) *
+								proyeccionEquipo.nroDiasAlRetorno
 						);
-						this.proyeccionEquipo.ca4SdEmptyRet = Math.round(
-							(this.ratioDevolucion.ratio4Sd / this.proyeccionEquipo.nroDiasHabiles) *
-								this.proyeccionEquipo.nroDiasAlRetorno
+						proyeccionEquipo.ca4SdEmptyRet = Math.round(
+							(proyeccionEquipo.ratio4Sd / proyeccionEquipo.nroDiasHabiles) *
+								proyeccionEquipo.nroDiasAlRetorno
 						);
-						this.proyeccionEquipo.ca4ShEmptyRet = Math.round(
-							(this.ratioDevolucion.ratio4Sh / this.proyeccionEquipo.nroDiasHabiles) *
-								this.proyeccionEquipo.nroDiasAlRetorno
+						proyeccionEquipo.ca4ShEmptyRet = Math.round(
+							(proyeccionEquipo.ratio4Sh / proyeccionEquipo.nroDiasHabiles) *
+								proyeccionEquipo.nroDiasAlRetorno
 						);
 
-						this.proyeccionEquipo.available2Sd += this.proyeccionEquipo.ca2SdEmptyRet;
-						this.proyeccionEquipo.available4Sd += this.proyeccionEquipo.ca4SdEmptyRet;
-						this.proyeccionEquipo.available4Sh += this.proyeccionEquipo.ca4ShEmptyRet;
+						for (let p of this.rpoPlan) {
+							let detalle = new ProyeccionEquipoDet();
 
-						// TRAE LOS RPO PLAN
-						this.rpoPlanService.obtieneRpoPlan(this.urls, this.token).subscribe((res3: any) => {
-							let rpoPlan = res3.body.planes.planes;
+							detalle.idItem = proyeccionEquipo.detalles.length + 1;
+							detalle.alNave = p.alNaveRpo;
+							detalle.viaje = p.viajeRpo;
+							detalle.eta = p.etaRpo;
+							detalle.fgRpoPlan = 'S';
+							detalle.caRpo2Sd = p.ca2SdRpo;
+							detalle.caRpo4Sd = p.ca4SdRpo;
+							detalle.caRpo4Sh = p.ca4ShRpo;
 
-							for (let p of rpoPlan) {
-								let detalle = new ProyeccionEquipoDet();
+							proyeccionEquipo.detalles.push(detalle);
+						}
 
-								detalle.idItem = this.proyeccionEquipo.detalles.length + 1;
-								detalle.alNave = p.alNaveRpo;
-								detalle.viaje = p.viajeRpo;
-								detalle.eta = p.etaRpo;
-								detalle.fgRpoPlan = 'S';
-								detalle.caRpo2Sd = p.ca2SdRpo;
-								detalle.caRpo4Sd = p.ca4SdRpo;
-								detalle.caRpo4Sh = p.ca4ShRpo;
+						proyeccionEquipo = this.calcularAvailables(proyeccionEquipo);
 
-								this.proyeccionEquipo.available2Sd += detalle.caRpo2Sd;
-								this.proyeccionEquipo.available4Sd += detalle.caRpo4Sd;
-								this.proyeccionEquipo.available4Sh += detalle.caRpo4Sh;
-
-								this.proyeccionEquipo.detalles.push(detalle);
-							}
-
-							this.proyeccionGenerada = true;
-
+						if (this.proyeccionVenta) {
+							this.iniciaProyeccionVentas(proyeccionEquipo);
+						} else {
+							this.proyeccionVentaFinal = null;
+							this.proyeccionEquipo = proyeccionEquipo;
+							this.generar = true;
 							this.cargando = false;
-						});
+						}
 					});
 			});
 	}
 
 	/**
-	 * Método que obtiene los datos de la cabecera de la proyección
+	 * Método que obtiene los datos de la cabecera de la proyección.
+	 * Los datos de stock son gestionados de forma independiente, por eso
+	 * no se declaran en este método.
 	 */
-	private iniciaDatosCabecera() {
-		this.proyeccionEquipo = new ProyeccionEquipoCab();
-
-		this.proyeccionEquipo.coTiProy = 'DR';
-		this.proyeccionEquipo.coProyEqui = null;
-		this.proyeccionEquipo.coFile = this.fileMtc1r999.coFile;
+	private iniciaDatosCabecera(proyeccionEquipo: ProyeccionEquipoCab): ProyeccionEquipoCab {
+		proyeccionEquipo.coTiProy = 'DR';
+		proyeccionEquipo.coProyEqui = null;
+		proyeccionEquipo.coFile = this.fileMtc1r999.coFile;
 
 		if (this.proyeccionVenta) {
-			this.proyeccionEquipo.coProyVenta = this.proyeccionVenta.coProyeccion;
+			proyeccionEquipo.coProyVenta = this.proyeccionVenta.coProyeccion;
 		} else {
-			this.proyeccionEquipo.coProyVenta = null;
+			proyeccionEquipo.coProyVenta = null;
 		}
 
-		this.proyeccionEquipo.feCrea = this.today;
-		this.proyeccionEquipo.nroSem = 0;
+		proyeccionEquipo.feCrea = this.today;
+		proyeccionEquipo.nroSem = 0;
 
-		this.proyeccionEquipo.stock2Sd = 0;
-		this.proyeccionEquipo.stock4Sd = 0;
-		this.proyeccionEquipo.stock4Sh = 0;
-
-		this.proyeccionEquipo.available2Sd = 0;
-		this.proyeccionEquipo.available4Sd = 0;
-		this.proyeccionEquipo.available4Sh = 0;
+		return proyeccionEquipo;
 	}
 
 	/**
@@ -307,27 +373,27 @@ export class ProyeccionEquiposComponent {
 	 * @param resumen Resumen obtenido desde la BD
 	 * @returns Proyección generada a partir del resumen.
 	 */
-	private resumenToDetalle(resumen: any[]) {
-		this.proyeccionEquipo.detalles = new Array<ProyeccionEquipoDet>();
+	private resumenToDetalle(resumen: any[], proyeccionEquipo: ProyeccionEquipoCab): ProyeccionEquipoCab {
+		proyeccionEquipo.detalles = new Array<ProyeccionEquipoDet>();
 
 		resumen.forEach(p => {
 			if (
-				this.proyeccionEquipo.detalles.filter(
+				proyeccionEquipo.detalles.filter(
 					d => d.alNave === p.alNave && d.viaje === p.viaje && d.eta.getTime() === p.eta.getTime()
 				).length === 0
 			) {
 				let det = new ProyeccionEquipoDet();
 
-				det.idItem = this.proyeccionEquipo.detalles.length + 1;
+				det.idItem = proyeccionEquipo.detalles.length + 1;
 				det.alNave = p.alNave;
 				det.viaje = p.viaje;
 				det.eta = p.eta;
 
-				this.proyeccionEquipo.detalles.push(det);
+				proyeccionEquipo.detalles.push(det);
 			}
 		});
 
-		for (let d of this.proyeccionEquipo.detalles) {
+		for (let d of proyeccionEquipo.detalles) {
 			d.fgRpoPlan = 'N';
 			d.ca2SdFe = 0;
 			d.ca2SdFePick = 0;
@@ -343,7 +409,7 @@ export class ProyeccionEquiposComponent {
 			d.ca4ShNoFePick = 0;
 		}
 
-		this.proyeccionEquipo.detalles.forEach(d => {
+		proyeccionEquipo.detalles.forEach(d => {
 			resumen
 				.filter(f => f.alNave === d.alNave && f.viaje === d.viaje && f.eta.getTime() === d.eta.getTime())
 				.forEach(p => {
@@ -369,49 +435,180 @@ export class ProyeccionEquiposComponent {
 				});
 		});
 
-		this.proyeccionEquipo.detalles.sort((a, b) => new Date(a.eta).getTime() - new Date(b.eta).getTime());
+		proyeccionEquipo.detalles.sort((a, b) => new Date(a.eta).getTime() - new Date(b.eta).getTime());
 
-		this.proyeccionEquipo.to2SdFe = 0;
-		this.proyeccionEquipo.to2SdNoFe = 0;
-		this.proyeccionEquipo.to4SdNoFe = 0;
-		this.proyeccionEquipo.to4SdFe = 0;
-		this.proyeccionEquipo.to4ShNoFe = 0;
-		this.proyeccionEquipo.to4ShFe = 0;
-		this.proyeccionEquipo.to2SdNoFePick = 0;
-		this.proyeccionEquipo.to2SdFePick = 0;
-		this.proyeccionEquipo.to4SdNoFePick = 0;
-		this.proyeccionEquipo.to4SdFePick = 0;
-		this.proyeccionEquipo.to4ShNoFePick = 0;
-		this.proyeccionEquipo.to4ShFePick = 0;
+		proyeccionEquipo.to2SdFe = 0;
+		proyeccionEquipo.to2SdNoFe = 0;
+		proyeccionEquipo.to4SdNoFe = 0;
+		proyeccionEquipo.to4SdFe = 0;
+		proyeccionEquipo.to4ShNoFe = 0;
+		proyeccionEquipo.to4ShFe = 0;
+		proyeccionEquipo.to2SdNoFePick = 0;
+		proyeccionEquipo.to2SdFePick = 0;
+		proyeccionEquipo.to4SdNoFePick = 0;
+		proyeccionEquipo.to4SdFePick = 0;
+		proyeccionEquipo.to4ShNoFePick = 0;
+		proyeccionEquipo.to4ShFePick = 0;
 
-		for (let d of this.proyeccionEquipo.detalles) {
-			this.proyeccionEquipo.to2SdFe += d.ca2SdFe;
-			this.proyeccionEquipo.to2SdNoFe += d.ca2SdNoFe;
-			this.proyeccionEquipo.to4SdFe += d.ca4SdFe;
-			this.proyeccionEquipo.to4SdNoFe += d.ca4SdNoFe;
-			this.proyeccionEquipo.to4ShFe += d.ca4ShFe;
-			this.proyeccionEquipo.to4ShNoFe += d.ca4ShNoFe;
-			this.proyeccionEquipo.to2SdFePick += d.ca2SdFePick;
-			this.proyeccionEquipo.to2SdNoFePick += d.ca2SdNoFePick;
-			this.proyeccionEquipo.to4SdFePick += d.ca4SdFePick;
-			this.proyeccionEquipo.to4SdNoFePick += d.ca4SdNoFePick;
-			this.proyeccionEquipo.to4ShFePick += d.ca4ShFePick;
-			this.proyeccionEquipo.to4ShNoFePick += d.ca4ShNoFePick;
+		for (let d of proyeccionEquipo.detalles) {
+			proyeccionEquipo.to2SdFe += d.ca2SdFe;
+			proyeccionEquipo.to2SdNoFe += d.ca2SdNoFe;
+			proyeccionEquipo.to4SdFe += d.ca4SdFe;
+			proyeccionEquipo.to4SdNoFe += d.ca4SdNoFe;
+			proyeccionEquipo.to4ShFe += d.ca4ShFe;
+			proyeccionEquipo.to4ShNoFe += d.ca4ShNoFe;
+			proyeccionEquipo.to2SdFePick += d.ca2SdFePick;
+			proyeccionEquipo.to2SdNoFePick += d.ca2SdNoFePick;
+			proyeccionEquipo.to4SdFePick += d.ca4SdFePick;
+			proyeccionEquipo.to4SdNoFePick += d.ca4SdNoFePick;
+			proyeccionEquipo.to4ShFePick += d.ca4ShFePick;
+			proyeccionEquipo.to4ShNoFePick += d.ca4ShNoFePick;
 		}
 
-		this.proyeccionEquipo.to2SdBook = this.proyeccionEquipo.to2SdFe + this.proyeccionEquipo.to2SdNoFe;
-		this.proyeccionEquipo.to4SdBook = this.proyeccionEquipo.to4SdFe + this.proyeccionEquipo.to4SdNoFe;
-		this.proyeccionEquipo.to4ShBook = this.proyeccionEquipo.to4ShFe + this.proyeccionEquipo.to4ShNoFe;
+		proyeccionEquipo.to2SdBook = proyeccionEquipo.to2SdFe + proyeccionEquipo.to2SdNoFe;
+		proyeccionEquipo.to4SdBook = proyeccionEquipo.to4SdFe + proyeccionEquipo.to4SdNoFe;
+		proyeccionEquipo.to4ShBook = proyeccionEquipo.to4ShFe + proyeccionEquipo.to4ShNoFe;
 
-		this.proyeccionEquipo.to2SdPick = this.proyeccionEquipo.to2SdFePick + this.proyeccionEquipo.to2SdNoFePick;
-		this.proyeccionEquipo.to4SdPick = this.proyeccionEquipo.to4SdFePick + this.proyeccionEquipo.to4SdNoFePick;
-		this.proyeccionEquipo.to4ShPick = this.proyeccionEquipo.to4ShFePick + this.proyeccionEquipo.to4ShNoFePick;
+		proyeccionEquipo.to2SdPick = proyeccionEquipo.to2SdFePick + proyeccionEquipo.to2SdNoFePick;
+		proyeccionEquipo.to4SdPick = proyeccionEquipo.to4SdFePick + proyeccionEquipo.to4SdNoFePick;
+		proyeccionEquipo.to4ShPick = proyeccionEquipo.to4ShFePick + proyeccionEquipo.to4ShNoFePick;
 
-		this.proyeccionEquipo.available2Sd =
-			this.proyeccionEquipo.stock2Sd - this.proyeccionEquipo.to2SdBook + this.proyeccionEquipo.to2SdPick;
-		this.proyeccionEquipo.available4Sd =
-			this.proyeccionEquipo.stock4Sd - this.proyeccionEquipo.to4SdBook + this.proyeccionEquipo.to4SdPick;
-		this.proyeccionEquipo.available4Sh =
-			this.proyeccionEquipo.stock4Sh - this.proyeccionEquipo.to4ShBook + this.proyeccionEquipo.to4ShPick;
+		return proyeccionEquipo;
+	}
+
+	/**
+	 * Método auxiliar que calcula los totales de la proyección de equipos.
+	 * Este método es llamado una vez que la proyección ha sido generada.
+	 */
+	private calcularAvailables(proyeccionEquipo: ProyeccionEquipoCab): ProyeccionEquipoCab {
+		proyeccionEquipo.available2Sd =
+			proyeccionEquipo.to2SdPick - proyeccionEquipo.to2SdBook + proyeccionEquipo.ca2SdEmptyRet;
+		proyeccionEquipo.available4Sd =
+			proyeccionEquipo.to4SdPick - proyeccionEquipo.to4SdBook + proyeccionEquipo.ca4SdEmptyRet;
+		proyeccionEquipo.available4Sh =
+			proyeccionEquipo.to4ShPick - proyeccionEquipo.to4ShBook + proyeccionEquipo.ca4ShEmptyRet;
+
+		let rpoPlan = proyeccionEquipo.detalles.filter(r => r.fgRpoPlan === 'S');
+		for (let rpo of rpoPlan) {
+			proyeccionEquipo.available2Sd += rpo.caRpo2Sd;
+			proyeccionEquipo.available4Sd += rpo.caRpo4Sd;
+			proyeccionEquipo.available4Sh += rpo.caRpo4Sh;
+		}
+
+		return proyeccionEquipo;
+	}
+
+	public iniciaProyeccionVentas(proyeccionEquipo: ProyeccionEquipoCab) {
+		let proyeccionVenta = new ProyeccionEquipoCab();
+		proyeccionVenta.coProyEqui = this.proyeccionVenta.coProyeccion;
+		proyeccionVenta.coTiProy = this.proyeccionVenta.tipo;
+		proyeccionVenta.feProy = this.proyeccionVenta.feProyeccion;
+		proyeccionVenta.fgActi = this.proyeccionVenta.fgActi;
+		proyeccionVenta.nroSem = this.proyeccionVenta.nroSem;
+		proyeccionVenta.coFile = this.proyeccionVenta.coFile;
+		proyeccionVenta.to2SdNoFe = this.proyeccionVenta.to2SdNoFe;
+		proyeccionVenta.to2SdFe = this.proyeccionVenta.to2SdFe;
+		proyeccionVenta.to4SdNoFe = this.proyeccionVenta.to4SdNoFe;
+		proyeccionVenta.to4SdFe = this.proyeccionVenta.to4SdFe;
+		proyeccionVenta.to4ShNoFe = this.proyeccionVenta.to4ShNoFe;
+		proyeccionVenta.to4ShFe = this.proyeccionVenta.to4ShFe;
+		proyeccionVenta.to2SdNoFePick = this.proyeccionVenta.to2SdNoFePick;
+		proyeccionVenta.to2SdFePick = this.proyeccionVenta.to2SdFePick;
+		proyeccionVenta.to4SdNoFePick = this.proyeccionVenta.to4SdNoFePick;
+		proyeccionVenta.to4SdFePick = this.proyeccionVenta.to4SdFePick;
+		proyeccionVenta.to4ShNoFePick = this.proyeccionVenta.to4ShNoFePick;
+		proyeccionVenta.to4ShFePick = this.proyeccionVenta.to4ShFePick;
+		proyeccionVenta.to2SdBook = this.proyeccionVenta.to2SdBook;
+		proyeccionVenta.to4SdBook = this.proyeccionVenta.to4SdBook;
+		proyeccionVenta.to4ShBook = this.proyeccionVenta.to4ShBook;
+		proyeccionVenta.to2SdPick = this.proyeccionVenta.to2SdPick;
+		proyeccionVenta.to4SdPick = this.proyeccionVenta.to4SdPick;
+		proyeccionVenta.to4ShPick = this.proyeccionVenta.to4ShPick;
+
+		proyeccionVenta.detalles = new Array<ProyeccionEquipoDet>();
+
+		for (let d of this.proyeccionVenta.detalles) {
+			let df = new ProyeccionEquipoDet();
+			df.idItem = d.idItem;
+			df.alNave = d.alNave;
+			df.viaje = d.viaje;
+			df.eta = d.eta;
+			df.ca2SdNoFe = d.ca2SdNoFe;
+			df.ca2SdFe = d.ca2SdFe;
+			df.ca4SdNoFe = d.ca4SdNoFe;
+			df.ca4SdFe = d.ca4SdFe;
+			df.ca4ShNoFe = d.ca4ShNoFe;
+			df.ca4ShFe = d.ca4ShFe;
+			df.ca2SdNoFePick = d.ca2SdNoFePick;
+			df.ca2SdFePick = d.ca2SdFePick;
+			df.ca4SdNoFePick = d.ca4SdNoFePick;
+			df.ca4SdFePick = d.ca4SdFePick;
+			df.ca4ShNoFePick = d.ca4ShNoFePick;
+			df.ca4ShFePick = d.ca4ShFePick;
+			df.fgRpoPlan = 'N';
+			proyeccionVenta.detalles.push(df);
+		}
+
+		proyeccionVenta.detalles.sort((a, b) => new Date(a.eta).getTime() - new Date(b.eta).getTime());
+
+		proyeccionVenta.ratio2Sd = this.ratioDevolucion.ratio2Sd;
+		proyeccionVenta.ratio4Sd = this.ratioDevolucion.ratio4Sd;
+		proyeccionVenta.ratio4Sh = this.ratioDevolucion.ratio4Sh;
+		proyeccionVenta.nroDiasHabiles = 24;
+
+		let lastEta = new Date(proyeccionVenta.detalles[proyeccionVenta.detalles.length - 1].eta.getTime());
+
+		proyeccionVenta.feEmptyReturn = new Date(
+			lastEta.getFullYear(),
+			lastEta.getMonth(),
+			lastEta.getDate() - 7
+		);
+
+		let fechaIni = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+		let fechaFin = new Date(proyeccionVenta.detalles[proyeccionVenta.detalles.length - 1].eta.getTime());
+
+		this.calendarioService
+			.getCalendario(
+				this.token,
+				this.urls,
+				this.datepipe.transform(fechaIni, 'yyyy-MM-dd'),
+				this.datepipe.transform(fechaFin, 'yyyy-MM-dd')
+			)
+			.subscribe(res3 => {
+				let cal = res3.body.calendario;
+
+				proyeccionVenta.nroDiasAlRetorno = cal.filter(
+					c => c.fecha.getTime() > this.today.getTime() && c.fecha.getTime() <= lastEta && c.fgFeriado === 'N'
+				).length;
+
+				proyeccionVenta.ca2SdEmptyRet = Math.round(
+					(proyeccionVenta.ratio2Sd / proyeccionVenta.nroDiasHabiles) * proyeccionVenta.nroDiasAlRetorno
+				);
+				proyeccionVenta.ca4SdEmptyRet = Math.round(
+					(proyeccionVenta.ratio4Sd / proyeccionVenta.nroDiasHabiles) * proyeccionVenta.nroDiasAlRetorno
+				);
+				proyeccionVenta.ca4ShEmptyRet = Math.round(
+					(proyeccionVenta.ratio4Sh / proyeccionVenta.nroDiasHabiles) * proyeccionVenta.nroDiasAlRetorno
+				);
+
+				for (let p of this.rpoPlan) {
+					let detalle = new ProyeccionEquipoDet();
+
+					detalle.idItem = proyeccionVenta.detalles.length + 1;
+					detalle.alNave = p.alNaveRpo;
+					detalle.viaje = p.viajeRpo;
+					detalle.eta = p.etaRpo;
+					detalle.fgRpoPlan = 'S';
+					detalle.caRpo2Sd = p.ca2SdRpo;
+					detalle.caRpo4Sd = p.ca4SdRpo;
+					detalle.caRpo4Sh = p.ca4ShRpo;
+
+					proyeccionVenta.detalles.push(detalle);
+				}
+				this.proyeccionVentaFinal = proyeccionVenta;
+				this.proyeccionEquipo = proyeccionEquipo;
+				this.generar = true;
+				this.cargando = false;
+			});
 	}
 }

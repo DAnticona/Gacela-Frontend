@@ -1,0 +1,46 @@
+<div class="row">
+	<table class="col-md-12" *ngIf="!cargando" class="table table-sm text-center">
+		<thead>
+			<tr>
+				<th colspan="8">RPO Plan</th>
+			</tr>
+			<tr>
+				<th></th>
+				<th>Nave</th>
+				<th>Viaje</th>
+				<th>2SD</th>
+				<th>4SD</th>
+				<th>4SH</th>
+				<th>ETA</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let rpo of rpoPlan; let i = index">
+				<td>
+					<button class="btn btn-outline-info btn-sm" (click)="editarRpo(i)">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+				</td>
+				<td>{{ rpo.alNaveRpo }}</td>
+				<td>{{ rpo.viajeRpo }}</td>
+				<td>{{ rpo.ca2SdRpo }}</td>
+				<td>{{ rpo.ca4SdRpo }}</td>
+				<td>{{ rpo.ca4ShRpo }}</td>
+				<td>{{ rpo.etaRpo | date: 'dd/MM/yyyy' }}</td>
+				<td>
+					<button class="btn btn-outline-danger btn-sm" (click)="eliminarRpo(i)">
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8" class="text-left">
+					<button class="btn btn-outline-secondary btn-sm" (click)="agregarRpo()">
+						<i class="fa fa-plus fa-1x" aria-hidden="true"></i>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

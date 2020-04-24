@@ -1,63 +1,113 @@
 <div class="m-5">
+	<h1>Proyecciones</h1>
+	<hr />
 
-    <h1>Proyecciones</h1>
-    <hr>
-
-    <form>
-
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button class="btn btn-primary ml-1 mb-1" (click)="nuevaProyeccion()"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i>Nuevo</button>
-                <button class="btn btn-primary ml-1 mb-1" (click)="abrirProyeccion()"><i class="fa fa-folder-open-o fa-fw" aria-hidden="true"></i>Abrir</button>
-            </div>
-        </div>
-        <div class="row mt-3">
-
-            <table class="table">
-                <caption>{{proyeccionesFiltradas.length}} registros encontrados</caption>
-                <thead>
-                    <tr class="text-center">
-                        <th scope="col">#</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Código</th>
-                        <th scope="col">Desde</th>
-                        <th scope="col">Hasta</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td scope="col">
-                            <select #tipo class="custom-select custom-select mb-3" (change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)">
-                              <option value="" selected>Todos</option>
-                              <option value="RH">RH</option>
-                              <option value="DR">DR</option>
-                          </select>
-                        </td>
-                        <td scope="col"><input #codigo type="text" class="form-control" id="codigo" placeholder="Código" (keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"></td>
-                        <td scope="col"><input #fechaIni value="{{lastWeek | date: 'yyyy-MM-dd'}}" type="date" class="form-control" id="fechaIni" (change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)" (keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"></td>
-                        <td scope="col"><input #fechaFin value="{{today | date: 'yyyy-MM-dd'}}" type="date" class="form-control" id="fechaFin" (change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)" (keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"></td>
-                        <td scope="col">
-                            <select #estado class="custom-select custom-select mb-3" (change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)">
-                              <option value="">Todos</option>
-                              <option value="P">Pendiente</option>
-                              <option value="A" selected>Aprobado</option>
-                              <option value="C">Cerrado</option>
-                          </select>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody *ngIf="proyeccionesFiltradas.length > 0">
-                    <tr *ngFor="let proyeccion of proyeccionesFiltradas; let i = index" class="text-center fila" (click)="seleccionar(i)" (dblclick)="abrirProyeccion()" [ngClass]="{selected: proyeccion.coProyeccion == codigoSel, noSelected: proyeccion.coProyeccion != codigoSel}">
-                        <th>{{i + 1}}</th>
-                        <td>{{proyeccion.tipo}}</td>
-                        <td>{{proyeccion.coProyeccion}}</td>
-                        <td colspan="2">{{proyeccion.feProyeccion | date: 'dd/MM/yyyy'}}</td>
-                        <td>{{proyeccion.fgActi}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </form>
-
+	<form>
+		<div class="row">
+			<div class="col-sm-12 text-right">
+				<button class="btn btn-primary ml-1 mb-1" (click)="nuevaProyeccion()">
+					<i class="fa fa-file-o fa-fw" aria-hidden="true"></i>Nuevo
+				</button>
+				<button class="btn btn-primary ml-1 mb-1" (click)="abrirProyeccion()">
+					<i class="fa fa-folder-open-o fa-fw" aria-hidden="true"></i>Abrir
+				</button>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<table class="table">
+				<caption>
+					{{
+						proyeccionesFiltradas.length
+					}}
+					registros encontrados
+				</caption>
+				<thead>
+					<tr class="text-center">
+						<th scope="col">#</th>
+						<th scope="col">Tipo</th>
+						<th scope="col">Código</th>
+						<th scope="col">Desde</th>
+						<th scope="col">Hasta</th>
+						<th scope="col">Estado</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td scope="col">
+							<select
+								#tipo
+								class="custom-select custom-select mb-3"
+								(change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+							>
+								<option value="" selected>Todos</option>
+								<option value="RH">RH</option>
+								<option value="DR">DR</option>
+							</select>
+						</td>
+						<td scope="col">
+							<input
+								#codigo
+								type="text"
+								class="form-control"
+								id="codigo"
+								placeholder="Código"
+								(keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+							/>
+						</td>
+						<td scope="col">
+							<input
+								#fechaIni
+								value="{{ lastWeek | date: 'yyyy-MM-dd' }}"
+								type="date"
+								class="form-control"
+								id="fechaIni"
+								(change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+								(keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+							/>
+						</td>
+						<td scope="col">
+							<input
+								#fechaFin
+								value="{{ today | date: 'yyyy-MM-dd' }}"
+								type="date"
+								class="form-control"
+								id="fechaFin"
+								(change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+								(keyup)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+							/>
+						</td>
+						<td scope="col">
+							<select
+								#estado
+								class="custom-select custom-select mb-3"
+								(change)="filtrar(tipo.value, codigo.value, fechaIni.value, fechaFin.value, estado.value)"
+							>
+								<option value="">Todos</option>
+								<option value="P">Pendiente</option>
+								<option value="A" selected>Aprobado</option>
+								<option value="C">Cerrado</option>
+							</select>
+						</td>
+					</tr>
+				</thead>
+				<tbody *ngIf="proyeccionesFiltradas.length > 0">
+					<tr
+						*ngFor="let proyeccion of proyeccionesFiltradas; let i = index"
+						class="text-center fila"
+						(click)="seleccionar(i)"
+						(dblclick)="abrirProyeccion()"
+						[ngClass]="{
+							selected: proyeccion.coProyeccion == codigoSel,
+							noSelected: proyeccion.coProyeccion != codigoSel
+						}"
+					>
+						<th>{{ i + 1 }}</th>
+						<td>{{ proyeccion.tipo }}</td>
+						<td>{{ proyeccion.coProyeccion }}</td>
+						<td colspan="2">{{ proyeccion.feProyeccion | date: 'dd/MM/yyyy' }}</td>
+						<td>{{ proyeccion.fgActi }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</form>
 </div>

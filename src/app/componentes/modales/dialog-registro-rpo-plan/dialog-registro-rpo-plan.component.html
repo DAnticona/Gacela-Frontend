@@ -1,0 +1,132 @@
+<h1 mat-dialog-title>Registro RPO Plan</h1>
+
+<div mat-dialog-content>
+	<form [formGroup]="forma">
+		<fieldset [disabled]="cargando">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="nave">Nave</label>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<button class="btn btn-outline-info" type="button" id="editar" (click)="buscarNave()">
+								<i class="fa fa-search"></i>
+							</button>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							id="nave"
+							placeholder="Nave"
+							formControlName="alNaveRpo"
+							aria-label="Nave"
+							aria-describedby="editar"
+						/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="viaje">Viaje</label>
+					<input
+						type="text"
+						class="form-control"
+						id="viaje"
+						placeholder="Viaje"
+						formControlName="viajeRpo"
+						[ngClass]="{ 'is-invalid': forma['controls'].viajeRpo.invalid }"
+						appMayuscula
+						style="text-transform: uppercase;"
+					/>
+					<div *ngIf="forma['controls'].viajeRpo.errors" class="invalid-feedback">
+						<div *ngIf="forma['controls'].viajeRpo.errors.required">
+							Valor requerido
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="2Sd">2SD</label>
+					<input
+						type="number"
+						class="form-control"
+						id="2Sd"
+						formControlName="ca2SdRpo"
+						[ngClass]="{ 'is-invalid': forma['controls'].ca2SdRpo.invalid }"
+					/>
+					<div *ngIf="forma['controls'].ca2SdRpo.errors" class="invalid-feedback">
+						<div *ngIf="forma['controls'].ca2SdRpo.errors.required">
+							Valor requerido
+						</div>
+						<div *ngIf="forma['controls'].ca2SdRpo.errors.montoInvalido">
+							No puede ingresar un monto negativo. ETA es menor que hoy.
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="4sd">4SD</label>
+					<input
+						type="number"
+						class="form-control"
+						id="4sd"
+						formControlName="ca4SdRpo"
+						[ngClass]="{ 'is-invalid': forma['controls'].ca4SdRpo.invalid }"
+					/>
+					<div *ngIf="forma['controls'].ca4SdRpo.errors" class="invalid-feedback">
+						<div *ngIf="forma['controls'].ca4SdRpo.errors.required">
+							Valor requerido
+						</div>
+						<div *ngIf="forma['controls'].ca4SdRpo.errors.montoInvalido">
+							No puede ingresar un monto negativo. ETA es menor que hoy.
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="4sh">4SH</label>
+					<input
+						type="number"
+						class="form-control"
+						id="4sh"
+						formControlName="ca4ShRpo"
+						[ngClass]="{ 'is-invalid': forma['controls'].ca4ShRpo.invalid }"
+					/>
+					<div *ngIf="forma['controls'].ca4ShRpo.errors" class="invalid-feedback">
+						<div *ngIf="forma['controls'].ca4ShRpo.errors.required">
+							Valor requerido
+						</div>
+						<div *ngIf="forma['controls'].ca4ShRpo.errors.montoInvalido">
+							No puede ingresar un monto negativo. ETA es menor a hoy.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					<label for="eta">ETA</label>
+					<input
+						type="date"
+						class="form-control"
+						id="eta"
+						formControlName="etaRpo"
+						[ngClass]="{ 'is-invalid': forma['controls'].etaRpo.invalid }"
+					/>
+					<div *ngIf="forma['controls'].etaRpo.errors" class="invalid-feedback">
+						<div *ngIf="forma['controls'].etaRpo.errors.fechaInvalida">
+							No puede ingresar un ETA menor que hoy. Existen montos negativos.
+						</div>
+						<div *ngIf="forma['controls'].etaRpo.errors.fechaMinimaInvalida">
+							La fecha no debe ser menor a 3 días
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+<div mat-dialog-actions>
+	<button class="btn btn-outline-primary m-1" [disabled]="forma.invalid || cargando" (click)="onAceptar()">
+		<i [ngClass]="{ 'fa fa-spinner fa-pulse fa-fw': cargando }" aria-hidden="true"></i>
+		<span *ngIf="!cargando">Aceptar</span>
+		<span *ngIf="cargando">Cargando</span>
+	</button>
+	<button class="btn btn-outline-danger m-1" (click)="onCancelar()">Cancelar</button>
+</div>

@@ -5,140 +5,115 @@ import { ProyeccionEquipoCab } from '../models/proyeccionEquipoCab.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class ProyeccionService {
+	constructor(private http: HttpClient) {}
 
-  
+	getProyecciones(token: string, urls: any) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
-  constructor(private http: HttpClient) { }
+		return this.http.get(urls.proyeccionesLisUrl, httpOptions);
+	}
 
-  getProyecciones(token: string, urls: any) {
+	getProyeccion(token: string, urls: any, codigo: string) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+			params: new HttpParams().set('codigo', codigo),
+		};
 
-    const httpOptions = {
+		return this.http.get(urls.proyeccionDetUrl, httpOptions).pipe(
+			map((res: any) => {
+				for (let r of res.body.proyeccionVenta.detalles) {
+					if (r.eta) {
+						r.eta = new Date(r.eta.substr(0, 4), Number(r.eta.substr(5, 2) - 1), r.eta.substr(8, 2));
+					}
+				}
+				return res;
+			})
+		);
+	}
 
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
+	registraProyeccion(token: string, urls: any, proyeccion: ProyeccionVentaCab) {
+		// console.log(proyeccion);
 
-    return this.http.get(urls.proyeccionesLisUrl, httpOptions);
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
-  }
+		return this.http.post(urls.proyeccionRegUrl, proyeccion, httpOptions);
+	}
 
-  getProyeccion(token: string, urls: any, codigo: string) {
+	generaResumenProyeccion(token: string, urls: any, coFile: string) {
+		// console.log('generando');
 
-    const httpOptions = {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+			params: new HttpParams().set('codigo', coFile),
+		};
 
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body',
-      params: new HttpParams().set('codigo', codigo)
-    };
+		return this.http.get(urls.proyeccionGenXFileUrl, httpOptions).pipe(
+			map((res: any) => {
+				for (let p of res.body.proyeccionGenerada) {
+					p.eta = new Date(p.eta + 'T00:00:00.000');
+				}
 
-    return this.http.get(urls.proyeccionDetUrl, httpOptions);
+				return res;
+			})
+		);
+	}
 
-  }
+	generaExcel(token: string, urls: any, proyeccion: any) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
+		return this.http.post(urls.proyeccionEquExcel, proyeccion, httpOptions);
+	}
 
-  registraProyeccion(token: string, urls: any, proyeccion: ProyeccionVentaCab) {
+	obtieneRatio(token: string, urls: any) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
-    // console.log(proyeccion);
+		return this.http.get(urls.ratioLisUrl, httpOptions);
+	}
 
-    const httpOptions = {
+	registraRatio(token: string, urls: any, ratio: any) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
-
-    return this.http.post(urls.proyeccionRegUrl, proyeccion, httpOptions);
-
-  }
-
-  generaResumenProyeccion(token: string, urls: any, coFile: string) {
-
-    // console.log('generando');
-
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body',
-      params: new HttpParams().set('codigo', coFile)
-    };
-
-    return this.http.get(urls.proyeccionGenXFileUrl, httpOptions)
-      .pipe(
-        map((res: any) => {
-
-          for (let p of res.body.proyeccionGenerada) {
-    
-            p.eta = new Date(p.eta + 'T00:00:00.000');
-      
-          }
-
-          return res;
-          
-        })
-      );
-
-  }
-
-
-  generaExcel(token: string, urls: any, proyeccion: any) {
-
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
-
-    return this.http.post(urls.proyeccionEquExcel, proyeccion, httpOptions);
-
-  }
-
-
-  obtieneRatio(token: string, urls: any) {
-
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
-
-    return this.http.get(urls.ratioLisUrl, httpOptions);
-
-  }
-
-  registraRatio(token: string, urls: any, ratio: any) {
-
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
-
-    return this.http.post(urls.ratioRegUrl, ratio, httpOptions);
-
-  }
-
-
+		return this.http.post(urls.ratioRegUrl, ratio, httpOptions);
+	}
 }

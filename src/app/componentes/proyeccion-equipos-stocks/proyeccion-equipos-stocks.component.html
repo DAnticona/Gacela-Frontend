@@ -1,0 +1,57 @@
+<form>
+	<table class="table table-borderless table-sm">
+		<thead>
+			<tr>
+				<th colspan="3" class="text-center">Stocks</th>
+			</tr>
+			<tr class="text-center">
+				<th><label class="col-md-1 col-form-label text-right" for="stock2Sd">2SD</label></th>
+				<th><label class="col-md-1 col-form-label text-right" for="stock4Sd">4SD</label></th>
+				<th><label class="col-md-1 col-form-label text-right" for="stock4Sh">4SH</label></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input
+						type="number"
+						class="form-control form-control-sm"
+						id="stock2Sd"
+						[(ngModel)]="stock2Sd"
+						name="stock2Sd"
+						required
+						min="0"
+						(keyup)="editaValor()"
+						(click)="$event.target.select()"
+					/>
+				</td>
+				<td>
+					<input
+						type="number"
+						class="form-control form-control-sm"
+						id="stock4Sd"
+						[(ngModel)]="stock4Sd"
+						name="stock4Sd"
+						required
+						min="0"
+						(keyup)="editaValor()"
+						(click)="$event.target.select()"
+					/>
+				</td>
+				<td>
+					<input
+						type="number"
+						class="form-control form-control-sm"
+						id="stock4Sh"
+						[(ngModel)]="stock4Sh"
+						name="stock4Sh"
+						required
+						min="0"
+						(keyup)="editaValor()"
+						(click)="$event.target.select()"
+					/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>

@@ -1,7 +1,11 @@
 {
-    "tslint.suppressWhileTypeErrorsPresent": true,
-    "prettier.printWidth": 110,
+    "workbench.startupEditor": "newUntitledFile",
+    "window.zoomLevel": 0,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.minimap.enabled": false,
     "editor.rulers": [
-    110
-    ]
+        110
+    ],
+    "editor.formatOnSave": true,
 }

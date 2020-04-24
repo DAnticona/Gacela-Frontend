@@ -1,45 +1,38 @@
 <div class="card border-secondary mb-3" style="max-width: 18rem;">
+	<div class="card-header">
+		<span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span>
+	</div>
 
-    <div class="card-header">
+	<div *ngIf="cargando" class="card-body text-center">
+		<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>
+	</div>
 
-        <span><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Proyección venta</span>
+	<div *ngIf="!cargando">
+		<ul *ngIf="!proyeccion" class="list-group list-unstyled list-group-flush text-danger">
+			<li class="list-group-item border-0">
+				<i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección
+			</li>
+		</ul>
 
-    </div>
+		<ul *ngIf="proyeccion" class="list-group list-unstyled list-group-flush text-secondary">
+			<li class="list-group-item border-0">Tipo: {{ proyeccion.tipo }}</li>
+			<li class="list-group-item border-0">Código: {{ proyeccion.coProyeccion }}</li>
+			<li class="list-group-item border-0">Cód. File: {{ proyeccion.coFile }}</li>
+			<li class="list-group-item border-0">Fecha: {{ proyeccion.feProyeccion | date: 'dd/MM/yyyy' }}</li>
+		</ul>
+	</div>
 
-    <div *ngIf="cargando" class="card-body text-center">
-
-        <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
-
-    </div>
-
-    <div *ngIf="!cargando">
-
-        <ul *ngIf="!proyeccion" class="list-group list-unstyled list-group-flush text-danger">
-
-            <li class="list-group-item border-0">
-                <i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i>Ninguna proyección
-            </li>
-
-        </ul>
-
-        <ul *ngIf="proyeccion" class="list-group list-unstyled list-group-flush text-secondary">
-
-            <li class="list-group-item border-0">Tipo: {{proyeccion.tipo}}</li>
-            <li class="list-group-item border-0">Código: {{proyeccion.coProyeccion}}</li>
-            <li class="list-group-item border-0">Cód. File: {{proyeccion.coFile}}</li>
-            <li class="list-group-item border-0">Fecha: {{proyeccion.feProyeccion | date: 'dd/MM/yyyy'}}</li>
-
-        </ul>
-
-    </div>
-
-    <div *ngIf="!cargando" class="card-body">
-
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="ventaActiva" name="ventaActiva" [(ngModel)]="ventaActiva" (change)="setVentaActiva()">
-            <label class="custom-control-label" for="ventaActiva">Usar proyección ventas</label>
-        </div>
-
-    </div>
-
+	<div *ngIf="!cargando" class="card-body">
+		<div class="custom-control custom-switch">
+			<input
+				type="checkbox"
+				class="custom-control-input"
+				id="ventaActiva"
+				name="ventaActiva"
+				[(ngModel)]="ventaActiva"
+				(change)="setVentaActiva()"
+			/>
+			<label class="custom-control-label" for="ventaActiva">Usar proyección ventas</label>
+		</div>
+	</div>
 </div>

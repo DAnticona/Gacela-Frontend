@@ -4,96 +4,84 @@ import { ParamsService } from '../../../servicios/params.service';
 import { ProyeccionService } from '../../../servicios/proyeccion-venta.service';
 
 @Component({
-  selector: 'app-proyventas',
-  templateUrl: './proyventas.component.html',
-  styleUrls: ['./proyventas.component.css']
+	selector: 'app-proyventas',
+	templateUrl: './proyventas.component.html',
+	styleUrls: ['./proyventas.component.css'],
 })
 export class ProyventasComponent {
+	token: string;
+	urls: any;
 
-  token: string;
-  urls: any;
+	today = new Date();
+	lastWeek: Date;
 
-  today = new Date();
-  lastWeek: Date;
+	proyecciones: any[] = [];
+	proyeccionesFiltradas: any[] = [];
 
-  proyecciones: any[] = [];
-  proyeccionesFiltradas: any[] = [];
+	codigoSel: string;
 
-  codigoSel: string;
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private paramsService: ParamsService,
+		private proyeccionService: ProyeccionService
+	) {
+		this.today.setMinutes(this.today.getMinutes() + this.today.getTimezoneOffset());
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private paramsService: ParamsService,
-              private proyeccionService: ProyeccionService) {
+		this.lastWeek = new Date(this.today.getTime() - 1000 * 60 * 60 * 24 * 7);
 
-    this.today.setMinutes(this.today.getMinutes() + this.today.getTimezoneOffset());
+		this.token = this.paramsService.conexion.token;
+		this.urls = this.paramsService.urls;
 
-    this.lastWeek = new Date(this.today.getTime() - (1000*60*60*24*7));
+		this.proyeccionService.getProyecciones(this.token, this.urls).subscribe((res: any) => {
+			// console.log(res);
 
-    this.token = this.paramsService.conexion.token;
-    this.urls = this.paramsService.urls;
+			this.proyecciones = res.body.listaProyeccionesVenta;
 
-    this.proyeccionService.getProyecciones(this.token, this.urls)
-      .subscribe((res: any) => {
+			this.proyecciones.forEach((p: any) => {
+				p.feProyeccion = new Date(p.feProyeccion + 'T00:00:00');
+			});
 
-        // console.log(res);
+			this.filtrar(
+				'',
+				'',
+				this.lastWeek.toISOString().slice(0, 10),
+				this.today.toISOString().slice(0, 10),
+				'A'
+			);
+		});
+	}
 
-        this.proyecciones = res.body.listaProyeccionesVenta;
+	filtrar(tipo: string, coProyeccion: string, fechaIni: string, fechaFin: string, estado: string) {
+		fechaIni = fechaIni + 'T00:00:00';
+		fechaFin = fechaFin + 'T00:00:00';
 
-        
-        this.proyecciones.forEach((p: any) => {
+		this.proyeccionesFiltradas = this.proyecciones.filter(proyeccion => {
+			return (
+				proyeccion.tipo.includes(tipo) &&
+				proyeccion.coProyeccion.includes(coProyeccion.toUpperCase()) &&
+				proyeccion.fgActi.includes(estado) &&
+				proyeccion.feProyeccion.getTime() >= new Date(fechaIni).getTime() &&
+				proyeccion.feProyeccion.getTime() <= new Date(fechaFin).getTime()
+			);
+		});
+	}
 
-          p.feProyeccion = new Date(p.feProyeccion + 'T00:00:00');
+	seleccionar(i: number) {
+		this.codigoSel = this.proyeccionesFiltradas[i].coProyeccion;
+	}
 
-        });
-        
+	nuevaProyeccion() {
+		this.router.navigate(['nuevo'], { relativeTo: this.route });
+	}
 
-        this.filtrar('', '', this.lastWeek.toISOString().slice(0,10), this.today.toISOString().slice(0,10), 'A');
+	abrirProyeccion() {
+		// console.log(this.codigoSel);
 
-      });
+		if (!this.codigoSel) {
+			return;
+		}
 
-  }
-
-  filtrar(tipo: string, coProyeccion: string, fechaIni: string, fechaFin: string, estado: string) {
-
-    fechaIni = fechaIni + 'T00:00:00';
-    fechaFin = fechaFin + 'T00:00:00';
-
-    this.proyeccionesFiltradas = this.proyecciones.filter(proyeccion => {
-
-    return proyeccion.tipo.includes(tipo) && proyeccion.coProyeccion.includes(coProyeccion.toUpperCase()) && proyeccion.fgActi.includes(estado)
-    && proyeccion.feProyeccion.getTime() >= (new Date(fechaIni)).getTime() && proyeccion.feProyeccion.getTime() <= (new Date(fechaFin)).getTime();
-
-    });
-
-  }
-
-
-  seleccionar(i: number) {
-
-    this.codigoSel = this.proyeccionesFiltradas[i].coProyeccion;
-    
-  }
-
-  nuevaProyeccion() {
-
-    this.router.navigate(['nuevo'], { relativeTo: this.route });
-
-  }
-
-  abrirProyeccion() {
-
-    // console.log(this.codigoSel);
-
-    if(!this.codigoSel) {
-
-      return;
-
-    }
-
-    this.router.navigate([this.codigoSel], { relativeTo: this.route });
-    
-  }
-
+		this.router.navigate([this.codigoSel], { relativeTo: this.route });
+	}
 }
-
