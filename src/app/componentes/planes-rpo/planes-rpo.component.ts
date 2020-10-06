@@ -5,7 +5,6 @@ import { ParamsService } from 'src/app/servicios/params.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogListarNavesComponent } from '../opciones/maestros/naves/dialog-listar-naves/dialog-listar-naves.component';
 import { DialogRegistroRpoPlanComponent } from '../modales/dialog-registro-rpo-plan/dialog-registro-rpo-plan.component';
-import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 
 /**
@@ -18,7 +17,6 @@ import Swal from 'sweetalert2';
 	selector: 'app-planes-rpo',
 	templateUrl: './planes-rpo.component.html',
 	styleUrls: ['./planes-rpo.component.css'],
-	providers: [DatePipe],
 })
 export class PlanesRpoComponent {
 	/**
@@ -59,8 +57,7 @@ export class PlanesRpoComponent {
 	constructor(
 		private paramService: ParamsService,
 		private rpoPlanService: RpoPlanService,
-		public dialog: MatDialog,
-		public datepipe: DatePipe
+		public dialog: MatDialog
 	) {
 		this.urls = this.paramService.urls;
 		this.token = this.paramService.conexion.token;

@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ProyeccionEquipoCab } from '../../modelos/proyeccion-equipo-cab.model';
-import { DatePipe } from '@angular/common';
 import { ProyeccionEquipoDet } from 'src/app/modelos/proyeccion-equipo-det.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ParamsService } from '../../servicios/params.service';
@@ -13,7 +12,6 @@ import { FileService } from '../../servicios/file.service';
 	selector: 'app-proyeccion-equipos-detalle',
 	templateUrl: './proyeccion-equipos-detalle.component.html',
 	styleUrls: ['./proyeccion-equipos-detalle.component.css'],
-	providers: [DatePipe],
 })
 export class ProyeccionEquiposDetalleComponent implements OnChanges {
 	private urls: any;
@@ -34,7 +32,6 @@ export class ProyeccionEquiposDetalleComponent implements OnChanges {
 	constructor(
 		private paramService: ParamsService,
 		public dialog: MatDialog,
-		public datepipe: DatePipe,
 		private proyeccionService: ProyeccionService,
 		private fileService: FileService
 	) {

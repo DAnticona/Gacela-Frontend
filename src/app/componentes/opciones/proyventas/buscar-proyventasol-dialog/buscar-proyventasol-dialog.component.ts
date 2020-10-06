@@ -34,8 +34,7 @@ export class BuscarProyventasolDialogComponent implements OnInit {
 		this.urls = this.paramsService.urls;
 
 		this.fileMTC1R999Service.listarFiles(this.token, this.urls).subscribe((res: any) => {
-			
-			this.archivos = res.body.filesCab;
+			this.archivos = res.body.files;
 
 			this.archivos.forEach(a => {
 				a.feCargaFile = new Date(a.feCargaFile + 'T00:00:00.000');

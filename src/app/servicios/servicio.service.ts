@@ -2,28 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class ServicioService {
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+	getServicios(token: string, urls: any) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
 
-  getServicios(token: string, urls: any) {
+			observe: 'response' as 'body',
+		};
 
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-
-        token: `${token}`,
-        'Content-Type': 'application/json'
-        
-      }),
-
-      observe: 'response' as 'body'
-
-    };
-
-    return this.http.get(urls.servicioUrl, httpOptions);
-
-  }
+		return this.http.get(urls.servicioUrl, httpOptions);
+	}
 }

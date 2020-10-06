@@ -375,7 +375,6 @@ export class ProyeccionEquiposComponent {
 	 */
 	private resumenToDetalle(resumen: any[], proyeccionEquipo: ProyeccionEquipoCab): ProyeccionEquipoCab {
 		proyeccionEquipo.detalles = new Array<ProyeccionEquipoDet>();
-
 		resumen.forEach(p => {
 			if (
 				proyeccionEquipo.detalles.filter(
@@ -500,56 +499,133 @@ export class ProyeccionEquiposComponent {
 
 	public iniciaProyeccionVentas(proyeccionEquipo: ProyeccionEquipoCab) {
 		let proyeccionVenta = new ProyeccionEquipoCab();
+
 		proyeccionVenta.coProyEqui = this.proyeccionVenta.coProyeccion;
 		proyeccionVenta.coTiProy = this.proyeccionVenta.tipo;
 		proyeccionVenta.feProy = this.proyeccionVenta.feProyeccion;
 		proyeccionVenta.fgActi = this.proyeccionVenta.fgActi;
 		proyeccionVenta.nroSem = this.proyeccionVenta.nroSem;
 		proyeccionVenta.coFile = this.proyeccionVenta.coFile;
-		proyeccionVenta.to2SdNoFe = this.proyeccionVenta.to2SdNoFe;
-		proyeccionVenta.to2SdFe = this.proyeccionVenta.to2SdFe;
-		proyeccionVenta.to4SdNoFe = this.proyeccionVenta.to4SdNoFe;
-		proyeccionVenta.to4SdFe = this.proyeccionVenta.to4SdFe;
-		proyeccionVenta.to4ShNoFe = this.proyeccionVenta.to4ShNoFe;
-		proyeccionVenta.to4ShFe = this.proyeccionVenta.to4ShFe;
-		proyeccionVenta.to2SdNoFePick = this.proyeccionVenta.to2SdNoFePick;
-		proyeccionVenta.to2SdFePick = this.proyeccionVenta.to2SdFePick;
-		proyeccionVenta.to4SdNoFePick = this.proyeccionVenta.to4SdNoFePick;
-		proyeccionVenta.to4SdFePick = this.proyeccionVenta.to4SdFePick;
-		proyeccionVenta.to4ShNoFePick = this.proyeccionVenta.to4ShNoFePick;
-		proyeccionVenta.to4ShFePick = this.proyeccionVenta.to4ShFePick;
-		proyeccionVenta.to2SdBook = this.proyeccionVenta.to2SdBook;
-		proyeccionVenta.to4SdBook = this.proyeccionVenta.to4SdBook;
-		proyeccionVenta.to4ShBook = this.proyeccionVenta.to4ShBook;
-		proyeccionVenta.to2SdPick = this.proyeccionVenta.to2SdPick;
-		proyeccionVenta.to4SdPick = this.proyeccionVenta.to4SdPick;
-		proyeccionVenta.to4ShPick = this.proyeccionVenta.to4ShPick;
 
 		proyeccionVenta.detalles = new Array<ProyeccionEquipoDet>();
 
+		this.proyeccionVenta.detalles = this.proyeccionVenta.detalles.filter(
+			p => p.eta.getTime() > this.today.getTime()
+		);
+
 		for (let d of this.proyeccionVenta.detalles) {
 			let df = new ProyeccionEquipoDet();
-			df.idItem = d.idItem;
+
+			df.idItem = proyeccionVenta.detalles.length + 1;
 			df.alNave = d.alNave;
 			df.viaje = d.viaje;
 			df.eta = d.eta;
-			df.ca2SdNoFe = d.ca2SdNoFe;
-			df.ca2SdFe = d.ca2SdFe;
-			df.ca4SdNoFe = d.ca4SdNoFe;
-			df.ca4SdFe = d.ca4SdFe;
-			df.ca4ShNoFe = d.ca4ShNoFe;
-			df.ca4ShFe = d.ca4ShFe;
-			df.ca2SdNoFePick = d.ca2SdNoFePick;
-			df.ca2SdFePick = d.ca2SdFePick;
-			df.ca4SdNoFePick = d.ca4SdNoFePick;
-			df.ca4SdFePick = d.ca4SdFePick;
-			df.ca4ShNoFePick = d.ca4ShNoFePick;
-			df.ca4ShFePick = d.ca4ShFePick;
 			df.fgRpoPlan = 'N';
+
+			// Verifica coinciencias entre proyecciones ventas y equipos
+			let eDet = proyeccionEquipo.detalles.filter(
+				ed => ed.alNave === d.alNave && ed.viaje === d.viaje && ed.eta.getTime() === d.eta.getTime()
+			);
+
+			// Si existen coincidencias, entonces si txt es mayor prevalece txt sino ventas
+			if (eDet.length > 0 && eDet[0].fgRpoPlan === 'N') {
+				// Existe en equipos
+
+				if (eDet[0].ca2SdNoFe > d.ca2SdNoFe) {
+					df.ca2SdNoFe = eDet[0].ca2SdNoFe;
+				} else {
+					df.ca2SdNoFe = d.ca2SdNoFe;
+				}
+
+				if (eDet[0].ca2SdFe > d.ca2SdFe) {
+					df.ca2SdFe = eDet[0].ca2SdFe;
+				} else {
+					df.ca2SdFe = d.ca2SdFe;
+				}
+
+				if (eDet[0].ca4SdNoFe > d.ca4SdNoFe) {
+					df.ca4SdNoFe = eDet[0].ca4SdNoFe;
+				} else {
+					df.ca4SdNoFe = d.ca4SdNoFe;
+				}
+
+				if (eDet[0].ca4SdFe > d.ca4SdFe) {
+					df.ca4SdFe = eDet[0].ca4SdFe;
+				} else {
+					df.ca4SdFe = d.ca4SdFe;
+				}
+
+				if (eDet[0].ca4ShNoFe > d.ca4ShNoFe) {
+					df.ca4ShNoFe = eDet[0].ca4ShNoFe;
+				} else {
+					df.ca4ShNoFe = d.ca4ShNoFe;
+				}
+
+				if (eDet[0].ca4ShFe > d.ca4ShFe) {
+					df.ca4ShFe = eDet[0].ca4ShFe;
+				} else {
+					df.ca4ShFe = d.ca4ShFe;
+				}
+
+				df.ca2SdNoFePick = eDet[0].ca2SdNoFePick;
+				df.ca2SdFePick = eDet[0].ca2SdFePick;
+				df.ca4SdNoFePick = eDet[0].ca4SdNoFePick;
+				df.ca4SdFePick = eDet[0].ca4SdFePick;
+				df.ca4ShNoFePick = eDet[0].ca4ShNoFePick;
+				df.ca4ShFePick = eDet[0].ca4ShFePick;
+			} else {
+				df.ca2SdNoFe = d.ca2SdNoFe;
+				df.ca2SdFe = d.ca2SdFe;
+				df.ca4SdNoFe = d.ca4SdNoFe;
+				df.ca4SdFe = d.ca4SdFe;
+				df.ca4ShNoFe = d.ca4ShNoFe;
+				df.ca4ShFe = d.ca4ShFe;
+				df.ca2SdNoFePick = d.ca2SdNoFePick;
+				df.ca2SdFePick = d.ca2SdFePick;
+				df.ca4SdNoFePick = d.ca4SdNoFePick;
+				df.ca4SdFePick = d.ca4SdFePick;
+				df.ca4ShNoFePick = d.ca4ShNoFePick;
+				df.ca4ShFePick = d.ca4ShFePick;
+			}
+
 			proyeccionVenta.detalles.push(df);
 		}
 
+		// Verifica si existen naves en txt que no este en ventas
+		for (let ed of proyeccionEquipo.detalles) {
+			let vDet = proyeccionVenta.detalles.filter(
+				v => v.alNave === ed.alNave && v.viaje === ed.viaje && v.eta.getTime() === ed.eta.getTime()
+			);
+
+			// Si existen, las agrega
+			if (vDet.length === 0 && ed.fgRpoPlan === 'N') {
+				let df = new ProyeccionEquipoDet();
+
+				df.idItem = proyeccionVenta.detalles.length + 1;
+				df.alNave = ed.alNave;
+				df.viaje = ed.viaje;
+				df.eta = ed.eta;
+				df.fgRpoPlan = 'N';
+				df.ca2SdNoFe = ed.ca2SdNoFe;
+				df.ca2SdFe = ed.ca2SdFe;
+				df.ca4SdNoFe = ed.ca4SdNoFe;
+				df.ca4SdFe = ed.ca4SdFe;
+				df.ca4ShNoFe = ed.ca4ShNoFe;
+				df.ca4ShFe = ed.ca4ShFe;
+				df.ca2SdNoFePick = ed.ca2SdNoFePick;
+				df.ca2SdFePick = ed.ca2SdFePick;
+				df.ca4SdNoFePick = ed.ca4SdNoFePick;
+				df.ca4SdFePick = ed.ca4SdFePick;
+				df.ca4ShNoFePick = ed.ca4ShNoFePick;
+				df.ca4ShFePick = ed.ca4ShFePick;
+
+				proyeccionVenta.detalles.push(df);
+			}
+		}
+
 		proyeccionVenta.detalles.sort((a, b) => new Date(a.eta).getTime() - new Date(b.eta).getTime());
+
+		proyeccionVenta = this.calculaTotalVentas(proyeccionVenta);
 
 		proyeccionVenta.ratio2Sd = this.ratioDevolucion.ratio2Sd;
 		proyeccionVenta.ratio4Sd = this.ratioDevolucion.ratio4Sd;
@@ -610,5 +686,61 @@ export class ProyeccionEquiposComponent {
 				this.generar = true;
 				this.cargando = false;
 			});
+	}
+
+	public calculaTotalVentas(proyeccionVenta: ProyeccionEquipoCab): ProyeccionEquipoCab {
+		let to2SdNoFe = 0;
+		let to2SdFe = 0;
+		let to4SdNoFe = 0;
+		let to4SdFe = 0;
+		let to4ShNoFe = 0;
+		let to4ShFe = 0;
+
+		let to2SdNoFePick = 0;
+		let to2SdFePick = 0;
+		let to4SdNoFePick = 0;
+		let to4SdFePick = 0;
+		let to4ShNoFePick = 0;
+		let to4ShFePick = 0;
+
+		for (let pvd of proyeccionVenta.detalles) {
+			to2SdNoFe += pvd.ca2SdNoFe;
+			to2SdFe += pvd.ca2SdFe;
+			to4SdNoFe += pvd.ca4SdNoFe;
+			to4SdFe += pvd.ca4SdFe;
+			to4ShNoFe += pvd.ca4ShNoFe;
+			to4ShFe += pvd.ca4ShFe;
+
+			to2SdNoFePick += pvd.ca2SdNoFePick;
+			to2SdFePick += pvd.ca2SdFePick;
+			to4SdNoFePick += pvd.ca4SdNoFePick;
+			to4SdFePick += pvd.ca4SdFePick;
+			to4ShNoFePick += pvd.ca4ShNoFePick;
+			to4ShFePick += pvd.ca4ShFePick;
+		}
+
+		proyeccionVenta.to2SdNoFe = to2SdNoFe;
+		proyeccionVenta.to2SdFe = to2SdFe;
+		proyeccionVenta.to4SdNoFe = to4SdNoFe;
+		proyeccionVenta.to4SdFe = to4SdFe;
+		proyeccionVenta.to4ShNoFe = to4ShNoFe;
+		proyeccionVenta.to4ShFe = to4ShFe;
+
+		proyeccionVenta.to2SdNoFePick = to2SdNoFePick;
+		proyeccionVenta.to2SdFePick = to2SdFePick;
+		proyeccionVenta.to4SdNoFePick = to4SdNoFePick;
+		proyeccionVenta.to4SdFePick = to4SdFePick;
+		proyeccionVenta.to4ShNoFePick = to4ShNoFePick;
+		proyeccionVenta.to4ShFePick = to4ShFePick;
+
+		proyeccionVenta.to2SdBook = to2SdNoFe + to2SdFe;
+		proyeccionVenta.to4SdBook = to4SdNoFe + to4SdFe;
+		proyeccionVenta.to4ShBook = to4ShNoFe + to4ShFe;
+
+		proyeccionVenta.to2SdPick = to2SdNoFePick + to2SdFePick;
+		proyeccionVenta.to4SdPick = to4SdNoFePick + to4SdFePick;
+		proyeccionVenta.to4ShPick = to4ShNoFePick + to4ShFePick;
+
+		return proyeccionVenta;
 	}
 }

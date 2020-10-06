@@ -13,7 +13,7 @@
 			<p><i class="fa fa-minus-circle fa-fw" aria-hidden="true"></i> Ningún archivo</p>
 		</div>
 
-		<ul *ngIf="fileMtc1r999" class="list-unstyled text-secondary">
+		<ul *ngIf="fileMtc1r999.coFile" class="list-unstyled text-secondary">
 			<li class="border-white mb-2">File: {{ fileMtc1r999.noFile }}</li>
 			<li class="border-white mb-2">Cód. File: {{ fileMtc1r999.coFile }}</li>
 			<li class="border-white mb-2">Fecha: {{ fileMtc1r999.feCargaFile | date: 'dd/MM/yyyy' }}</li>
@@ -22,6 +22,38 @@
 		<div class="text-right">
 			<label class="labelLink" for="fileSOL">Cargar archivo</label>
 			<input type="file" id="fileSOL" accept=".txt" hidden (change)="cargarFile($event.target.files)" />
+		</div>
+
+		<div *ngIf="conflictosEta.length > 0" class="alert alert-danger" role="alert">
+			<span>
+				<i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+				Existen conflictos CUT OFF
+				<label
+					class="labelLink text-dark alert-link"
+					*ngIf="!mostrarConflictos"
+					(click)="mostrarConflictos = !mostrarConflictos"
+				>
+					Ver más
+				</label>
+				<label
+					class="labelLink text-dark alert-link"
+					*ngIf="mostrarConflictos"
+					(click)="mostrarConflictos = !mostrarConflictos"
+				>
+					Ver menos
+				</label>
+			</span>
+
+			<div *ngIf="mostrarConflictos">
+				<ul class="error list-unstyled text-sm-left">
+					<li class="text-sm" *ngFor="let c of conflictosEta; let i = index">
+						<span>{{ c.nave }} - {{ c.viaje }} {{ c.cut_off }}</span>
+						<button class="btn btn-link btn-sm" (click)="corregirCutOff(i)">
+							<i class="fa fa-edit"></i>
+						</button>
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		<div *ngIf="navesNoRegistradas.length == 0 && fileMtc1r999" class="alert alert-success" role="alert">

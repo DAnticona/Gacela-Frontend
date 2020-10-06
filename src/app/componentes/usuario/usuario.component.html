@@ -1,163 +1,232 @@
 <form [formGroup]="forma" *ngIf="usuarioModel && tiDocus">
-    <h1 class="m-3">Datos Personales</h1>
-    <hr class="m-3" />
+	<h1 class="m-3">Datos Personales</h1>
+	<hr class="m-3" />
 
-    <div class="row justify-content-center m-5">
+	<div class="row justify-content-center m-5">
+		<div class="col-lg-4 col-md-12 imagen text-center" *ngIf="usuarioModel">
+			<app-imagen-usuario></app-imagen-usuario>
+		</div>
 
-        <div class="col-lg-4 col-md-12 imagen text-center" *ngIf="usuarioModel">
+		<div class="col-lg-8 col-md-12 pl-5 pr-5 forma">
+			<div class="form-group row">
+				<label for="coPers" class="col-lg-3 col-md-12 col-form-label">Código:</label>
+				<div class="col-lg-9 col-md-12">
+					<input type="text" class="form-control" id="coPers" placeholder="Código" formControlName="coPers" />
+				</div>
+			</div>
 
-            <app-imagen-usuario></app-imagen-usuario>
+			<div class="form-group row">
+				<div class="col-lg-3 col-md-12">
+					<select class="form-control" formControlName="tiDocu">
+						<option disabled>Tipo Doc.</option>
+						<option *ngFor="let tidocu of tiDocus" [ngValue]="tidocu.coTiDocu">{{ tidocu.alTiDocu }} </option>
+					</select>
+				</div>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nro. Documento"
+						formControlName="nuDocu"
+						[ngClass]="{
+							'is-valid': forma.controls['nuDocu'].valid,
+							'is-invalid': !forma.controls['nuDocu'].valid
+						}"
+					/>
+					<div class="invalid-feedback">
+						Ingresar un número de documento válido
+					</div>
+				</div>
+			</div>
 
-        </div>
+			<div class="form-group row">
+				<label for="noPers" class="col-lg-3 col-md-12 col-form-label">Nombres:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						id="noPers"
+						placeholder="Nombres"
+						formControlName="noPers"
+						[ngClass]="{
+							'is-valid': forma.controls['noPers'].valid,
+							'is-invalid': !forma.controls['noPers'].valid
+						}"
+						(change)="forma.patchValue({ noPers: $event.target.value.toUpperCase() })"
+					/>
+					<div class="invalid-feedback">
+						Nombre es requerido
+					</div>
+				</div>
+			</div>
 
-        <div class="col-lg-8 col-md-12 pl-5 pr-5 forma">
+			<div class="form-group row">
+				<label for="apPate" class="col-lg-3 col-md-12 col-form-label">Ap. Paterno:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						id="apPate"
+						placeholder="Apellido Paterno"
+						formControlName="apPate"
+						[ngClass]="{
+							'is-valid': forma.controls['apPate'].valid,
+							'is-invalid': !forma.controls['apPate'].valid
+						}"
+						(change)="forma.patchValue({ apPate: $event.target.value.toUpperCase() })"
+					/>
+					<div class="invalid-feedback">
+						Apellido Paterno es requerido
+					</div>
+				</div>
+			</div>
 
-            <div class="form-group row">
-                <label for="coPers" class="col-lg-3 col-md-12 col-form-label">Código:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="coPers" placeholder="Código" formControlName="coPers" />
-                </div>
-            </div>
+			<div class="form-group row">
+				<label for="apMate" class="col-lg-3 col-md-12 col-form-label">Ap. Materno:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						id="apMate"
+						placeholder="Apellido Materno"
+						formControlName="apMate"
+						[ngClass]="{
+							'is-valid': forma.controls['apMate'].valid,
+							'is-invalid': !forma.controls['apMate'].valid
+						}"
+						(change)="forma.patchValue({ apMate: $event.target.value.toUpperCase() })"
+					/>
+					<div class="invalid-feedback">
+						Apellido Materno es requerido
+					</div>
+				</div>
+			</div>
 
-            <div class="form-group row">
-                <div class="col-lg-3 col-md-12">
-                    <select class="form-control" formControlName="tiDocu">
-                        <option disabled>Tipo Doc.</option>
-                        <option *ngFor="let tidocu of tiDocus" [ngValue]="tidocu.coTiDocu">{{ tidocu.alTiDocu }}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" placeholder="Nro. Documento" formControlName="nuDocu"
-                        [ngClass]="{
-                                'is-valid': forma.controls['nuDocu'].valid,
-                                'is-invalid': !forma.controls['nuDocu'].valid
-                                }" />
-                    <div class="invalid-feedback">
-                        Ingresar un número de documento válido
-                    </div>
-                </div>
-            </div>
+			<fieldset class="form-group">
+				<div class="row">
+					<legend class="col-form-label col-lg-3 col-md-12 pt-0">Sexo:</legend>
+					<div class="col-lg-9 col-md-12">
+						<div class="form-check form-check-inline">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="sexo"
+								id="M"
+								value="M"
+								formControlName="sexo"
+							/>
+							<label class="form-check-label" for="M">Masculino</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="sexo"
+								id="F"
+								value="F"
+								formControlName="sexo"
+							/>
+							<label class="form-check-label" for="F">Femenino</label>
+						</div>
+					</div>
+				</div>
+			</fieldset>
 
-            <div class="form-group row">
-                <label for="noPers" class="col-lg-3 col-md-12 col-form-label">Nombres:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="noPers" placeholder="Nombres" formControlName="noPers"
-                        [ngClass]="{'is-valid': forma.controls['noPers'].valid,
-                                    'is-invalid': !forma.controls['noPers'].valid
-                                    }" (change)="forma.patchValue({noPers: $event.target.value.toUpperCase()})" />
-                    <div class="invalid-feedback">
-                        Nombre es requerido
-                    </div>
-                </div>
-            </div>
+			<div class="form-group row">
+				<label for="feNaci" class="col-lg-3 col-md-12 col-form-label">Fecha Nac.:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="date"
+						name="feNaci"
+						id="feNaci"
+						value="{{ usuarioModel.feNaci | date: 'yyyy-MM-dd' }}"
+						formControlName="feNaci"
+						[ngClass]="{
+							'is-valid': forma.controls['feNaci'].valid,
+							'is-invalid': !forma.controls['feNaci'].valid
+						}"
+					/>
+					<div class="invalid-feedback">
+						Ingresar una fecha válida
+					</div>
+				</div>
+			</div>
 
-            <div class="form-group row">
-                <label for="apPate" class="col-lg-3 col-md-12 col-form-label">Ap. Paterno:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="apPate" placeholder="Apellido Paterno"
-                        formControlName="apPate" [ngClass]="{'is-valid': forma.controls['apPate'].valid,
-                    'is-invalid': !forma.controls['apPate'].valid
-                    }" (change)="forma.patchValue({apPate: $event.target.value.toUpperCase()})" />
-                    <div class="invalid-feedback">
-                        Apellido Paterno es requerido
-                    </div>
-                </div>
-            </div>
+			<div class="form-group row">
+				<label for="email" class="col-lg-3 col-md-12 col-form-label">Email:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="email"
+						class="form-control"
+						id="email"
+						placeholder="Correo Electrónico"
+						formControlName="email"
+						[ngClass]="{
+							'is-valid': forma.controls['email'].valid,
+							'is-invalid': !forma.controls['email'].valid
+						}"
+						(change)="forma.patchValue({ email: $event.target.value.toUpperCase() })"
+					/>
+					<div class="invalid-feedback">
+						Ingresar un correo electrónico válido
+					</div>
+				</div>
+			</div>
 
-            <div class="form-group row">
-                <label for="apMate" class="col-lg-3 col-md-12 col-form-label">Ap. Materno:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="apMate" placeholder="Apellido Materno"
-                        formControlName="apMate" [ngClass]="{'is-valid': forma.controls['apMate'].valid,
-                    'is-invalid': !forma.controls['apMate'].valid
-                    }" (change)="forma.patchValue({apMate: $event.target.value.toUpperCase()})" />
-                    <div class="invalid-feedback">
-                        Apellido Materno es requerido
-                    </div>
-                </div>
-            </div>
+			<div class="form-group row">
+				<label for="noUsua" class="col-lg-3 col-md-12 col-form-label">Usuario:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						id="noUsua"
+						placeholder="Nombre de Usuario"
+						formControlName="noUsua"
+						(change)="forma.patchValue({ noUsua: $event.target.value.toUpperCase() })"
+					/>
+				</div>
+			</div>
 
-            <fieldset class="form-group">
-                <div class="row">
-                    <legend class="col-form-label col-lg-3 col-md-12 pt-0">Sexo:</legend>
-                    <div class="col-lg-9 col-md-12">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="sexo" id="M" value="M"
-                                formControlName="sexo" />
-                            <label class="form-check-label" for="M">Masculino</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="sexo" id="F" value="F"
-                                formControlName="sexo" />
-                            <label class="form-check-label" for="F">Femenino</label>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
+			<div class="form-group row">
+				<label for="noPerf" class="col-lg-3 col-md-12 col-form-label">Perfil:</label>
+				<div class="col-lg-9 col-md-12">
+					<input
+						type="text"
+						class="form-control"
+						id="noPerf"
+						placeholder="Perfil"
+						formControlName="noPerf"
+						(change)="forma.patchValue({ noPerf: $event.target.value.toUpperCase() })"
+					/>
+				</div>
+			</div>
 
-            <div class="form-group row">
-                <label for="feNaci" class="col-lg-3 col-md-12 col-form-label">Fecha Nac.:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="date" name="feNaci" id="feNaci" value="{{ usuarioModel.feNaci | date: 'yyyy-MM-dd' }}"
-                        formControlName="feNaci" [ngClass]="{'is-valid': forma.controls['feNaci'].valid,
-                    'is-invalid': !forma.controls['feNaci'].valid
-                    }" />
-                    <div class="invalid-feedback">
-                        Ingresar una fecha válida
-                    </div>
-                </div>
+			<div class="form-group row mt-5">
+				<div class="col-6 text-center">
+					<button
+						type="button"
+						class="btn btn-outline-primary"
+						(click)="guardarDatos()"
+						[disabled]="cargando || forma.invalid"
+					>
+						<i [ngClass]="{ 'fa-spinner fa-pulse': cargando, 'fa-floppy-o': !cargando }" class="fa"></i>
+						<span *ngIf="!cargando"> Guardar</span>
+						<span *ngIf="cargando"> Cargando...</span>
+					</button>
+				</div>
 
-            </div>
-
-            <div class="form-group row">
-                <label for="email" class="col-lg-3 col-md-12 col-form-label">Email:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="email" class="form-control" id="email" placeholder="Correo Electrónico"
-                        formControlName="email" [ngClass]="{'is-valid': forma.controls['email'].valid,
-                    'is-invalid': !forma.controls['email'].valid
-                    }" (change)="forma.patchValue({email: $event.target.value.toUpperCase()})" />
-                    <div class="invalid-feedback">
-                        Ingresar un correo electrónico válido
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-                <label for="noUsua" class="col-lg-3 col-md-12 col-form-label">Usuario:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="noUsua" placeholder="Nombre de Usuario"
-                        formControlName="noUsua"
-                        (change)="forma.patchValue({noUsua: $event.target.value.toUpperCase()})" />
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="noPerf" class="col-lg-3 col-md-12 col-form-label">Perfil:</label>
-                <div class="col-lg-9 col-md-12">
-                    <input type="text" class="form-control" id="noPerf" placeholder="Perfil" formControlName="noPerf"
-                        (change)="forma.patchValue({noPerf: $event.target.value.toUpperCase()})" />
-                </div>
-            </div>
-
-            <div class="form-group row mt-5">
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-outline-primary" (click)="guardarDatos()" [disabled]="cargando || forma.invalid">
-                        <i [ngClass]="{'fa-spinner fa-pulse': cargando,'fa-floppy-o': !cargando}" class="fa"></i>
-                        <span *ngIf="!cargando"> Guardar</span>
-                        <span *ngIf="cargando"> Cargando...</span>
-                    </button>
-                </div>
-
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-outline-danger" [routerLink]="['/welcome/perfil', noUsua]"
-                        [disabled]="cargando">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="col-6 text-center">
+					<button
+						type="button"
+						class="btn btn-outline-danger"
+						[routerLink]="['/welcome/perfil', noUsua]"
+						[disabled]="cargando"
+					>
+						<i class="fa fa-arrow-left" aria-hidden="true"></i>
+						Cancelar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </form>

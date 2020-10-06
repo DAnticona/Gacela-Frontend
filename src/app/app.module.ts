@@ -50,6 +50,7 @@ import { ProyeccionEquiposDetalleComponent } from './componentes/proyeccion-equi
 import { ProyeccionEquiposStocksComponent } from './componentes/proyeccion-equipos-stocks/proyeccion-equipos-stocks.component';
 import { PlanesRpoComponent } from './componentes/planes-rpo/planes-rpo.component';
 import { DialogRegistroRpoPlanComponent } from './componentes/modales/dialog-registro-rpo-plan/dialog-registro-rpo-plan.component';
+import { DialogCorregirCutOffComponent } from './componentes/modales/dialog-corregir-cut-off/dialog-corregir-cut-off.component';
 
 @NgModule({
 	entryComponents: [
@@ -57,6 +58,7 @@ import { DialogRegistroRpoPlanComponent } from './componentes/modales/dialog-reg
 		DialogListarNavesComponent,
 		DialogRegistrarNavesComponent,
 		DialogRegistroRpoPlanComponent,
+		DialogCorregirCutOffComponent,
 	],
 	declarations: [
 		AppComponent,
@@ -99,6 +101,7 @@ import { DialogRegistroRpoPlanComponent } from './componentes/modales/dialog-reg
 		ProyeccionEquiposStocksComponent,
 		PlanesRpoComponent,
 		DialogRegistroRpoPlanComponent,
+		DialogCorregirCutOffComponent,
 	],
 	imports: [
 		BrowserModule,

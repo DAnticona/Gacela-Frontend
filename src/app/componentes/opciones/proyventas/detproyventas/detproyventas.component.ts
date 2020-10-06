@@ -194,6 +194,7 @@ export class DetproyventasComponent {
 					ca4ShFePick: new FormControl(0, [Validators.required, Validators.min(0)]),
 					ca4RhNoFePick: new FormControl(0, [Validators.required, Validators.min(0)]),
 					ca4RhFePick: new FormControl(0, [Validators.required, Validators.min(0)]),
+					fgFile: new FormControl('N'),
 				})
 			);
 		});
@@ -251,6 +252,7 @@ export class DetproyventasComponent {
 							detalle.alNave = p.alNave;
 							detalle.viaje = p.viaje;
 							detalle.eta = p.eta;
+							detalle.fgFile = 'S';
 
 							this.proyeccionCab.detalles.push(detalle);
 						}
@@ -307,12 +309,20 @@ export class DetproyventasComponent {
 	}
 
 	getDetalle(detalle: ProyeccionVentaDet) {
+		let disable = false;
+
+		if (detalle.fgFile === 'S') {
+			disable = true;
+		}
 		(this.forma.controls['detalles'] as FormArray).push(
 			new FormGroup({
 				idItem: new FormControl({ value: detalle.idItem, disabled: true }, Validators.required),
 				alNave: new FormControl({ value: detalle.alNave, disabled: true }, Validators.required),
-				viaje: new FormControl(detalle.viaje, Validators.required),
-				eta: new FormControl(this.datepipe.transform(detalle.eta, 'yyyy-MM-dd'), Validators.required),
+				viaje: new FormControl({ value: detalle.viaje, disabled: disable }, Validators.required),
+				eta: new FormControl(
+					{ value: this.datepipe.transform(detalle.eta, 'yyyy-MM-dd'), disabled: disable },
+					Validators.required
+				),
 
 				ca2SdNoFe: new FormControl(detalle.ca2SdNoFe, [Validators.required, Validators.min(0)]),
 				ca2SdFe: new FormControl(detalle.ca2SdFe, [Validators.required, Validators.min(0)]),
@@ -330,6 +340,7 @@ export class DetproyventasComponent {
 				ca4ShFePick: new FormControl(detalle.ca4ShFePick, [Validators.required, Validators.min(0)]),
 				ca4RhNoFePick: new FormControl(detalle.ca4RhNoFePick, [Validators.required, Validators.min(0)]),
 				ca4RhFePick: new FormControl(detalle.ca4RhFePick, [Validators.required, Validators.min(0)]),
+				fgFile: new FormControl(detalle.fgFile),
 			})
 		);
 	}

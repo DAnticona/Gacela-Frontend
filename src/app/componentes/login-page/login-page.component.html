@@ -4,9 +4,7 @@
 			<img src="assets/Images/gacela.svg" class="imageGacela" />
 		</div>
 
-		<div *ngIf="error" class="alert alert-danger">
-			{{ error.mensaje }}
-		</div>
+		<div *ngIf="error" class="alert alert-danger">{{ error.mensaje }}</div>
 
 		<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 			<fieldset [disabled]="cargando">

@@ -159,7 +159,9 @@
 							<button
 								class="btn btn-outline-info btn-sm"
 								(click)="getNaves(i)"
-								[disabled]="proyeccionCab.fgActi == 'C'"
+								[disabled]="
+									proyeccionCab.fgActi == 'C' || forma.get('detalles')['controls'][i].controls['eta'].disabled
+								"
 							>
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button>
@@ -277,7 +279,9 @@
 							<button
 								class="btn btn-outline-danger btn-sm"
 								(click)="quitaNave(i)"
-								[disabled]="proyeccionCab.fgActi == 'C'"
+								[disabled]="
+									proyeccionCab.fgActi == 'C' || forma.get('detalles')['controls'][i].controls['eta'].disabled
+								"
 							>
 								<i class="fa fa-trash" aria-hidden="true"></i>
 							</button>

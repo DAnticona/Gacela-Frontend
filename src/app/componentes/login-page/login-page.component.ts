@@ -5,77 +5,56 @@ import { Router } from '@angular/router';
 import { ParamsService } from '../../servicios/params.service';
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+	selector: 'app-login-page',
+	templateUrl: './login-page.component.html',
+	styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent {
+	urls: any;
 
-  urls: any;
+	loginForm: FormGroup;
 
-  loginForm: FormGroup;
+	error: any;
 
-  error: any;
+	conexion: any;
 
-  conexion: any;
+	cargando = false;
 
-  cargando = false;
+	constructor(private paramsService: ParamsService, private router: Router) {
+		this.paramsService.getUrls().subscribe(res => {
+			this.urls = res;
+		});
 
-  constructor(private paramsService: ParamsService,
-              private router: Router) {
+		this.loginForm = new FormGroup({
+			noUsua: new FormControl('', Validators.required),
+			paUsua: new FormControl('', Validators.required),
+		});
+	}
 
-    this.paramsService.getUrls()
-      .subscribe(res => {
+	onSubmit() {
+		this.cargando = true;
 
-        this.urls = res;
-          
-      });
+		this.paramsService.getLogin(this.loginForm.value, this.urls).subscribe(
+			(res: any) => {
+				this.conexion = res.body;
 
+				this.cargaLogin();
 
-    this.loginForm = new FormGroup({
+				this.cargando = false;
+			},
 
-      'noUsua': new FormControl('', Validators.required),
-      'paUsua': new FormControl('', Validators.required)
+			(err: any) => {
+				this.error = err.error;
 
-    });
-  }
+				this.cargando = false;
+			}
+		);
+	}
 
+	cargaLogin() {
+		this.paramsService.guardarUrls(this.urls);
+		this.paramsService.guardarConexion(this.conexion);
 
-  onSubmit() {
-
-    this.cargando = true;
-    
-    this.paramsService.getLogin(this.loginForm.value, this.urls)
-      .subscribe(
-        (res: any) => {
-
-          this.conexion = res.body.conexion;
-
-          this.cargaLogin();
-
-          this.cargando = false;
-
-        },
-      
-        (err: any) => {
-
-          this.error = err.error.error;
-
-          this.cargando = false;
-
-        }
-      );
-
-  }
-
-
-  cargaLogin() {
-
-    this.paramsService.guardarUrls(this.urls);
-    this.paramsService.guardarConexion(this.conexion);
-    
-    this.router.navigate(['welcome/home', this.loginForm.controls.noUsua.value.toLowerCase()]);
-
-  }
-
+		this.router.navigate(['welcome/home', this.loginForm.controls.noUsua.value.toLowerCase()]);
+	}
 }

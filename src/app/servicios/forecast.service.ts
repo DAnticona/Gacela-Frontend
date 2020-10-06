@@ -3,29 +3,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ForecastCab } from '../models/forecastCab.model';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class ForecastService {
+	token: string;
+	urls: any;
+	naves: any;
+	servicios: any;
 
-  token: string;
-  urls: any;
-  naves: any;
-  servicios: any;
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+	loadFile(urls: any, forecastCab: any, token: string) {
+		const httpOptions = {
+			headers: new HttpHeaders({
+				token: `${token}`,
+				'Content-Type': 'application/json',
+			}),
+			observe: 'response' as 'body',
+		};
 
-  loadFile(urls: any, forecastCab: ForecastCab, token: string) {
-
-    const httpOptions = {
-
-      headers: new HttpHeaders({
-        token: `${token}`,
-        'Content-Type': 'application/json'
-      }),
-      observe: 'response' as 'body'
-    };
-
-    return this.http.post(urls.forecastUrl, forecastCab, httpOptions);
-
-  }
+		return this.http.post(urls.forecastUrl, forecastCab, httpOptions);
+	}
 }

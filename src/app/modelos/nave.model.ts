@@ -1,14 +1,15 @@
-export class Nave {
+import { Servicio } from '../models/servicio.model';
+import { Linea } from '../models/linea.model';
 
-    coNave: string;
+export class Nave {
+	coNave: string;
 	noNave: string;
 	alNave: string;
-	coServ: string;
-	coLine: string;
+	servicio: Servicio;
+	linea: Linea;
 	fgActi: string;
 	usCrea: string;
 	usModi: string;
 	feCrea: Date;
 	feModi: Date;
-
 }

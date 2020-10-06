@@ -1,18 +1,33 @@
-<div class="accordion mt-3" id="menuList" *ngIf="menus.length > 0">
-    <ul class="menu">
-        <li *ngFor="let menu of menus, let i = index">
-            <a [href]="'#' + menu.noMenu" class="nombreMenu" [attr.data-toggle]="'collapse'" [attr.data-target]="'#' + menu.noMenu" [attr.aria-controls]="menu.noMenu" (click)="clickMenu(i)" [ngClass]="{ 'active': menu.activo }">
-        {{menu.alMenu | capitalizado}}
-        <i [ngClass]="{ 'fa-caret-right': !menu.expanded, 'fa-caret-down': menu.expanded }" class="fa menuIcon"></i>
-      </a>
+<div class="accordion mt-3" id="menuList" *ngIf="menus">
+	<ul class="menu">
+		<li *ngFor="let menu of menus; let i = index">
+			<a
+				[href]="'#' + menu.noMenu"
+				class="nombreMenu"
+				[attr.data-toggle]="'collapse'"
+				[attr.data-target]="'#' + menu.noMenu"
+				[attr.aria-controls]="menu.noMenu"
+				(click)="clickMenu(i)"
+				[ngClass]="{ active: menu.activo }"
+			>
+				{{ menu.alMenu | capitalizado }}
+				<i
+					[ngClass]="{ 'fa-caret-right': !menu.expanded, 'fa-caret-down': menu.expanded }"
+					class="fa menuIcon"
+				></i>
+			</a>
 
-            <ul class="collapse submenu" [id]="menu.noMenu" data-parent="#menuList">
-                <li [id]="subMenu.nombre" *ngFor="let subMenu of menu.subMenus" routerLinkActive="active">
-                    <a class="nombreSubMenu" [routerLink]="[subMenu.ruta, noUsua | lowercase]" (click)="clickSubMenu(i)">
-                        <i class="fa {{subMenu.icono}}"></i> {{subMenu.alSubMenu | capitalizado}}
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+			<ul class="collapse submenu" [id]="menu.noMenu" data-parent="#menuList">
+				<li [id]="subMenu.nombre" *ngFor="let subMenu of menu.subMenus" routerLinkActive="active">
+					<a
+						class="nombreSubMenu"
+						[routerLink]="[subMenu.ruta, noUsua | lowercase]"
+						(click)="clickSubMenu(i)"
+					>
+						<i class="fa {{ subMenu.icono }}"></i> {{ subMenu.alMenu | capitalizado }}
+					</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
 </div>
